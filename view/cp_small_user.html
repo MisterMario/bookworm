@@ -1,0 +1,16 @@
+<tr>
+  <td><?php echo $user_info["id"]; ?></td>
+  <td><?php echo $user_info["firstname"]; ?></td>
+  <td><?php echo $user_info["lastname"]; ?></td>
+  <td><?php echo $user_info["email"]; ?></td>
+  <td>
+    <div class="t-row-control">
+      <form action="" method="post">
+        <input type="hidden" name="form_name" value="control_user">
+        <input type="hidden" name="item_id" value="<?php echo $user_info["id"]; ?>">
+        <input type="submit" name="action" value="edit_row">
+        <input type="submit" name="action" value="delete_row">
+      </form>
+    </div>
+  </td>
+</tr>

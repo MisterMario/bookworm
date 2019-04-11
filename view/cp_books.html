@@ -1,0 +1,22 @@
+<div id="management-of-goods">
+  <div id="management-head">
+    <div id="management-search">
+      <form action="" method="post" class="search-form">
+        <label for="search-string">Поиск по товарам:</label>
+        <input type="text" name="search-string" placeholder="Имя автора или название товара">
+        <input type="submit" value="">
+      </form>
+    </div>
+    <div id="management-control">
+      <form action="" method="post">
+        <input type="hidden" name="form_name" value="control_products">
+        <input type="submit" name="new" value="Добавить товар">
+        <input type="submit" name="remove_all" value="Удалить все">
+      </form>
+    </div>
+  </div>
+  <div id="management-body">
+    <?php echo $list; ?>
+    <?php echo $pages_navigation; ?>
+  </div>
+</div>

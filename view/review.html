@@ -1,0 +1,21 @@
+<div id="review">
+  <div id="review-head">
+    <div id="review-info">
+      <input type="hidden" name="item_id" value="<?php echo $review["id"]; ?>">
+      <p><?php echo $review["user"]; ?></p>
+      <ul>
+        <?php echo $review["rating"]; ?>
+      </ul>
+    </div>
+    <div id="review-control" class="">
+      <form action="" method="post">
+        <input type="button" id="ok" value="" onclick="sendReview(this);" class="hidden">
+        <input type="button" id="edit"  onclick="editReview(this);" value="" class="<?php echo $isOwner ? '' : 'hidden'; ?>">
+        <input type="button" id="cancel" onclick="removeReview(this);" class="<?php echo $isOwner || $isMember ? '' : 'hidden'; ?>">
+      </form>
+    </div>
+  </div>
+  <div id="review-body">
+    <textarea name="review-text" rows="<?php echo $review["text_rows"]; ?>" cols="80" placeholder="Введите сюда то, что думаете о товаре..." readonly><?php echo $review["text"]; ?></textarea>
+  </div>
+</div>

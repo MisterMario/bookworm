@@ -1,0 +1,25 @@
+<div id="review" class="my">
+  <div id="review-head">
+    <div id="review-info">
+      <input type="hidden" name="item_id" value="0">
+      <p>Добавление<br />отзыва</p>
+      <ul>
+        <li value="1" class="" onclick="setRating(this)"></li>
+        <li value="2" class="" onclick="setRating(this)"></li>
+        <li value="3" class="" onclick="setRating(this)"></li>
+        <li value="4" class="" onclick="setRating(this)"></li>
+        <li value="5" class="" onclick="setRating(this)"></li>
+      </ul>
+    </div>
+    <div id="review-control">
+      <form action="" method="post">
+        <input type="button" id="ok" value="" onclick="sendReview(this);">
+        <input type="button" id="edit" value="" onclick="editReview(this);" class="hidden">
+        <input type="button" id="cancel" onclick="resetReview();">
+      </form>
+    </div>
+  </div>
+  <div id="review-body">
+    <textarea name="review-text" rows="1" cols="80" placeholder="Введите сюда то, что думаете о товаре..." oninput="expandTextarea(false);"></textarea>
+  </div>
+</div>

@@ -1,0 +1,17 @@
+<div class="product small-product">
+  <div id="product-photo">
+    <img src="/<?php echo VIEW_DIR; ?>products/<?php echo $book["image"]; ?>" alt="">
+  </div>
+  <div id="product-description">
+    <h1><a href="/product/<?php echo $book["id"]; ?>"><?php echo $book["name"]; ?></a></h1>
+    <ul>
+      <li><strong>Автор:</strong> <?php echo $book["author"]; ?></li>
+      <li><strong>Цена:</strong> <?php echo $book["price"]." ".CURRENCY; ?></li>
+      <li><strong>Количество:</strong> <?php echo $book["count"]; ?></li>
+      <li><strong>Итого:</strong> <?php echo $book["total_sum"]." ".CURRENCY; ?></li>
+    </ul>
+  </div>
+  <div id="product-control">
+    <input type="button" name="product-delete" onclick="" class="<?php if (!$isEdited) echo "hidden"; ?>">
+  </div>
+</div>

@@ -1,0 +1,29 @@
+<div id="my-contacts">
+  <div id="personal-data" class="rect">
+    <h2>Инфо-блок:</h2>
+    <form action="" method="post">
+      <input type="hidden" name="item_id" value="<?php echo $i_block["id"]; ?>">
+      <div class="form-row">
+        <label for="title">Заголовок: <span>*</span></label>
+        <div class="input">
+          <input type="text" name="title" placeholder="Реклама" value="<?php echo $i_block["title"]; ?>">
+        </div>
+      </div>
+      <div class="form-row">
+        <label for="access-level">Уровень доступа: <span>*</span></label>
+        <div class="input">
+          <input type="text" name="access_level" placeholder="2" value="<?php echo $i_block["access_level"]; ?>">
+        </div>
+      </div>
+      <div class="form-row textarea-fix">
+        <label for="info_block_content">Содержание: <span>*</span></label>
+        <div class="input">
+          <textarea name="info_block_content" rows="10" cols="80" placeholder="HTML-код содержания блока"><?php echo $i_block["content"]; ?></textarea>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div id="my-contacts-control" class="form-controls">
+    <input type="button" name="save-changes" value="<?php echo $isEdit ? "Сохранить изменения" : "Добавить блок"; ?>" class="green-btn" onclick="sendInfoBlock(<?php echo $isEdit ? "true" : "false"; ?>)">
+  </div>
+</div>

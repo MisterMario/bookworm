@@ -1,0 +1,10 @@
+<div id="user-profil">
+  <img src="/<?php echo VIEW_DIR; ?>images/icon-man.png" alt="">
+  <div id="user-name">
+    <p><?php echo $user->getFirstName(); ?></p>
+    <p><?php echo $user->getLastName(); ?></p>
+  </div>
+  <form action="" method="post">
+    <input type="button" name="btn-logout" onclick="goLogout();">
+  </form>
+</div>
