@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1
--- Время создания: Дек 18 2018 г., 13:26
+-- Время создания: Апр 15 2019 г., 18:55
 -- Версия сервера: 10.1.31-MariaDB
 -- Версия PHP: 7.2.4
 
@@ -37,7 +37,7 @@ CREATE TABLE `book` (
   `tags` varchar(256) NOT NULL,
   `series` varchar(64) DEFAULT NULL,
   `rightholder` varchar(128) DEFAULT NULL,
-  `date_of_cos` date NOT NULL COMMENT 'date of commencement of sales',
+  `date_of_cos` date DEFAULT NULL COMMENT 'date of commencement of sales',
   `age_restrictions` varchar(6) NOT NULL,
   `isbn` bigint(20) DEFAULT NULL,
   `annotation` text,
@@ -89,19 +89,6 @@ CREATE TABLE `book_in_cart` (
   `count` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Дамп данных таблицы `book_in_cart`
---
-
-INSERT INTO `book_in_cart` (`id`, `user_id`, `book_id`, `count`) VALUES
-(11, 3, 1, 1),
-(12, 3, 2, 2),
-(13, 3, 3, 2),
-(14, 3, 4, 2),
-(30, 1, 1, 12),
-(33, 1, 6, 6),
-(34, 1, 2, 2);
-
 -- --------------------------------------------------------
 
 --
@@ -120,10 +107,49 @@ CREATE TABLE `book_in_order` (
 --
 
 INSERT INTO `book_in_order` (`id`, `order_id`, `book_id`, `count`) VALUES
-(1, 5, 1, 50),
-(2, 5, 10, 2),
-(3, 5, 8, 1),
-(4, 5, 4, 2);
+(1, 8, 2, 1),
+(2, 8, 7, 1),
+(3, 8, 10, 1),
+(4, 8, 11, 2),
+(5, 8, 12, 2),
+(6, 8, 8, 2),
+(7, 9, 2, 1),
+(8, 9, 7, 1),
+(9, 9, 10, 1),
+(10, 9, 11, 2),
+(11, 9, 12, 2),
+(12, 9, 8, 2),
+(13, 10, 2, 1),
+(14, 10, 7, 1),
+(15, 10, 10, 1),
+(16, 10, 11, 2),
+(17, 10, 12, 2),
+(18, 10, 8, 2),
+(19, 11, 2, 1),
+(20, 11, 3, 1),
+(21, 11, 7, 2),
+(22, 11, 6, 2),
+(23, 11, 5, 7),
+(24, 11, 10, 4);
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `customer`
+--
+
+CREATE TABLE `customer` (
+  `id` int(11) NOT NULL,
+  `order_id` int(11) NOT NULL,
+  `firstname` varchar(32) DEFAULT NULL,
+  `lastname` varchar(32) DEFAULT NULL,
+  `phone_number` varchar(13) DEFAULT NULL,
+  `email` varchar(64) DEFAULT NULL,
+  `zip_code` int(6) NOT NULL,
+  `state` varchar(64) DEFAULT NULL,
+  `city` varchar(64) DEFAULT NULL,
+  `address` varchar(128) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -178,8 +204,8 @@ CREATE TABLE `info_block` (
 --
 
 INSERT INTO `info_block` (`id`, `title`, `content`, `access_level`) VALUES
-(1, 'Личный кабинет', '<ul class=\"personal-cabinet\">\r\n              <li name=\"my-contacts\"><a href=\"/pc/my-contacts\">Мои контакты</a></li>\r\n              <li name=\"my-basket\"><a href=\"/pc/my-cart\">Моя корзина</a></li>\r\n              <li name=\"purchase-history\"><a href=\"/pc/orders-history\">История заказов</a></li>\r\n              <li name=\"control-panel\"><a href=\"/control/menu/\">Панель управления</a></li>\r\n            </ul>', 2),
-(2, 'Популярные авторы', '<ul>\r\n              <li><a href=\"#\">Джоджо Мойес</a></li>\r\n              <li><a href=\"#\">Достоевский Федор</a></li>\r\n              <li><a href=\"#\">Жан-Кристоф Гранже</a></li>\r\n              <li><a href=\"#\">Зигмунд Фрейд</a></li>\r\n              <li><a href=\"#\">Кокотюха Андрій</a></li>\r\n              <li><a href=\"#\">Кунин Алексей</a></li>\r\n              <li><a href=\"#\">Леви Джулия</a></li>\r\n              <li><a href=\"#\">Носов Николай</a></li>\r\n            </ul>', 0);
+(1, 'Личный кабинет', '&lt;ul class=&quot;personal-cabinet&quot;&gt;\n&lt;li name=&quot;my-contacts&quot;&gt;&lt;a href=&quot;/pc/my-contacts&quot;&gt;Мои контакты&lt;/a&gt;&lt;/li&gt;\n&lt;li name=&quot;my-basket&quot;&gt;&lt;a href=&quot;/pc/my-cart&quot;&gt;Моя корзина&lt;/a&gt;&lt;/li&gt;\n&lt;li name=&quot;purchase-history&quot;&gt;&lt;a href=&quot;/pc/orders-history&quot;&gt;История заказов&lt;/a&gt;&lt;/li&gt;\n&lt;li name=&quot;control-panel&quot;&gt;&lt;a href=&quot;/control/menu/&quot;&gt;Панель управления&lt;/a&gt;&lt;/li&gt;\n&lt;/ul&gt;', 2),
+(2, 'Популярные авторы', '&lt;ul&gt;\n&lt;li&gt;&lt;a href=&quot;#&quot;&gt;Джоджо Мойес&lt;/a&gt;&lt;/li&gt;\n&lt;li&gt;&lt;a href=&quot;#&quot;&gt;Достоевский Федор&lt;/a&gt;&lt;/li&gt;\n&lt;li&gt;&lt;a href=&quot;#&quot;&gt;Жан-Кристоф Гранже&lt;/a&gt;&lt;/li&gt;\n&lt;li&gt;&lt;a href=&quot;#&quot;&gt;Зигмунд Фрейд&lt;/a&gt;&lt;/li&gt;\n&lt;li&gt;&lt;a href=&quot;#&quot;&gt;Кокотюха Андрій&lt;/a&gt;&lt;/li&gt;\n&lt;li&gt;&lt;a href=&quot;#&quot;&gt;Кунин Алексей&lt;/a&gt;&lt;/li&gt;\n&lt;li&gt;&lt;a href=&quot;#&quot;&gt;Леви Джулия&lt;/a&gt;&lt;/li&gt;\n&lt;li&gt;&lt;a href=&quot;#&quot;&gt;Носов Николай&lt;/a&gt;&lt;/li&gt;\n&lt;/ul&gt;', 0);
 
 -- --------------------------------------------------------
 
@@ -197,7 +223,7 @@ CREATE TABLE `order_` (
   `time_of_dilivery` smallint(1) NOT NULL,
   `dilivery_method` smallint(1) NOT NULL DEFAULT '1',
   `payment_method` smallint(1) NOT NULL DEFAULT '1',
-  `status` smallint(1) NOT NULL
+  `status` smallint(1) NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -205,11 +231,12 @@ CREATE TABLE `order_` (
 --
 
 INSERT INTO `order_` (`id`, `user_id`, `books_of_count`, `total_price`, `date_of_issue`, `date_of_dilivery`, `time_of_dilivery`, `dilivery_method`, `payment_method`, `status`) VALUES
-(1, 1, 10, 4500, '2018-09-24', '2018-09-28', 4, 1, 1, 5),
-(2, 1, 5, 1500, '2018-10-07', '2018-10-13', 1, 2, 1, 4),
-(3, 1, 29, 7873, '2018-10-18', '2018-10-24', 3, 1, 3, 2),
-(4, 1, 5, 1500, '2018-10-22', '2018-10-23', 2, 1, 2, 3),
-(5, 1, 55, 14873, '2018-10-23', '2018-10-25', 3, 1, 1, 1);
+(6, 6, 14, 2509, '2019-01-11', '2019-01-12', 3, 1, 5, 5),
+(7, 6, 14, 2509, '2019-01-11', '2019-01-12', 1, 2, 1, 1),
+(8, 3, 9, 1686, '2019-01-14', '2019-01-15', 3, 1, 5, 5),
+(9, 3, 9, 1686, '2019-01-14', '2019-01-21', 1, 3, 4, 1),
+(10, 3, 9, 1686, '2019-01-14', '2019-01-16', 4, 1, 1, 1),
+(11, 2, 17, 2343, '2019-01-14', '2019-01-21', 1, 2, 3, 1);
 
 -- --------------------------------------------------------
 
@@ -225,16 +252,6 @@ CREATE TABLE `review` (
   `text` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Дамп данных таблицы `review`
---
-
-INSERT INTO `review` (`id`, `book_id`, `user_id`, `rating`, `text`) VALUES
-(1, 1, 4, 0, 'Мне не понравилось. В общем: книга на любителя. Концовка так себе.'),
-(2, 1, 3, 2, 'Кинза, в очередной раз, окунает тебя в эту историю все глубже. Сюжет закручивается все сильнее, кажется конца и края нет этой истории. И да, серия, действительно, затянулась, открывая перед нами все новые истории и новые лица... Хорошо это или плохо, не берусь судить. Просто, как и во всех сказках, хочется хэппи энда, доброго и счастливого, а он все никак не настанет. Эта серия может продолжаться бесконечно, уходя в сторону от главных героев, открываться нам с разных сторон, так как автор просто мега- мастер слова и мысли детективного рассказа, Агата Кристи нашла свое новое воплощение в Элле Рейн. Надеюсь, в следующей книге не будет конца истории, но будет добрый, хороший хэппи энд :)'),
-(3, 1, 2, 5, 'Очень нравится сериал, с удовольствием прочитала новую книгу и буду ждать следующую.'),
-(4, 1, 1, 3, 'Лучшая серия книг, которую я прочел за всю мою жизнь. Я ещё не успел купить 1 часть последней книги. Очень хочу прочесть.');
-
 -- --------------------------------------------------------
 
 --
@@ -246,7 +263,7 @@ CREATE TABLE `user` (
   `firstname` varchar(32) NOT NULL,
   `lastname` varchar(32) NOT NULL,
   `gender` smallint(1) NOT NULL DEFAULT '1',
-  `phone_number` varchar(12) NOT NULL,
+  `phone_number` varchar(13) NOT NULL,
   `email` varchar(64) NOT NULL,
   `zip_code` int(6) DEFAULT NULL,
   `state` varchar(64) DEFAULT NULL,
@@ -262,10 +279,12 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id`, `firstname`, `lastname`, `gender`, `phone_number`, `email`, `zip_code`, `state`, `city`, `address`, `password`, `level`, `tmp`) VALUES
-(1, 'Кирилл', 'Савицкий', 1, '375297752396', 'kirilsavitskiy@mail.ru', NULL, NULL, NULL, NULL, '223396235', 4, 'oinbu32muzflxzrp0bexg18mfuokeqef'),
-(2, 'Александра', 'Питчер', 2, '375448512377', 'lexypitcher@gmail.com', NULL, NULL, NULL, NULL, '1992lexy', 2, ''),
-(3, 'Александра', 'Мельникова', 2, '375291582238', 'alexamelka@mail.com', NULL, NULL, NULL, NULL, 'alexa2539', 2, '057l7d7i9ktlnilmq0chdy0ma5vzddpo'),
-(4, 'Ярослав', 'Крестовский', 1, '375294472333', 'yariksharik@mail.ru', NULL, NULL, NULL, NULL, 'yarik7233kek', 2, NULL);
+(1, 'неавторизованный', 'пользователь', 1, '', '', NULL, NULL, NULL, NULL, '', 2, NULL),
+(2, 'Кирилл', 'Савицкий', 1, '+375297752396', 'kirilsavitskiy@mail.ru', 253546, 'Минская', 'Солигорск', 'ул. Пипиркина, д. 25', '375297752396', 4, ''),
+(3, 'Александра', 'Питчер', 2, '375448512377', 'lexypitcher@gmail.com', NULL, NULL, NULL, NULL, '1992lexy', 2, ''),
+(4, 'Александра', 'Мельникова', 2, '375291582238', 'alexamelka@mail.com', 38362, 'TN', 'Oakfield', '1827 Walt Nuzum Farm Road', 'alexa2539', 2, ''),
+(5, 'Ярослав', 'Крестовский', 1, '375294472333', 'yariksharik@mail.ru', NULL, NULL, NULL, NULL, 'yarik7233kek', 2, NULL),
+(6, 'Артем', 'Сорокин', 1, '+375291584322', 'andrysoroka@mail.ru', 0, '', '', '', '156234', 2, '');
 
 --
 -- Индексы сохранённых таблиц
@@ -293,6 +312,13 @@ ALTER TABLE `book_in_order`
   ADD PRIMARY KEY (`id`),
   ADD KEY `order_id` (`order_id`),
   ADD KEY `book_id` (`book_id`);
+
+--
+-- Индексы таблицы `customer`
+--
+ALTER TABLE `customer`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `order_id` (`order_id`);
 
 --
 -- Индексы таблицы `dynamic_page`
@@ -347,13 +373,19 @@ ALTER TABLE `book`
 -- AUTO_INCREMENT для таблицы `book_in_cart`
 --
 ALTER TABLE `book_in_cart`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT для таблицы `book_in_order`
 --
 ALTER TABLE `book_in_order`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+
+--
+-- AUTO_INCREMENT для таблицы `customer`
+--
+ALTER TABLE `customer`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT для таблицы `dynamic_page`
@@ -377,19 +409,19 @@ ALTER TABLE `info_block`
 -- AUTO_INCREMENT для таблицы `order_`
 --
 ALTER TABLE `order_`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT для таблицы `review`
 --
 ALTER TABLE `review`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT для таблицы `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- Ограничения внешнего ключа сохраненных таблиц
@@ -399,34 +431,40 @@ ALTER TABLE `user`
 -- Ограничения внешнего ключа таблицы `book`
 --
 ALTER TABLE `book`
-  ADD CONSTRAINT `book_ibfk_1` FOREIGN KEY (`genre_id`) REFERENCES `genre` (`id`);
+  ADD CONSTRAINT `book_ibfk_1` FOREIGN KEY (`genre_id`) REFERENCES `genre` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Ограничения внешнего ключа таблицы `book_in_cart`
 --
 ALTER TABLE `book_in_cart`
-  ADD CONSTRAINT `book_in_cart_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`),
-  ADD CONSTRAINT `book_in_cart_ibfk_2` FOREIGN KEY (`book_id`) REFERENCES `book` (`id`);
+  ADD CONSTRAINT `book_in_cart_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `book_in_cart_ibfk_2` FOREIGN KEY (`book_id`) REFERENCES `book` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Ограничения внешнего ключа таблицы `book_in_order`
 --
 ALTER TABLE `book_in_order`
-  ADD CONSTRAINT `book_in_order_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `order_` (`id`),
-  ADD CONSTRAINT `book_in_order_ibfk_2` FOREIGN KEY (`book_id`) REFERENCES `book` (`id`);
+  ADD CONSTRAINT `book_in_order_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `order_` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `book_in_order_ibfk_2` FOREIGN KEY (`book_id`) REFERENCES `book` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Ограничения внешнего ключа таблицы `customer`
+--
+ALTER TABLE `customer`
+  ADD CONSTRAINT `customer_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `order_` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Ограничения внешнего ключа таблицы `order_`
 --
 ALTER TABLE `order_`
-  ADD CONSTRAINT `order__ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
+  ADD CONSTRAINT `order__ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Ограничения внешнего ключа таблицы `review`
 --
 ALTER TABLE `review`
-  ADD CONSTRAINT `review_ibfk_1` FOREIGN KEY (`book_id`) REFERENCES `book` (`id`),
-  ADD CONSTRAINT `review_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
+  ADD CONSTRAINT `review_ibfk_1` FOREIGN KEY (`book_id`) REFERENCES `book` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `review_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
