@@ -240,16 +240,20 @@ input.green-btn:hover {
 #header #right-part #mini-profil input[type="button"][name="btn-logout"]:hover {
   background: #82ca9c url(../images/btn-logout-hover.png) no-repeat center;
 }
+#header #right-part #mini-profil #user-profil {
+  overflow: hidden;
+}
 #header #right-part #mini-profil img {
   display: inline-block;
-  vertical-align: middle;
+  float: left;
+  margin-top: 1px;
 }
 #header #right-part #mini-profil #user-name {
   display: inline-block;
   height: 32px;
-  vertical-align: middle;
   letter-spacing: 0;
   padding: 0 6px;
+  float: left;
 }
 #header #right-part #mini-profil p {
   font-size: 14px;
