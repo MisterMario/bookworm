@@ -1435,6 +1435,30 @@ form.search-form input[type="submit"] {
 #inside-content-body form .form-row .input input[type="radio"]:checked + label::before {
   background: #00ad9d;
 }
+/* Информационные сообщения о прчине отсутствия контента на странице */
+#inside-content-body #message-in-content {
+  background-position: center 88px!important;
+  background-repeat: no-repeat!important;
+}
+#inside-content-body #message-in-content p {
+  width: 400px; /* Слишком много текста в одной строке будет выглядеть некрасиво */
+  padding: 222px 0 118px 0;
+  margin: 0 auto;
+  text-align: center;
+  color: #009688;
+}
+#inside-content-body #message-in-content.empty-cart {
+  background: url(../images/empty-cart.png);
+}
+#inside-content-body #message-in-content.empty-catalog {
+  background: url(../images/empty-catalog.png);
+}
+#inside-content-body #message-in-content.empty-orders-history {
+  background: url(../images/empty-orders-history.png);
+}
+#inside-content-body #message-in-content.failed-search {
+  background: url(../images/search-icon-for-message.png);
+}
 /* Стилизация чекбоксов */
 #inside-content-body form .form-row .input input[type="checkbox"] {
   display: none;

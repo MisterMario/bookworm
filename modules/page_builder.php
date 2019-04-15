@@ -230,7 +230,7 @@ class Catalog {
 
     $db = DB::getInstance();
     $num_pages = $db->query("SELECT COUNT(id) FROM ".DB_TABLES["book"].($page_info["page_code"] == 2 ? " WHERE genre_id=".$page_info["item_code"] : "") ); // Получение количества всех записей определенного жанра
-    if (gettype($num_pages) == "boolean" || $num_pages->num_rows == 0) return null;
+    if (gettype($num_pages) == "boolean" || $num_pages->fetch_assoc()["COUNT(id)"] == 0) return EmptyContent::getHTML(2);
 
     $num_pages = (int)ceil( ( (int)$num_pages->fetch_assoc()["COUNT(id)"] ) / 12 ); // Количество страниц
 
@@ -408,7 +408,7 @@ class Cart {
 
     $db = DB::getInstance();
     $res = $db->query("SELECT id, book_id, count FROM ".DB_TABLES["book_ic"]." WHERE user_id=".$user_id);
-    if (gettype($res) == "boolean" || $res->num_rows == 0) return null;
+    if (gettype($res) == "boolean" || $res->num_rows == 0) return EmptyContent::getHTML(1);
 
     while ($row = $res->fetch_assoc()) {
       $book = $db->query("SELECT name, author, price FROM ".DB_TABLES["book"]." WHERE id=".$row["book_id"]." LIMIT 1");
@@ -460,7 +460,7 @@ class Cart {
         ob_start(); include VIEW_DIR."book_in_cart.html";
         $products_list .= ob_get_clean();
       }
-    } else return null;
+    } else return EmptyContent::getHTML(1);
 
     ob_start(); include VIEW_DIR."cart.html";
     return ob_get_clean();
@@ -574,7 +574,7 @@ class OrdersHistory {
 
     $db = DB::getInstance();
     $res = $db->query("SELECT * FROM ".DB_TABLES["order"]." WHERE user_id=".$user_id." ORDER BY id DESC");
-    if (gettype($res) == "boolean" || $res->num_rows == 0) return null;
+    if (gettype($res) == "boolean" || $res->num_rows == 0) return EmptyContent::getHTML(3);
 
     while ($row = $res->fetch_assoc()) {
       $canBeEdited = false; $canCancel = false;
@@ -900,6 +900,38 @@ class InfoBlocksEditor {
     $i_block = array("id" => 0, "title" => "", "content" => "", "access_level" => 0);
     ob_start(); include VIEW_DIR."editor_info_block.html";
     return ob_get_clean();
+  }
+}
+
+class EmptyContent {
+  public static function getHTML($reason_id) {
+    $reason_class = "";
+    $reason_text = "";
+    $html = "";
+
+  	ob_start();
+  	switch ($reason_id) {
+      case 1:
+        $reason_class = "empty-cart";
+        $reason_text = "Корзина товаров пуста";
+        break;
+      case 2:
+        $reason_class = "empty-catalog";
+        $reason_text = "Каталог товаров пуст";
+        break;
+      case 3:
+        $reason_class = "empty-orders-history";
+        $reason_text = "Вы еще ничего не заказывали";
+        break;
+      case 4:
+        $reason_class = "failed-search";
+        $reason_text = "Поиск не дал результатов";
+        break;
+    }
+    include VIEW_DIR."empty_content.html";
+  	$html = ob_get_clean();
+
+    return $html;
   }
 }
 
