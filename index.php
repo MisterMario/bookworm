@@ -9,7 +9,11 @@ $user = Auth::createUser();
 
 if (count($_POST) > 0) require_once("post.php"); // Обработкой POST займусь позднее
 
-$page_info = SEF::getPageInfo($_SERVER["REQUEST_URI"]);
+// Преобразование uri в UTF-8 необходимо для поиска.
+// Так как Windows-1251 не включает кириллицу, а при поиске используются русские буквы
+$decoded_uri = iconv("Windows-1251", "UTF-8", $_SERVER["REQUEST_URI"]);
+$decoded_uri = urldecode($decoded_uri);
+$page_info = SEF::getPageInfo($decoded_uri);
 
 // Проверка того, что страница существует и доступна пользователю
 if (!$page_info["page_code"])
