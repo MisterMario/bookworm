@@ -180,13 +180,13 @@ class Page {
     ob_start();
     switch ($this->code) {
       case 403:
-        include VIEW_DIR."403.html";
+        include SERVER_VIEW_DIR."403.html";
         break;
       case 404:
-        include VIEW_DIR."404.html";
+        include SERVER_VIEW_DIR."404.html";
         break;
       default:
-        include VIEW_DIR."index.html";
+        include SERVER_VIEW_DIR."index.html";
         break;
     }
     return ob_get_clean();
@@ -211,14 +211,14 @@ class Page {
     if ($active_num + 3 < $num_pages) $list .= "<li class=\"disabled\">...</li><li><a href=\"\">".$num_pages."</a></li>";
     elseif ($active_num + 2 == $num_pages) $list .= "<li><a href=\"".$uri.$num_pages."\">".$num_pages."</a></li>";
 
-    ob_start(); include VIEW_DIR."pages_navigation.html";
+    ob_start(); include SERVER_VIEW_DIR."pages_navigation.html";
     return ob_get_clean();
   }
 
   public static function getMiniProfil($user) {
     ob_start();
-    if ($user) include VIEW_DIR."mp_user.html";
-    else include VIEW_DIR."mp_login.html";
+    if ($user) include SERVER_VIEW_DIR."mp_user.html";
+    else include SERVER_VIEW_DIR."mp_login.html";
 
     return ob_get_clean();
   }
@@ -227,7 +227,7 @@ class Page {
 class Catalog {
   public static function getHTML($page_info) { // Возвращает контент главной страницы (каталога всех товаров)
     $content = "";
-    ob_start(); include VIEW_DIR."sorting_goods.html";
+    ob_start(); include SERVER_VIEW_DIR."sorting_goods.html";
     $content .= ob_get_clean();
     $content .= BooksCatalog::getFullBooksListHTML($page_info["page_num"], $page_info["item_code"]);
 
@@ -255,7 +255,7 @@ class InfoBlock {
       ob_start();
       $block_title = $row["title"];
       $block_content = htmlspecialchars_decode($row["content"], ENT_QUOTES);
-      include VIEW_DIR."info_block.html";
+      include SERVER_VIEW_DIR."info_block.html";
       $blocks_list .= ob_get_clean();
     }
 
@@ -284,15 +284,15 @@ class BooksCatalog {
       $i++;
       ob_start();
       $book = array("id" => $row["id"], "name" => $row["name"], "author" => self::bookAuthor($row["author"]), "price" => $row["price"], "image" => Book::getImage($row["id"]));
-      include VIEW_DIR."small_book.html";
+      include SERVER_VIEW_DIR."small_book.html";
       $books_row .= ob_get_clean();
       if ($i % 4 == 0 || $i == $res->num_rows) { // Строка добавляется в каталог неполной, если книга последняя.
         ob_start();
-        include VIEW_DIR."small_books_row.html";
+        include SERVER_VIEW_DIR."small_books_row.html";
         $books_list .= ob_get_clean(); $books_row = ""; // Добавляет текущую строку с книгами в каталог и очишает ее
       }
     }
-    ob_start(); include VIEW_DIR."catalog.html";
+    ob_start(); include SERVER_VIEW_DIR."catalog.html";
 
     return ob_get_clean();
   }
@@ -317,16 +317,16 @@ class BooksCatalog {
                     "author" => self::bookAuthor($row["author"]),
                     "price" => $row["price"],
                     "image" => Book::getImage($row["id"]));
-      include VIEW_DIR."small_book.html";
+      include SERVER_VIEW_DIR."small_book.html";
       $books_row .= ob_get_clean();
 
       if ($i % 4 == 0 || $i == $res->num_rows) { // Строка добавляется в каталог неполной, если книга последняя.
         ob_start();
-        include VIEW_DIR."small_books_row.html";
+        include SERVER_VIEW_DIR."small_books_row.html";
         $books_list .= ob_get_clean(); $books_row = ""; // Добавляет текущую строку с книгами в каталог и очишает ее
       }
     }
-    ob_start(); include VIEW_DIR."catalog.html";
+    ob_start(); include SERVER_VIEW_DIR."catalog.html";
 
     return ob_get_clean();
   }
@@ -371,11 +371,11 @@ class Book {
     $book_reviews = Review::getReviewsList($page_info["item_code"]);
     $my_review = "";
     if ($user) {
-      ob_start(); include VIEW_DIR."my_review.html";
+      ob_start(); include SERVER_VIEW_DIR."my_review.html";
       $my_review = ob_get_clean();
     }
 
-    ob_start(); include VIEW_DIR."book_info.html";
+    ob_start(); include SERVER_VIEW_DIR."book_info.html";
     return ob_get_clean();
   }
 
@@ -390,12 +390,12 @@ class Book {
     $book["genre"] = Genre::getName($book["genre_id"]);
     $book["image"] = self::getImage($book["id"]);
     ob_start();
-    include VIEW_DIR."book_general_information.html";
+    include SERVER_VIEW_DIR."book_general_information.html";
     return ob_get_clean();
   }
 
   public static function getImage($id) { // На случай, если для книги не было загружено картинки
-    return file_exists(VIEW_DIR."/products/".$id.".png")? $id.".png" : "default.png";
+    return file_exists(SERVER_VIEW_DIR."/products/".$id.".png")? $id.".png" : "default.png";
   }
 }
 
@@ -429,7 +429,7 @@ class Review {
       $isOwner = $user && $user->getId() == $row["user_id"] ? true : false; // Автор отзыва
       $isMember = $user && $user->getLevel() > 2 ? true : false; // Админ
 
-      ob_start(); include VIEW_DIR."review.html";
+      ob_start(); include SERVER_VIEW_DIR."review.html";
       $list .= ob_get_clean();
     }
     return $list;
@@ -458,11 +458,11 @@ class Cart {
       $total_sum += $book["total_sum"];
       $num_books += (int)$book["count"];
 
-      ob_start(); include VIEW_DIR."book_in_cart.html";
+      ob_start(); include SERVER_VIEW_DIR."book_in_cart.html";
       $products_list .= ob_get_clean();
     }
 
-    ob_start(); include VIEW_DIR."cart.html";
+    ob_start(); include SERVER_VIEW_DIR."cart.html";
     return ob_get_clean();
   }
 
@@ -494,12 +494,12 @@ class Cart {
         $total_sum += $book["total_sum"];
         $num_books += (int)$book_count;
 
-        ob_start(); include VIEW_DIR."book_in_cart.html";
+        ob_start(); include SERVER_VIEW_DIR."book_in_cart.html";
         $products_list .= ob_get_clean();
       }
     } else return EmptyContent::getHTML(1);
 
-    ob_start(); include VIEW_DIR."cart.html";
+    ob_start(); include SERVER_VIEW_DIR."cart.html";
     return ob_get_clean();
   }
 
@@ -545,7 +545,7 @@ class Cart {
         }
     }
 
-    ob_start(); include VIEW_DIR."mini_cart.html";
+    ob_start(); include SERVER_VIEW_DIR."mini_cart.html";
     return ob_get_clean();
   }
 }
@@ -592,14 +592,14 @@ class AddOrder {
       $total_sum = CCart::getStatusForUser($user->getId())["total_sum"];
     } else $total_sum = CCart::getStatusForNoDBUser()["total_sum"];
 
-    ob_start(); include VIEW_DIR."add_order.html";
+    ob_start(); include SERVER_VIEW_DIR."add_order.html";
     return ob_get_clean();
   }
 }
 
 class MyContacts {
   public static function getHTML($user_info) { // Принимает массив с информацией о пользователе
-    ob_start(); include VIEW_DIR."my_contacts.html";
+    ob_start(); include SERVER_VIEW_DIR."my_contacts.html";
 
     return ob_get_clean();
   }
@@ -632,11 +632,11 @@ class OrdersHistory {
         $canCancel = true;
       }
 
-      ob_start(); include VIEW_DIR."order.html";
+      ob_start(); include SERVER_VIEW_DIR."order.html";
       $orders_list .= ob_get_clean();
     }
 
-    ob_start(); include VIEW_DIR."purchase_history.html";
+    ob_start(); include SERVER_VIEW_DIR."purchase_history.html";
     return ob_get_clean();
   }
 }
@@ -667,12 +667,12 @@ class OrderInfo {
                     "total_sum" => (int)$book_info["price"] * (int)$book["count"],
                     "image" => Book::getImage($book["book_id"]));
 
-      ob_start(); include VIEW_DIR."book_in_order.html";
+      ob_start(); include SERVER_VIEW_DIR."book_in_order.html";
       $books_list .= ob_get_clean();
     }
 
 
-    ob_start(); include VIEW_DIR."information_about_order.html";
+    ob_start(); include SERVER_VIEW_DIR."information_about_order.html";
     return ob_get_clean();
   }
 
@@ -701,11 +701,11 @@ class OrderInfo {
                     "total_sum" => (int)$book_info["price"] * (int)$book["count"],
                     "image" => Book::getImage($book["book_id"]));
 
-      ob_start(); include VIEW_DIR."edit_book_in_order.html";
+      ob_start(); include SERVER_VIEW_DIR."edit_book_in_order.html";
       $books_list .= ob_get_clean();
     }
 
-    ob_start(); include VIEW_DIR."information_about_order.html";
+    ob_start(); include SERVER_VIEW_DIR."information_about_order.html";
     return ob_get_clean();
   }
 
@@ -782,14 +782,14 @@ class OrderInfo {
 
 class Register {
   public static function getHTML() {
-    ob_start(); include VIEW_DIR."register.html";
+    ob_start(); include SERVER_VIEW_DIR."register.html";
     return ob_get_clean();
   }
 }
 
 class ControlPanel {
   public static function getMenuHTML() {
-    ob_start(); include VIEW_DIR."control-panel.html";
+    ob_start(); include SERVER_VIEW_DIR."control-panel.html";
     return ob_get_clean();
   }
   public static function getBooksListHTML($page_num, $count) {
@@ -804,14 +804,14 @@ class ControlPanel {
       $book = array("id" => $row["id"], "name" => $row["name"], "author" => $row["author"], "price" => $row["price"], "count" => $row["count"]);
       $book["total_sum"] = (int)$book["price"] * (int)$book["count"];
       $book["image"] = Book::getImage($book["id"]);
-      ob_start(); include VIEW_DIR."cp_small_book.html";
+      ob_start(); include SERVER_VIEW_DIR."cp_small_book.html";
       $list .= ob_get_clean();
     }
     $num_pages = (int)( $db->query("SELECT count(id) FROM ".DB_TABLES["book"])->fetch_assoc()["count(id)"] ) / $count;
     $num_pages = (int)ceil($num_pages);
     $pages_navigation = Page::getPageNavigation($num_pages, $page_num, "/control/products/");
 
-    ob_start(); include VIEW_DIR."cp_books.html";
+    ob_start(); include SERVER_VIEW_DIR."cp_books.html";
     return ob_get_clean();
   }
 
@@ -825,14 +825,14 @@ class ControlPanel {
 
     while ($row = $res->fetch_assoc()) {
       $user_info = array("id" => $row["id"], "firstname" => $row["firstname"], "lastname" => $row["lastname"], "email" => $row["email"]);
-      ob_start(); include VIEW_DIR."cp_small_user.html";
+      ob_start(); include SERVER_VIEW_DIR."cp_small_user.html";
       $list .= ob_get_clean();
     }
     $num_pages = (int)( $db->query("SELECT count(id) FROM ".DB_TABLES["user"])->fetch_assoc()["count(id)"] ) / $count;
     $num_pages = (int)ceil($num_pages);
     $pages_navigation = Page::getPageNavigation($num_pages, $page_num, "/control/users/");
 
-    ob_start(); include VIEW_DIR."cp_users.html";
+    ob_start(); include SERVER_VIEW_DIR."cp_users.html";
     return ob_get_clean();
   }
 
@@ -846,14 +846,14 @@ class ControlPanel {
 
     while ($row = $res->fetch_assoc()) {
       $ib = array("id" => $row["id"], "title" => $row["title"], "access_level" => $row["access_level"]);
-      ob_start(); include VIEW_DIR."cp_small_info_block.html";
+      ob_start(); include SERVER_VIEW_DIR."cp_small_info_block.html";
       $list .= ob_get_clean();
     }
     $num_pages = (int)( $db->query("SELECT count(id) FROM ".DB_TABLES["i-block"])->fetch_assoc()["count(id)"] ) / $count;
     $num_pages = (int)ceil($num_pages);
     $pages_navigation = Page::getPageNavigation($num_pages, $page_num, "/control/info-blocks/");
 
-    ob_start(); include VIEW_DIR."cp_info_blocks.html";
+    ob_start(); include SERVER_VIEW_DIR."cp_info_blocks.html";
     return ob_get_clean();
   }
 }
@@ -863,7 +863,7 @@ class UsersEditor {
     $isEdit = true;
     $user_info = User::getUserInformation($user_id);
 
-    ob_start(); include VIEW_DIR."editor_user.html";
+    ob_start(); include SERVER_VIEW_DIR."editor_user.html";
     return ob_get_clean();
   }
 
@@ -881,7 +881,7 @@ class UsersEditor {
                        "address" => "",
                        "zip_code" => "");
 
-    ob_start(); include VIEW_DIR."editor_user.html";
+    ob_start(); include SERVER_VIEW_DIR."editor_user.html";
     return ob_get_clean();
   }
 }
@@ -901,7 +901,7 @@ class BooksEditor {
                   "price" => $res["price"], "count" => $res["count"], "annotation" => $res["annotation"], "image" => Book::getImage($res["id"]));
     $genre_select = Genre::getGenreSelectHTML($res["genre_id"]);
 
-    ob_start(); include VIEW_DIR."editor_book.html";
+    ob_start(); include SERVER_VIEW_DIR."editor_book.html";
     return ob_get_clean();
   }
 
@@ -911,7 +911,7 @@ class BooksEditor {
     $book = array("id" => 0, "name" => "", "author" => "", "genre" => "", "language" => "", "keywords" => "", "series" => "",
                   "rightholder" => "", "age_restrictions" => "", "isbn" => "", "price" => "", "count" => "", "annotation" => "", "image" => Book::getImage(0));
     $genre_select = Genre::getGenreSelectHTML();
-    ob_start(); include VIEW_DIR."editor_book.html";
+    ob_start(); include SERVER_VIEW_DIR."editor_book.html";
     return ob_get_clean();
   }
 }
@@ -927,7 +927,7 @@ class InfoBlocksEditor {
 
     $i_block = array("id" => $res["id"], "title" => $res["title"], "content" => $res["content"], "access_level" => $res["access_level"]);
 
-    ob_start(); include VIEW_DIR."editor_info_block.html";
+    ob_start(); include SERVER_VIEW_DIR."editor_info_block.html";
     return ob_get_clean();
   }
 
@@ -935,7 +935,7 @@ class InfoBlocksEditor {
     $isEdit = false;
 
     $i_block = array("id" => 0, "title" => "", "content" => "", "access_level" => 0);
-    ob_start(); include VIEW_DIR."editor_info_block.html";
+    ob_start(); include SERVER_VIEW_DIR."editor_info_block.html";
     return ob_get_clean();
   }
 }
@@ -965,7 +965,7 @@ class EmptyContent {
         $reason_text = "Поиск не дал результатов";
         break;
     }
-    include VIEW_DIR."empty_content.html";
+    include SERVER_VIEW_DIR."empty_content.html";
   	$html = ob_get_clean();
 
     return $html;
@@ -977,7 +977,7 @@ class Search {
     $content = ""; $books_list = ""; $books_id_list = array();
     $db = DB::getInstance();
 
-    ob_start(); include VIEW_DIR."sorting_goods.html";
+    ob_start(); include SERVER_VIEW_DIR."sorting_goods.html";
     $content .= ob_get_clean();
 
     $first_id = ($page_num * 12) - 12 + 1;
