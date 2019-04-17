@@ -19,7 +19,7 @@ class SEF {
   const PATTERN_FOR_EDIT_USER = "/^\/edit\/user\/[0-9]{1,}\/{0,1}$/";
   const PATTERN_FOR_EDIT_INFO_BLOCK = "/^\/edit\/info-block\/[0-9]{1,}\/{0,1}$/";
   const PATTERN_FOR_EDIT_ORDER = "/^\/edit\/order\/[0-9]{1,}\/{0,1}$/";
-  const PATTERN_FOR_SEARCH = "/^\/search\/[a-zA-Zа-яА-Я0-9\s\.\!_-]{1,}(\/{0,1}|(\/[0-9]{1,}\/{0,1}))$/u";
+  const PATTERN_FOR_SEARCH = "/^\/search\/[a-zA-Zа-яА-Я0-9\s\.\!:@;,_-]{1,}(\/{0,1}|(\/[0-9]{1,}\/{0,1}))$/u";
   const PATTERN_FOR_CART = "/^\/cart\/{0,1}$/"; // Корзина для неавторизованного пользователя
 
   public static function getPageInfo($uri) {

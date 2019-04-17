@@ -982,7 +982,7 @@ class Search {
 
     $first_id = ($page_num * 12) - 12 + 1;
     $searched_books = $db->query("SELECT id, name FROM ".DB_TABLES["book"]." WHERE name LIKE '%${searched_string}%' LIMIT 12");
-    if (gettype($searched_books) == "boolean" || $searched_books->num_rows == 0) return null;
+    if (gettype($searched_books) == "boolean" || $searched_books->num_rows == 0) return EmptyContent::getHTML(4);
     while ($row = $searched_books->fetch_assoc()) {
       $books_id_list[] += $row["id"];
     }
@@ -990,11 +990,7 @@ class Search {
     if ($first_id > count($books_id_list)) return EmptyContent::getHTML(4);
     // ID в БД начинается с 1, а индексы элементов массива с 0
     $content .= BooksCatalog::getBooksListById($books_id_list[$first_id - 1], $books_id_list);
-
-    $num_pages = $db->query("SELECT COUNT(id) as count FROM ".DB_TABLES["book"]." WHERE name LIKE '%${searched_string}%'"); // Получение количества всех записей определенного жанра
-    if (gettype($num_pages) == "boolean" || $num_pages->fetch_assoc()["count"] == 0) return EmptyContent::getHTML(2);
-    $num_pages->data_seek(0);
-    $num_pages = (int)ceil( ( (int)$num_pages->fetch_assoc()["count"] ) / 12 ); // Количество страниц
+    $num_pages = (int)ceil( $searched_books->num_rows / 12 ); // Количество страниц
 
     $uri = "/search/".$searched_string."/";
 
