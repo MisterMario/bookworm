@@ -146,6 +146,9 @@ class Page {
         }
         break;
       case 10:
+        $this->title .= "Поиск товаров";
+        $this->section_name = "Поиск: ".$page_info["item_code"];
+        $this->content = Search::getBooksBySearchString($page_info["item_code"], $page_info["page_num"]);
         break;
       case 11:
         $this->title .= "Моя корзина";
@@ -229,10 +232,10 @@ class Catalog {
     $content .= BooksCatalog::getFullBooksListHTML($page_info["page_num"], $page_info["item_code"]);
 
     $db = DB::getInstance();
-    $num_pages = $db->query("SELECT COUNT(id) FROM ".DB_TABLES["book"].($page_info["page_code"] == 2 ? " WHERE genre_id=".$page_info["item_code"] : "") ); // Получение количества всех записей определенного жанра
-    if (gettype($num_pages) == "boolean" || $num_pages->fetch_assoc()["COUNT(id)"] == 0) return EmptyContent::getHTML(2);
-
-    $num_pages = (int)ceil( ( (int)$num_pages->fetch_assoc()["COUNT(id)"] ) / 12 ); // Количество страниц
+    $num_pages = $db->query("SELECT COUNT(id) as count FROM ".DB_TABLES["book"].($page_info["page_code"] == 2 ? " WHERE genre_id=".$page_info["item_code"] : "") ); // Получение количества всех записей определенного жанра
+    if (gettype($num_pages) == "boolean" || $num_pages->fetch_assoc()["count"] == 0) return EmptyContent::getHTML(2);
+    $num_pages->data_seek(0);
+    $num_pages = (int)ceil( ( (int)$num_pages->fetch_assoc()["count"] ) / 12 ); // Количество страниц
 
     if ($page_info["item_code"] == 0) $uri = "/catalog/";
     else $uri = "/genre/".$page_info["item_code"]."/";
@@ -283,6 +286,40 @@ class BooksCatalog {
       $book = array("id" => $row["id"], "name" => $row["name"], "author" => self::bookAuthor($row["author"]), "price" => $row["price"], "image" => Book::getImage($row["id"]));
       include VIEW_DIR."small_book.html";
       $books_row .= ob_get_clean();
+      if ($i % 4 == 0 || $i == $res->num_rows) { // Строка добавляется в каталог неполной, если книга последняя.
+        ob_start();
+        include VIEW_DIR."small_books_row.html";
+        $books_list .= ob_get_clean(); $books_row = ""; // Добавляет текущую строку с книгами в каталог и очишает ее
+      }
+    }
+    ob_start(); include VIEW_DIR."catalog.html";
+
+    return ob_get_clean();
+  }
+
+  public function getBooksListById($first_id, $books_id_list) {
+    $books_list = ""; $books_row = ""; $i = 0;
+    $db = DB::getInstance();
+
+    $books_id_list = join(", ", $books_id_list);
+    $res = $db->query("SELECT id, name, author, price
+                       FROM ".DB_TABLES["book"].
+                       " WHERE id >= ".$first_id.
+                       " AND id IN (${books_id_list})".
+                       " LIMIT 12");
+    if (gettype($res) == "boolean" || $res->num_rows == 0) return null;
+
+    while($row = $res->fetch_assoc()) {
+      $i++;
+      ob_start();
+      $book = array("id" => $row["id"],
+                    "name" => $row["name"],
+                    "author" => self::bookAuthor($row["author"]),
+                    "price" => $row["price"],
+                    "image" => Book::getImage($row["id"]));
+      include VIEW_DIR."small_book.html";
+      $books_row .= ob_get_clean();
+
       if ($i % 4 == 0 || $i == $res->num_rows) { // Строка добавляется в каталог неполной, если книга последняя.
         ob_start();
         include VIEW_DIR."small_books_row.html";
@@ -932,6 +969,37 @@ class EmptyContent {
   	$html = ob_get_clean();
 
     return $html;
+  }
+}
+
+class Search {
+  public function getBooksBySearchString($searched_string, $page_num) {
+    $content = ""; $books_list = ""; $books_id_list = array();
+    $db = DB::getInstance();
+
+    ob_start(); include VIEW_DIR."sorting_goods.html";
+    $content .= ob_get_clean();
+
+    $first_id = ($page_num * 12) - 12 + 1;
+    $searched_books = $db->query("SELECT id, name FROM ".DB_TABLES["book"]." WHERE name LIKE '%${searched_string}%' LIMIT 12");
+    if (gettype($searched_books) == "boolean" || $searched_books->num_rows == 0) return null;
+    while ($row = $searched_books->fetch_assoc()) {
+      $books_id_list[] += $row["id"];
+    }
+
+    if ($first_id > count($books_id_list)) return EmptyContent::getHTML(4);
+    // ID в БД начинается с 1, а индексы элементов массива с 0
+    $content .= BooksCatalog::getBooksListById($books_id_list[$first_id - 1], $books_id_list);
+
+    $num_pages = $db->query("SELECT COUNT(id) as count FROM ".DB_TABLES["book"]." WHERE name LIKE '%${searched_string}%'"); // Получение количества всех записей определенного жанра
+    if (gettype($num_pages) == "boolean" || $num_pages->fetch_assoc()["count"] == 0) return EmptyContent::getHTML(2);
+    $num_pages->data_seek(0);
+    $num_pages = (int)ceil( ( (int)$num_pages->fetch_assoc()["count"] ) / 12 ); // Количество страниц
+
+    $uri = "/search/".$searched_string."/";
+
+    $content .= Page::getPageNavigation($num_pages, $page_num, $uri);
+    return $content;
   }
 }
 

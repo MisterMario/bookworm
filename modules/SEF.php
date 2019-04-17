@@ -19,7 +19,7 @@ class SEF {
   const PATTERN_FOR_EDIT_USER = "/^\/edit\/user\/[0-9]{1,}\/{0,1}$/";
   const PATTERN_FOR_EDIT_INFO_BLOCK = "/^\/edit\/info-block\/[0-9]{1,}\/{0,1}$/";
   const PATTERN_FOR_EDIT_ORDER = "/^\/edit\/order\/[0-9]{1,}\/{0,1}$/";
-  const PATTERN_FOR_SEARCH = "/^\/search\/[a-zA-Zа-яА-Я0-9_-]{1,}$/";
+  const PATTERN_FOR_SEARCH = "/^\/search\/[a-zA-Zа-яА-Я0-9\s\.\!_-]{1,}(\/{0,1}|(\/[0-9]{1,}\/{0,1}))$/u";
   const PATTERN_FOR_CART = "/^\/cart\/{0,1}$/"; // Корзина для неавторизованного пользователя
 
   public static function getPageInfo($uri) {
@@ -109,9 +109,11 @@ class SEF {
       preg_match_all("/[0-9]{1,}/", $uri, $numbers);
       $pi = array("page_code" => 9, "item_code" => 4, "page_num" => (int)$numbers[0][0]);
 
-    } elseif (preg_match(self::PATTERN_FOR_SEARCH, $uri)) { // Требует доработки
+    } elseif (preg_match(self::PATTERN_FOR_SEARCH, $uri)) { // Поиск по сайту
 
-      $pi = array("page_code" => 10, "item_code" => 0, "page_num" => 1);
+      $parts = preg_split("/\//", $uri);
+      $page_num = count($parts) >= 4 && strlen($parts[3]) > 0 ? (int)$parts[3] : 1;
+      $pi = array("page_code" => 10, "item_code" => $parts[2], "page_num" => $page_num);
 
     } elseif (preg_match(self::PATTERN_FOR_CART, $uri)) { // Корзина для неавторизованного пользователя
 
