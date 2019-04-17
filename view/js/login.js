@@ -8,7 +8,7 @@ function goLogin() {
 
   } else if (login.length != 0 && pass.length != 0) {
 
-    ajax('/login.php', {login: login, password: pass, remember: 1}, function(data) {
+    ajax('/ajax/login.php', {login: login, password: pass, remember: 1}, function(data) {
       if (data.code != 0) showMessageBox(data.message, 1);
       else {
         $('#left-block').html(data.html.left_block);
@@ -23,7 +23,7 @@ function goLogin() {
 }
 
 function goLogout() {
-  ajax('/logout.php', {logout: true}, function(data) {
+  ajax('/ajax/logout.php', {logout: true}, function(data) {
     if (data.code != 0) showMessageBox(data.message, 1);
     else {
       $('#left-block').html(data.html.left_block);

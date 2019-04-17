@@ -19,7 +19,7 @@ function sendBookInfo(isEdit) {
 
   if (isEdit) { // Если информация редактируется
     book_info.mode = 'book_edit';
-    ajax('/validator.php', book_info, function(data) {
+    ajax('/ajax/validator.php', book_info, function(data) {
       if (data.status) {
         showMessageBox('Информация о товаре обновлена!');
       } else showMessageBox(data.message, 1);
@@ -27,7 +27,7 @@ function sendBookInfo(isEdit) {
     });
   } else {
     book_info.mode = "book_new";
-    ajax('/validator.php', book_info, function(data) {
+    ajax('/ajax/validator.php', book_info, function(data) {
       if (data.status) {
         showMessageBox('Товар успешно добавлен!');
       } else showMessageBox(data.message, 1);
@@ -48,7 +48,7 @@ function sendInfoBlock(isEdit) {
 
   if (isEdit) {
     info_block.mode = "i_block_edit"
-    ajax('/validator.php', info_block, function(data) {
+    ajax('/ajax/validator.php', info_block, function(data) {
       if (data.status) {
         showMessageBox('Информационный блок изменен!\nДля отображения изменений перезагрузите страницу!');
       } else showMessageBox(data.message, 1);
@@ -56,7 +56,7 @@ function sendInfoBlock(isEdit) {
     });
   } else {
     info_block.mode = "i_block_new"
-    ajax('/validator.php', info_block, function(data) {
+    ajax('/ajax/validator.php', info_block, function(data) {
       if (data.status) {
         showMessageBox('Информационный блок успешно добавлен!\nДля отображения перезагрузите страницу!');
       } else showMessageBox(data.message, 1);
@@ -86,7 +86,7 @@ function sendMyContacts() {
   if (user_info.address === undefined) user_info.address = '';
   if (user_info.zip_code === undefined) user_info.zip_code = '';
 
-  ajax('/validator.php', user_info, function(data) {
+  ajax('/ajax/validator.php', user_info, function(data) {
     if (data.status) {
       showMessageBox('Информация успешно обновлена!');
     } else showMessageBox(data.message, 1);
@@ -107,7 +107,7 @@ function sendRegisterInfo() {
   }
 
   if ($('#personal-data input[name=i-agree]').prop('checked')) {
-    ajax('/validator.php', user_info, function(data) {
+    ajax('/ajax/validator.php', user_info, function(data) {
       if (data.status) {
         showMessageBox('Вы успешно зарегистрированы!');
       } else showMessageBox(data.message, 1);
@@ -128,7 +128,7 @@ function sendReview(self) { // this нужно получать по той пр
   if (review.text.length == 0) showMessageBox('Для начала введите то, что думаете о книге!', 1);
   else if (el.hasClass('my')) { // Если элемент не содержит класса My, значит он редактируется.
     review.mode = 'add_review';
-    ajax('/validator.php', review, function(data) {
+    ajax('/ajax/validator.php', review, function(data) {
       if (data.status) {
         addReviewToHTML(data.item_id, review.rating, review.text);
       } else showMessageBox(data.message, 1);
@@ -137,7 +137,7 @@ function sendReview(self) { // this нужно получать по той пр
 
   } else {
     review.mode = 'edit_review';
-    ajax('/validator.php', review, function(data) {
+    ajax('/ajax/validator.php', review, function(data) {
       if (data.status) {
         blockReviewForEditing(el);
       } else showMessageBox(data.message, 1);
@@ -184,7 +184,7 @@ function sendOrder() {
     showMessageBox('Ошибка! Не все поля заполнены!', 1);
 
   } else {
-    ajax('/ajax_order.php', order, function(data) {
+    ajax('/ajax/ajax_order.php', order, function(data) {
       if (data.status) {
         showMessageBox('Ваш заказ добавлен в очередь!', 1);
       } else showMessageBox(data.message, 1);

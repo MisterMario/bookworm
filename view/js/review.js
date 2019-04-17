@@ -78,7 +78,7 @@ function removeReview(self) {
         id: el.find('#review-head #review-info input[name=item_id]').val(),
       };
 
-  ajax('/validator.php', review, function(data) {
+  ajax('/ajax/validator.php', review, function(data) {
     if (data.status) {
       el.remove();
     } else alert(data.message);

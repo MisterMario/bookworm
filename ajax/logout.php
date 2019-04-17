@@ -1,6 +1,6 @@
 <?php
 
-require_once("config.php");
+require_once("wr_config.php");
 require_once(MODULES_DIR."user.class.php");
 require_once(MODULES_DIR."auth.class.php");
 

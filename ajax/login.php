@@ -1,6 +1,6 @@
 <?php
 
-require_once("config.php");
+require_once("wr_config.php");
 require_once(MODULES_DIR."user.class.php");
 require_once(MODULES_DIR."auth.class.php");
 
@@ -22,7 +22,7 @@ if (!isset($data["login"]) || !isset($data["password"]) || !isset($data["remembe
   } elseif (empty($login) || empty($password)) {
     $answer = array("code" => 2, "message" => "Ошибка! Не все поля заполнены!", "html" => "");
   } else {
-    
+
     $db = DB::getInstance();
     $user_id = $db->query("SELECT id FROM ".DB_TABLES["user"].
                           " WHERE email='$login' AND password='".$password."' LIMIT 1");

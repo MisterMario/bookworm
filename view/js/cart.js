@@ -9,7 +9,7 @@ function addToCart(self) {
       count: 1,
     };
 
-    ajax('/ajax_cart.php', params, function(data) {
+    ajax('/ajax/ajax_cart.php', params, function(data) {
       if (!data.status) showMessageBox('Произошла ошибка при добавлении товара в корзину!', 1);
       updateMiniCartStatus(data.total_sum, data.count);
     });
@@ -53,7 +53,7 @@ function removeFromCart(self) {
       product = $(self).parent().parent();
   var params = {form_name: 'remove_from_cart', item_id: item_id};
 
-  ajax('/ajax_cart.php', params, function(data) {
+  ajax('/ajax/ajax_cart.php', params, function(data) {
     if (data.status) {
       product.slideUp(500, function(){ product.remove(); });
       updateCartStatus();
@@ -81,7 +81,7 @@ function removeFromNoDBCart(self) {
 
 function clearCart() {
   var params = {form_name: 'clear_cart'};
-  ajax('/ajax_cart.php', params, function(data) {
+  ajax('/ajax/ajax_cart.php', params, function(data) {
     if (data.status) {
       $('.product').remove();
       $('#sum-total h2:first-child span').html('0');
@@ -116,7 +116,7 @@ function minus(self) {
       count: -1,
     };
 
-    ajax('/ajax_cart.php', params, function(data) {
+    ajax('/ajax/ajax_cart.php', params, function(data) {
       if (!data.status) showMessageBox('Произошла ошибка при уменьшении количества товаров!', 1);
     });
   } else setProductsCountNoDB(id, i_count.val());
@@ -146,7 +146,7 @@ function plus(self) {
       count: 1,
     };
 
-    ajax('/ajax_cart.php', params, function(data) {
+    ajax('/ajax/ajax_cart.php', params, function(data) {
       if (!data.status) showMessageBox('Произошла ошибка при увеличении количества товаров!', 1);
     });
   } else setProductsCountNoDB(id, i_count.val());
@@ -207,7 +207,7 @@ function getCartStatusFromCookies() { // В будущем можно попро
         /* Получение информации о товаре из БД
            Вынужденное использование синхронного запроса,
            так как асинхронный просто не успевает получить нужные данные вовремя */
-        ajax('/ajax_cart.php', {form_name: 'get_book_price', item_id: match[0]}, function(data) {
+        ajax('/ajax/ajax_cart.php', {form_name: 'get_book_price', item_id: match[0]}, function(data) {
           if (data.status) current_price = Number(data.price);
         }, false);
       } else {

@@ -8,7 +8,7 @@
 $data = json_decode(file_get_contents("php://input"), true);
 $answer = array("message" => "Ошибка!", "status" => false);
 
-require_once("config.php");
+require_once("wr_config.php");
 require_once(MODULES_DIR."validate.class.php");
 require_once(MODULES_DIR."book.class.php");
 require_once(MODULES_DIR."info_block.class.php");

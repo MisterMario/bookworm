@@ -41,7 +41,7 @@ function addBooksFromOrderToCart(self) {
     order_id: self.parent().find('input[name=item_id]').val(),
   };
 
-  ajax('/ajax_order.php', params, function(data) {
+  ajax('/ajax/ajax_order.php', params, function(data) {
     if (data.status) {
       showMessageBox('Товары успешно добавлены в корзину!');
       updateMiniCartStatus(data.total_sum, data.count);
@@ -58,7 +58,7 @@ function cacncelOrder(self) {
     order_id: self.parent().find('input[name=item_id]').val(),
   };
 
-  ajax('/ajax_order.php', params, function(data) {
+  ajax('/ajax/ajax_order.php', params, function(data) {
     if (data.status) {
       var order_status = self.parent().parent().prev().find('li:last-child');
       order_status.html( order_status.html().substr(0, order_status.html().indexOf('</strong>') + 9) + ' отменен.' );
