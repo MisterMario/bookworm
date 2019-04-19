@@ -500,6 +500,56 @@ form.search-form input[type="submit"] {
   background: url(../images/search-icon.png) no-repeat center;
   vertical-align: middle;
 }
+/* Список результатов поиска */
+#main #content #content-head #search-results {
+  display: none;
+  position: absolute;
+  border: 3px solid #009688;
+  border-top: 0;
+  background: #fff;
+  top: 217.8px;
+  margin-left: 580px;
+  width: 327px;
+  padding: 13px 9px;
+}
+#main #content #content-head #search-results .result-line {
+  margin-top: 13px;
+  overflow: hidden;
+}
+#main #content #content-head #search-results .result-line:hover {
+  cursor: pointer;
+  background: rgba(0, 150, 136, 0.1);
+}
+#main #content #content-head #search-results .result-line:first-child { /* Исключает first-child */
+  margin-top: 0;
+}
+#main #content #content-head #search-results .result-line img {
+  float: left;
+  width: 39px;
+  height: 58px;
+}
+#main #content #content-head #search-results .result-line ul {
+  float: left;
+  margin-left: 7px;
+  line-height: 13px;
+}
+#main #content #content-head #search-results .result-line ul li {
+  margin-top: 10px;
+}
+#main #content #content-head #search-results .result-line ul li:first-child {
+  font-weight: bold;
+}
+#main #content #content-head #search-results .result-line .link {
+  display: none;
+}
+#main #content #content-head #search-results a {
+  color: #000;
+}
+#main #content #content-head #search-results #more-results {
+  margin-top: 13px;
+  padding-top: 13px;
+  border-top: 2px solid #009688;
+}
 /* Тело контента */
 #main #content #content-body {
   width: 100%;
