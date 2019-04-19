@@ -70,43 +70,12 @@
           <div id="search">
             <form action="" method="post" class="search-form">
               <label for="search-string">Поиск по сайту:</label>
-              <input type="text" name="search-string" placeholder="Что-то ищете?" autocomplete="off" onkeyup="animateDropResults(this)">
-              <input type="submit" value="">
+              <input type="text" name="search-string" placeholder="Что-то ищете?" autocomplete="off" onkeyup="getResults(this)">
+              <input type="button" value="" onclick="animateDropResults(this.value)">
             </form>
           </div>
           <div id="search-results">
-            <div class="result-line" onclick="goToLink(this);">
-              <div class="link">/product/2/</div>
-              <img src="<?php echo CLIENT_VIEW_DIR; ?>products/2.png" alt="">
-              <ul>
-                <li>MY ANTONIA</li>
-                <li>Willa Sibert Cather</li>
-              </ul>
-            </div>
-            <div class="result-line" onclick="goToLink(this);">
-              <div class="link">/product/3/</div>
-              <img src="<?php echo CLIENT_VIEW_DIR; ?>products/3.png" alt="">
-              <ul>
-                <li>ON VOICE NATURE</li>
-                <li>Ayal Silversan</li>
-              </ul>
-            </div>
-            <div class="result-line" onclick="goToLink(this);">
-              <div class="link">/product/4/</div>
-              <img src="<?php echo CLIENT_VIEW_DIR; ?>products/4.png" alt="">
-              <ul>
-                <li>DOGUS</li>
-                <li>Казарян Тигран</li>
-              </ul>
-            </div>
-            <div class="result-line" onclick="goToLink(this);">
-              <div class="link">/product/6/</div>
-              <img src="<?php echo CLIENT_VIEW_DIR; ?>products/6.png" alt="">
-              <ul>
-                <li>THE TURN OF THE SCREW</li>
-                <li>Henry James</li>
-              </ul>
-            </div>
+            <div id="result-lines"></div>
             <div id="more-results">
               <a href="#">Просмотреть все результаты поиска...</a>
             </div>

@@ -973,7 +973,7 @@ class EmptyContent {
 }
 
 class Search {
-  public function getBooksBySearchString($searched_string, $page_num) {
+  public static function getBooksBySearchString($searched_string, $page_num) {
     $content = ""; $books_list = ""; $books_id_list = array();
     $db = DB::getInstance();
 
@@ -996,6 +996,17 @@ class Search {
 
     $content .= Page::getPageNavigation($num_pages, $page_num, $uri);
     return $content;
+  }
+
+  public static function getResultsList($books_list) {
+    $html = "";
+
+    foreach ($books_list as $book) {
+      $book["image"] = Book::getImage($book["id"]);
+      ob_start(); include SERVER_VIEW_DIR."search-result-line.html";
+      $html .= ob_get_clean();
+    }
+    return $html;
   }
 }
 
