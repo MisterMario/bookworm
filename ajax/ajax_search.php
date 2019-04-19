@@ -14,15 +14,12 @@ if (isset($data["search_string"])) {
   $db = DB::getInstance();
 
   // Получение ID жанра, если такой есть
-  $genre_id = $db->query("SELECT id FROM ".DB_TABLES["genre"]." WHERE name LIKE '%${search_string}%' LIMIT 1");
-  if (gettype($genre_id) != "boolean" && $genre_id->num_rows != 0)
-    $genre_id = $genre_id->fetch_assoc()["id"];
-  else $genre_id = "";
+  $genre_id = PageBuilder\Genre::getIdByName($search_string);
 
   $books = $db->query("SELECT id, name, author FROM ".DB_TABLES["book"].
                       " WHERE name LIKE '%${search_string}%'".
                       " OR author LIKE '%${search_string}%'".
-                      (strlen($genre_id) != 0 ? " OR genre_id LIKE '${genre_id}'" : "").
+                      ($genre_id != null ? " OR genre_id LIKE '${genre_id}'" : "").
                       " LIMIT 4");
 
   if (gettype($books) != "boolean" && $books->num_rows != 0) {

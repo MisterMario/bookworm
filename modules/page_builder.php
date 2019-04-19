@@ -297,40 +297,6 @@ class BooksCatalog {
     return ob_get_clean();
   }
 
-  public function getBooksListById($first_id, $books_id_list) {
-    $books_list = ""; $books_row = ""; $i = 0;
-    $db = DB::getInstance();
-
-    $books_id_list = join(", ", $books_id_list);
-    $res = $db->query("SELECT id, name, author, price
-                       FROM ".DB_TABLES["book"].
-                       " WHERE id >= ".$first_id.
-                       " AND id IN (${books_id_list})".
-                       " LIMIT 12");
-    if (gettype($res) == "boolean" || $res->num_rows == 0) return null;
-
-    while($row = $res->fetch_assoc()) {
-      $i++;
-      ob_start();
-      $book = array("id" => $row["id"],
-                    "name" => $row["name"],
-                    "author" => self::bookAuthor($row["author"]),
-                    "price" => $row["price"],
-                    "image" => Book::getImage($row["id"]));
-      include SERVER_VIEW_DIR."small_book.html";
-      $books_row .= ob_get_clean();
-
-      if ($i % 4 == 0 || $i == $res->num_rows) { // Строка добавляется в каталог неполной, если книга последняя.
-        ob_start();
-        include SERVER_VIEW_DIR."small_books_row.html";
-        $books_list .= ob_get_clean(); $books_row = ""; // Добавляет текущую строку с книгами в каталог и очишает ее
-      }
-    }
-    ob_start(); include SERVER_VIEW_DIR."catalog.html";
-
-    return ob_get_clean();
-  }
-
   private static function bookAuthor($author) { // Усекает имя автора, если оно больше определенного
     return strlen($author) > 40 ? substr($author, 0, 40)."..." : $author;
   }
@@ -343,6 +309,14 @@ class Genre {
     if(gettype($res) == "boolean" || $res->num_rows == 0) return null;
 
     return $res->fetch_assoc()["name"];
+  }
+
+  public static function getIdByName($name) {
+    $db = DB::getInstance();
+    $genre_id = $db->query("SELECT id FROM ".DB_TABLES["genre"]." WHERE name LIKE '%${name}%' LIMIT 1");
+    if (gettype($genre_id) == "boolean" || $genre_id->num_rows == 0) return null;
+
+    return $genre_id->fetch_assoc()["id"];
   }
 
   public static function getGenreSelectHTML($selected_num = -1) {
@@ -974,23 +948,48 @@ class EmptyContent {
 
 class Search {
   public static function getBooksBySearchString($searched_string, $page_num) {
-    $content = ""; $books_list = ""; $books_id_list = array();
+    $content = "";
     $db = DB::getInstance();
 
     ob_start(); include SERVER_VIEW_DIR."sorting_goods.html";
     $content .= ob_get_clean();
 
     $first_id = ($page_num * 12) - 12 + 1;
-    $searched_books = $db->query("SELECT id, name FROM ".DB_TABLES["book"]." WHERE name LIKE '%${searched_string}%' LIMIT 12");
+    $genre_id = Genre::getIdByName($searched_string);
+    $searched_books = $db->query("SELECT id, name, author, price FROM ".DB_TABLES["book"].
+                                 " WHERE name LIKE '%${searched_string}%'".
+                                 " OR author LIKE '%${searched_string}%'".
+                                 (strlen($genre_id) != 0 ? " OR genre_id LIKE '${genre_id}'" : "").
+                                 " AND id >= '${first_id}'".
+                                 " LIMIT 12");
     if (gettype($searched_books) == "boolean" || $searched_books->num_rows == 0) return EmptyContent::getHTML(4);
-    while ($row = $searched_books->fetch_assoc()) {
-      $books_id_list[] += $row["id"];
-    }
 
-    if ($first_id > count($books_id_list)) return EmptyContent::getHTML(4);
-    // ID в БД начинается с 1, а индексы элементов массива с 0
-    $content .= BooksCatalog::getBooksListById($books_id_list[$first_id - 1], $books_id_list);
-    $num_pages = (int)ceil( $searched_books->num_rows / 12 ); // Количество страниц
+    $books_list = ""; $books_row = ""; $i = 1;
+    while ($book = $searched_books->fetch_assoc()) {
+      ob_start();
+      $book["image"] = Book::getImage($book["id"]);
+      include SERVER_VIEW_DIR."small_book.html";
+      $books_row .= ob_get_clean();
+
+      if ($i % 4 == 0 || $i == $searched_books->num_rows) { // Строка добавляется в каталог неполной, если книга последняя.
+        ob_start();
+        include SERVER_VIEW_DIR."small_books_row.html";
+        $books_list .= ob_get_clean(); $books_row = ""; // Добавляет текущую строку с книгами в каталог и очишает ее
+      }
+      $i++;
+      if ($i > 4) $i = 1;
+    }
+    ob_start(); include SERVER_VIEW_DIR."catalog.html";
+    $content .= ob_get_clean();
+
+    $searched_books_num = $db->query("SELECT COUNT(id) as count FROM ".DB_TABLES["book"].
+                                     " WHERE name LIKE '%${searched_string}%'".
+                                     " OR author LIKE '%${searched_string}%'".
+                                     (strlen($genre_id) != 0 ? " OR genre_id LIKE '${genre_id}'" : "").
+                                     " AND id > '${first_id}'".
+                                     " LIMIT 12");
+    if (gettype($searched_books_num) == "boolean" || $searched_books_num->num_rows == 0) return EmptyContent::getHTML(4);
+    $num_pages = (int)ceil( $searched_books_num->fetch_assoc()["count"] / 12 ); // Количество страниц
 
     $uri = "/search/".$searched_string."/";
 
@@ -1003,6 +1002,10 @@ class Search {
 
     foreach ($books_list as $book) {
       $book["image"] = Book::getImage($book["id"]);
+      if (mb_strlen($book["name"], "utf-8") > 30)
+        $book["name"] = mb_substr($book["name"], 0, 30, "utf-8")."...";
+      if (mb_strlen($book["author"], "utf-8") > 30)
+        $book["author"] = mb_substr($book["author"], 0, 30, "utf-8")."...";
       ob_start(); include SERVER_VIEW_DIR."search-result-line.html";
       $html .= ob_get_clean();
     }
