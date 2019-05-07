@@ -283,7 +283,7 @@ class BooksCatalog {
     while($row = $res->fetch_assoc()) {
       $i++;
       ob_start();
-      $book = array("id" => $row["id"], "name" => $row["name"], "author" => self::bookAuthor($row["author"]), "price" => $row["price"], "image" => Book::getImage($row["id"]));
+      $book = array("id" => $row["id"], "name" => self::bookName($row["name"]), "author" => self::bookAuthor($row["author"]), "price" => $row["price"], "image" => Book::getImage($row["id"]));
       include SERVER_VIEW_DIR."small_book.html";
       $books_row .= ob_get_clean();
       if ($i % 4 == 0 || $i == $res->num_rows) { // Строка добавляется в каталог неполной, если книга последняя.
@@ -297,8 +297,12 @@ class BooksCatalog {
     return ob_get_clean();
   }
 
-  private static function bookAuthor($author) { // Усекает имя автора, если оно больше определенного
-    return strlen($author) > 40 ? substr($author, 0, 40)."..." : $author;
+  public static function bookName($name) {
+    return mb_strlen($name, "utf-8") > 22 ? mb_substr($name, 0, 20, "utf-8")."..." : $name;
+  }
+
+  public static function bookAuthor($author) { // Усекает имя автора, если оно больше определенного
+    return mb_strlen($author, "utf-8") > 25 ? mb_substr($author, 0, 25, "utf-8")."..." : $author;
   }
 }
 
@@ -967,6 +971,8 @@ class Search {
     $books_list = ""; $books_row = ""; $i = 1;
     while ($book = $searched_books->fetch_assoc()) {
       ob_start();
+      $book["name"] = BooksCatalog::bookName($book["name"]);
+      $book["author"] = BooksCatalog::bookAuthor($book["author"]);
       $book["image"] = Book::getImage($book["id"]);
       include SERVER_VIEW_DIR."small_book.html";
       $books_row .= ob_get_clean();
@@ -1002,8 +1008,8 @@ class Search {
 
     foreach ($books_list as $book) {
       $book["image"] = Book::getImage($book["id"]);
-      if (mb_strlen($book["name"], "utf-8") > 30)
-        $book["name"] = mb_substr($book["name"], 0, 30, "utf-8")."...";
+      if (mb_strlen($book["name"], "utf-8") > 25)
+        $book["name"] = mb_substr($book["name"], 0, 23, "utf-8")."...";
       if (mb_strlen($book["author"], "utf-8") > 30)
         $book["author"] = mb_substr($book["author"], 0, 30, "utf-8")."...";
       ob_start(); include SERVER_VIEW_DIR."search-result-line.html";
