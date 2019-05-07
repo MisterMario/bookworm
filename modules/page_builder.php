@@ -298,11 +298,11 @@ class BooksCatalog {
   }
 
   public static function bookName($name) {
-    return mb_strlen($name, "utf-8") > 22 ? mb_substr($name, 0, 20, "utf-8")."..." : $name;
+    return mb_strlen($name, "utf-8") > 20 ? mb_substr($name, 0, 19, "utf-8")."..." : $name;
   }
 
   public static function bookAuthor($author) { // Усекает имя автора, если оно больше определенного
-    return mb_strlen($author, "utf-8") > 25 ? mb_substr($author, 0, 25, "utf-8")."..." : $author;
+    return mb_strlen($author, "utf-8") > 25 ? mb_substr($author, 0, 22, "utf-8")."..." : $author;
   }
 }
 
