@@ -958,18 +958,17 @@ class Search {
     ob_start(); include SERVER_VIEW_DIR."sorting_goods.html";
     $content .= ob_get_clean();
 
-    $first_id = ($page_num * 12) - 12 + 1;
+    $offset = ($page_num * 12) - 12;
     $genre_id = Genre::getIdByName($searched_string);
     $searched_books = $db->query("SELECT id, name, author, price FROM ".DB_TABLES["book"].
                                  " WHERE name LIKE '%${searched_string}%'".
                                  " OR author LIKE '%${searched_string}%'".
                                  (strlen($genre_id) != 0 ? " OR genre_id LIKE '${genre_id}'" : "").
-                                 " AND id >= '${first_id}'".
-                                 " LIMIT 12");
+                                 " LIMIT 12 OFFSET ${offset}");
     if (gettype($searched_books) == "boolean" || $searched_books->num_rows == 0) return EmptyContent::getHTML(4);
 
     $books_list = ""; $books_row = ""; $i = 1;
-    while ($book = $searched_books->fetch_assoc()) {
+    while ($book = $searched_books->fetch_assoc()) { // Формирование списка книг
       ob_start();
       $book["name"] = BooksCatalog::bookName($book["name"]);
       $book["author"] = BooksCatalog::bookAuthor($book["author"]);
@@ -991,9 +990,7 @@ class Search {
     $searched_books_num = $db->query("SELECT COUNT(id) as count FROM ".DB_TABLES["book"].
                                      " WHERE name LIKE '%${searched_string}%'".
                                      " OR author LIKE '%${searched_string}%'".
-                                     (strlen($genre_id) != 0 ? " OR genre_id LIKE '${genre_id}'" : "").
-                                     " AND id > '${first_id}'".
-                                     " LIMIT 12");
+                                     (strlen($genre_id) != 0 ? " OR genre_id LIKE '${genre_id}'" : ""));
     if (gettype($searched_books_num) == "boolean" || $searched_books_num->num_rows == 0) return EmptyContent::getHTML(4);
     $num_pages = (int)ceil( $searched_books_num->fetch_assoc()["count"] / 12 ); // Количество страниц
 
