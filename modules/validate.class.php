@@ -74,7 +74,7 @@ class Validate {
         empty($data["count"]) || empty($data["annotation"])) {
       $msg = "Ошибка! Не все поля заполнены!";
 
-    } elseif (!preg_match("/^[а-яА-Яa-zA-Z0-9\. ]{1,}$/u", $data["title"])) {
+    } elseif (!preg_match("/^[а-яА-Яa-zA-Z0-9\.,\- ]{1,}$/u", $data["title"])) {
       $msg = "Ошибка! Некорректное значение поля: название!";
 
     } elseif (!preg_match("/^[а-яА-Яa-zA-Z\.\-\(\), ]{1,}$/u", $data["author"])) {
@@ -86,10 +86,10 @@ class Validate {
     } elseif (!preg_match("/^[а-яА-Яa-zA-Z, ]{1,}$/u", $data["keywords"])) {
       $msg = "Ошибка! Некорректное значение поля: ключевые слова!";
 
-    } elseif (!preg_match("/^[а-яА-Яa-zA-Z\. ]{1,}$/u", $data["series"])) {
+    } elseif (!preg_match("/^[а-яА-Яa-zA-Z\.,#\- ]{1,}$/u", $data["series"])) {
       $msg = "Ошибка! Некорректное значение поля: серии!";
 
-    } elseif (!preg_match("/^[а-яА-Яa-zA-Z\-\«\»\" ]{1,}$/u", $data["rightholder"])) {
+    } elseif (!preg_match("/^[а-яА-Яa-zA-Z\-\«\»\",. ]{1,}$/u", $data["rightholder"])) {
       $msg = "Ошибка! Некорректное значение поля: правообладатель!";
 
     } elseif (!preg_match("/^([0-9]|\+){1,}$/u", $data["age_restrictions"])) {
