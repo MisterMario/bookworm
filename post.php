@@ -1,53 +1,5 @@
 <?php
 
-function validateProfileData() {
-  $errors = array();
-
-  if (isset($_POST["firstname"], $_POST["lastname"], $_POST["gender"], $_POST["phone_number"], $_POST["email"],
-  $_POST["zip_code"], $_POST["state"], $_POST["city"], $_POST["address"])) {
-
-     $fname = $_POST["firstname"];
-     $lname = $_POST["lastname"];
-     $gender = $_POST["gender"];
-     $phone = $_POST["phone_number"];
-     $email = $_POST["email"];
-     $zcode = $_POST["zip_code"];
-     $state = $_POST["state"];
-     $city = $_POST["city"];
-     $address = $_POST["address"];
-
-     if (mb_strlen($fname, "utf-8") == 0 && mb_strlen($fname, "utf-8") > 32) {
-
-       array_push($errors, "Ошибка! Длина имени не может быть равна 0 и превышать 32 символа!");
-
-     } elseif (mb_strlen($lname, "utf-8") == 0 && mb_strlen($lname, "utf-8") > 32){
-
-       array_push($errors, "Ошибка! Длина фамилии не может быть равна 0 и превышать 32 символа!");
-
-     } elseif ($gender != 1 && $gender != 2) {
-
-       array_push($errors, "Ошибка! Некорректное значение пола!");
-
-     } elseif (mb_strlen($lname, "utf-8") == 0 && mb_strlen($lname, "utf-8") == 0) {
-
-       array_push($errors, "Ошибка! Некорректное значение пола!");
-
-     } elseif ($gender != 1 && $gender != 2) {
-
-       array_push($errors, "Ошибка! Некорректное значение пола!");
-
-     } elseif ($gender != 1 && $gender != 2) {
-
-       array_push($errors, "Ошибка! Некорректное значение пола!");
-
-     } elseif ($gender != 1 && $gender != 2) {
-
-       array_push($errors, "Ошибка! Некорректное значение пола!");
-
-     }
-   } // else определены не все переменные
-}
-
 switch ($_POST["form_name"]) {
   case "order":
     header("Location: /order/".$_POST["item_id"]);
