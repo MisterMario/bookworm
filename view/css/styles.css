@@ -491,7 +491,8 @@ form.search-form input[type="text"] {
   outline: none;
   margin-right: 4px;
 }
-form.search-form input[type="button"] {
+form.search-form input[type="button"],
+form.search-form input[type="submit"] {
   width: 22px;
   height: 22px;
   border: none;
