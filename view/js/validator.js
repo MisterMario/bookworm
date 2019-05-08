@@ -186,7 +186,7 @@ function sendOrder() {
   } else {
     ajax('/ajax/ajax_order.php', order, function(data) {
       if (data.status) {
-        showMessageBox('Ваш заказ добавлен в очередь!', 1);
+        showMessageBox('Ваш заказ добавлен в очередь!');
       } else showMessageBox(data.message, 1);
       //$('body').html(data); // Для отладки
     });
