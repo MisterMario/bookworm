@@ -137,10 +137,10 @@ class User {
   /* Статические методы для управления пользователями */
   public static function add($data) {
     $db = DB::getInstance();
-    return $db->query("INSERT INTO ".DB_TABLES["user"]."(firstname, lastname, gender, phone_number, email, password".
+    return $db->query("INSERT INTO ".DB_TABLES["user"]."(firstname, lastname, gender, phone_number, email, password, level".
                        ((isset($data["state"]) && !empty($data["state"])) ? ", state, city, address, zip_code) " : ") ").
                        "VALUES('${data["firstname"]}', '${data["lastname"]}', '${data["gender"]}', ".
-                              "'${data["phone_number"]}', '${data["email"]}', '${data["password"]}'".
+                              "'${data["phone_number"]}', '${data["email"]}', '${data["password"]}', '${data["level"]}'".
                         ((isset($data["state"]) && !empty($data["state"])) ?
                         ", '${data["state"]}', '${data["city"]}', '${data["address"]}', '${data["zip_code"]}')" : ")"));
   }

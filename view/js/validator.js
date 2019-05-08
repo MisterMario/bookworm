@@ -196,11 +196,12 @@ function sendOrder() {
 function sendUser(isEdit) {
   var user_data = {
     mode: isEdit ? 'edit_user' : 'add_user',
+    id: $('#personal-data input[name=item_id]').val(),
     firstname: $('#personal-data input[name=firstname]').val(),
     lastname: $('#personal-data input[name=lastname]').val(),
     email: $('#personal-data input[name=email]').val(),
     phone_number: $('#personal-data input[name=phone]').val(),
-    group: $('#personal-data select[name=users_group] option:selected').val(), // select
+    level: $('#personal-data select[name=users_group] option:selected').val(), // select
     password: $('#personal-data input[name=password]').val(),
     repassword: $('#personal-data input[name=repassword]').val(),
     gender: $('#personal-data input[name=gender]:checked').val(), // radio
@@ -209,8 +210,6 @@ function sendUser(isEdit) {
     address: $('#delivery-data input[name=address]').val(),
     zip_code: $('#delivery-data input[name=zip_code]').val(),
   };
-
-  console.log(user_data);
 
   // Если в эти поля попадают пустые PHP-переменные, то они принимают значение undefined
   if (user_data.state == undefined) user_data.state = "";

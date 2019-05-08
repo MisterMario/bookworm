@@ -86,7 +86,7 @@ if ($data["mode"] == "register") {
   if (mb_strlen($answer["message"], "utf-8") == 0)
     $answer["status"] = InfoBlock::add($data);
 
-}  elseif ($data["mode"] == "add_user") {
+}  elseif ($data["mode"] == "add_user" || $data["mode"] == "edit_user") {
 
   if (!empty($data["state"]) || !empty($data["city"]) ||
       !empty($data["address"]) || !empty($data["zip_code"]))
@@ -94,11 +94,11 @@ if ($data["mode"] == "register") {
   else
     $answer["message"] = Validate::registerForm($data);
 
-  if ($answer["message"] == "") $answer["status"] = User::add($data);
-
-} elseif ($data["mode"] == "edit_user") {
-
-  $answer["status"] = true;
+  if ($answer["message"] == "")
+    if ($data["mode"] == "add_user")
+      $answer["status"] = User::add($data);
+    else
+      $answer["status"] = User::edit($data);
 
 }
 
