@@ -194,5 +194,50 @@ function sendOrder() {
 }
 
 function sendUser(isEdit) {
-  //
+  var user_data = {
+    mode: isEdit ? 'edit_user' : 'add_user',
+    firstname: $('#personal-data input[name=firstname]').val(),
+    lastname: $('#personal-data input[name=lastname]').val(),
+    email: $('#personal-data input[name=email]').val(),
+    phone_number: $('#personal-data input[name=phone]').val(),
+    group: $('#personal-data select[name=users_group] option:selected').val(), // select
+    password: $('#personal-data input[name=password]').val(),
+    repassword: $('#personal-data input[name=repassword]').val(),
+    gender: $('#personal-data input[name=gender]:checked').val(), // radio
+    state: $('#delivery-data input[name=state]').val(),
+    city: $('#delivery-data input[name=city]').val(),
+    address: $('#delivery-data input[name=address]').val(),
+    zip_code: $('#delivery-data input[name=zip_code]').val(),
+  };
+
+  console.log(user_data);
+
+  // Если в эти поля попадают пустые PHP-переменные, то они принимают значение undefined
+  if (user_data.state == undefined) user_data.state = "";
+  if (user_data.city == undefined) user_data.city = "";
+  if (user_data.address == undefined) user_data.address = "";
+  if (user_data.zip_code == undefined) user_data.zip_code = "";
+
+  if (user_data.password != user_data.repassword)
+    showMessageBox('Введенные пароли не совпадают!', 1);
+  // Если хотя бы одно поле с данными о доставке заполнено - нужно заполнять все.
+  else if ((user_data.state.length > 0 || user_data.city.length > 0 ||
+            user_data.address.length > 0 || user_data.zip_code.length > 0) &&
+           (user_data.state.length == 0 || user_data.city.length == 0 ||
+            user_data.address.length == 0 || user_data.zip_code == 0))
+    showMessageBox('Заполните все данные для доставки или пропустите вовсе!', 1);
+  else {
+
+    ajax("/ajax/validator.php", user_data, function(data) {
+
+      if (data.status && !isEdit)
+        showMessageBox('Пользователь успешно добавлен!');
+      else if (data.status && isEdit)
+        showMessageBox('Информация о пользователе успешно обновлена!');
+      else
+        showMessageBox(data.message, 1);
+
+    });
+
+  }
 }
