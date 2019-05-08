@@ -498,6 +498,7 @@ form.search-form input[type="submit"] {
   border: none;
   outline: none;
   cursor: pointer;
+  font-size: 0;
   background: url(../images/search-icon.png) no-repeat center;
   vertical-align: middle;
 }

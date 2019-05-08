@@ -1,9 +1,11 @@
 <?php
 
 switch ($_POST["form_name"]) {
+
   case "order":
     header("Location: /order/".$_POST["item_id"]);
     break;
+
   case "control_user":
 
     if ( isset($_POST["new"]) )
@@ -11,7 +13,10 @@ switch ($_POST["form_name"]) {
     elseif ( isset($_POST["remove_all"]) ) User::clear();
     else {
       switch ($_POST["action"]) {
-        case 'edit_row':
+        case "search_item":
+          header("Location: /control/users/search/".$_POST["search-string"]);
+          break;
+        case "edit_row":
           header("Location: /edit/user/".$_POST["item_id"]);
           break;
         case "delete_row":
@@ -32,6 +37,9 @@ switch ($_POST["form_name"]) {
     elseif ( isset($_POST["remove_all"]) ) Book::clean();
     else {
       switch ($_POST["action"]) {
+        case "search_item":
+          header("Location: /control/products/search/".$_POST["search-string"]);
+          break;
         case 'edit_row':
           header("Location: /edit/user/".$_POST["item_id"]);
           break;
@@ -41,6 +49,7 @@ switch ($_POST["form_name"]) {
       }
     }
     break;
+
   case "control_info_blocks":
     require_once(MODULES_DIR."info_block.class.php");
     if ( isset($_POST["new"]) )
@@ -48,6 +57,9 @@ switch ($_POST["form_name"]) {
     elseif ( isset($_POST["remove_all"]) ) InfoBlock::clean();
     else {
       switch ($_POST["action"]) {
+        case "search_item":
+          header("Location: /control/info-blocks/search/".$_POST["search-string"]);
+          break;
         case 'edit_row':
           header("Location: /edit/info-block/".$_POST["item_id"]);
           break;

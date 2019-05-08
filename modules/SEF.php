@@ -20,6 +20,9 @@ class SEF {
   const PATTERN_FOR_EDIT_INFO_BLOCK = "/^\/edit\/info-block\/[0-9]{1,}\/{0,1}$/";
   const PATTERN_FOR_EDIT_ORDER = "/^\/edit\/order\/[0-9]{1,}\/{0,1}$/";
   const PATTERN_FOR_SEARCH = "/^\/search\/[a-zA-Zа-яА-Я0-9\s\.\!:@;,_-]{1,}(\/{0,1}|(\/[0-9]{1,}\/{0,1}))$/u";
+  const PATTERN_FOR_SEARCH_BY_USERS = "/^\/control\/users\/search\/[a-zA-Zа-яА-Я0-9\s\.\!:@;,_-]{1,}(\/{0,1}|(\/[0-9]{1,}\/{0,1}))$/u";
+  const PATTERN_FOR_SEARCH_BY_PRODUCTS = "/^\/control\/products\/search\/[a-zA-Zа-яА-Я0-9\s\.\!:@;,_-]{1,}(\/{0,1}|(\/[0-9]{1,}\/{0,1}))$/u";
+  const PATTERN_FOR_SEARCH_BY_INFO_BLOCKS = "/^\/control\/info-blocks\/search\/[a-zA-Zа-яА-Я0-9\s\.\!:@;,_-]{1,}(\/{0,1}|(\/[0-9]{1,}\/{0,1}))$/u";
   const PATTERN_FOR_CART = "/^\/cart\/{0,1}$/"; // Корзина для неавторизованного пользователя
 
   public static function getPageInfo($uri) {
@@ -118,6 +121,24 @@ class SEF {
     } elseif (preg_match(self::PATTERN_FOR_CART, $uri)) { // Корзина для неавторизованного пользователя
 
       $pi = array("page_code" => 11, "item_code" => 0, "page_num" => 0);
+
+    } elseif (preg_match(self::PATTERN_FOR_SEARCH_BY_USERS, $uri)) { // Поиск по пользователям
+
+      $parts = preg_split("/\//", $uri);
+      $page_num = count($parts) >= 6 && strlen($parts[5]) > 0 ? (int)$parts[5] : 1;
+      $pi = array("page_code" => 12, "item_code" => $parts[4], "page_num" => $page_num);
+
+    } elseif (preg_match(self::PATTERN_FOR_SEARCH_BY_PRODUCTS, $uri)) { // Поиск по пользователям
+
+      $parts = preg_split("/\//", $uri);
+      $page_num = count($parts) >= 6 && strlen($parts[5]) > 0 ? (int)$parts[5] : 1;
+      $pi = array("page_code" => 13, "item_code" => $parts[4], "page_num" => $page_num);
+
+    } elseif (preg_match(self::PATTERN_FOR_SEARCH_BY_INFO_BLOCKS, $uri)) { // Поиск по пользователям
+
+      $parts = preg_split("/\//", $uri);
+      $page_num = count($parts) >= 6 && strlen($parts[5]) > 0 ? (int)$parts[5] : 1;
+      $pi = array("page_code" => 14, "item_code" => $parts[4], "page_num" => $page_num);
 
     }
     return $pi;
