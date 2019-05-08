@@ -49,9 +49,6 @@ function validateProfileData() {
 }
 
 switch ($_POST["form_name"]) {
-  case 'logout':
-    Auth::sessionDestroy($user->getId());
-    break;
   case "order":
     header("Location: /order/".$_POST["item_id"]);
     break;
