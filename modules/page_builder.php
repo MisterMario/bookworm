@@ -155,6 +155,21 @@ class Page {
         $this->section_name = "Моя корзина";
         $this->content = Cart::getNoDBShoppingList();
         break;
+      case 12:
+        $this->title .= "Поиск пользователей";
+        $this->section_name = "Поиск пользователей: ".$page_info["item_code"];
+        $this->content = ControlPanel::getSearchResultsByUsers($page_info["item_code"], $page_info["page_num"], 12);
+        break;
+      case 13:
+        $this->title .= "Поиск по товарам";
+        $this->section_name = "Поиск товара: ".$page_info["item_code"];
+        $this->content = ControlPanel::getSearchResultsByProducts($page_info["item_code"], $page_info["page_num"], 12);
+        break;
+      case 14:
+        $this->title .= "Поиск инфо-блоков";
+        $this->section_name = "Поиск инфо-блока: ".$page_info["item_code"];
+        $this->content = ControlPanel::getSearchResultsByInfoBlocks($page_info["item_code"], $page_info["page_num"], 12);
+        break;
       case 403:
         $this->title .= "Ошибка доступа!";
     }
@@ -830,6 +845,93 @@ class ControlPanel {
     $num_pages = (int)( $db->query("SELECT count(id) FROM ".DB_TABLES["i-block"])->fetch_assoc()["count(id)"] ) / $count;
     $num_pages = (int)ceil($num_pages);
     $pages_navigation = Page::getPageNavigation($num_pages, $page_num, "/control/info-blocks/");
+
+    ob_start(); include SERVER_VIEW_DIR."cp_info_blocks.html";
+    return ob_get_clean();
+  }
+
+  // $count - число пользователей, отображаемых на одной странице
+  public static function getSearchResultsByUsers($searched_string, $page_num, $count) {
+    $db = DB::getInstance();
+    $list = "";
+
+    $offset = ($page_num * $count) - $count;
+    $selection = $db->query("SELECT id, firstname, lastname, email FROM ".DB_TABLES["user"]." WHERE ".
+                            "firstname LIKE '%${searched_string}%' OR ".
+                            "lastname LIKE '%${searched_string}%' OR ".
+                            "email LIKE '%${searched_string}%' ".
+                            "ORDER BY id LIMIT ${count} OFFSET ${offset}");
+    if (!DB::checkDBResult($selection)) return null;
+
+    while ($row = $selection->fetch_assoc()) {
+      $user_info = array("id" => $row["id"], "firstname" => $row["firstname"],
+                         "lastname" => $row["lastname"], "email" => $row["email"]);
+      ob_start(); include SERVER_VIEW_DIR."cp_small_user.html";
+      $list .= ob_get_clean();
+    }
+
+    $num_pages = (int)( $db->query("SELECT count(id) FROM ".DB_TABLES["user"]." WHERE ".
+                                   "firstname LIKE '%${searched_string}%' OR ".
+                                   "lastname LIKE '%${searched_string}%' OR ".
+                                   "email LIKE '%${searched_string}%'")->fetch_assoc()["count(id)"] ) / $count;
+    $num_pages = (int)ceil($num_pages);
+    $pages_navigation = Page::getPageNavigation($num_pages, $page_num, "/control/users/search/${searched_string}/");
+
+    ob_start(); include SERVER_VIEW_DIR."cp_users.html";
+    return ob_get_clean();
+  }
+
+  public static function getSearchResultsByProducts($searched_string, $page_num, $count) {
+    $db = DB::getInstance();
+    $list = "";
+
+    $offset = ($page_num * $count) - $count;
+    $selection = $db->query("SELECT id, name, author, price, count FROM ".DB_TABLES["book"]." WHERE ".
+                      "name LIKE '%${searched_string}%' OR ".
+                      "author LIKE '%${searched_string}%' ".
+                      "ORDER BY id LIMIT ${count} OFFSET ${offset}");
+
+    if (!DB::checkDBResult($selection)) return null;
+
+    while ($row = $selection->fetch_assoc()) {
+      $book = array("id" => $row["id"], "name" => $row["name"], "author" => $row["author"],
+                    "price" => $row["price"], "count" => $row["count"],
+                    "total_sum" => (int)$row["price"] * (int)$row["count"],
+                    "image" => Book::getImage($row["id"]));
+      ob_start(); include SERVER_VIEW_DIR."cp_small_book.html";
+      $list .= ob_get_clean();
+    }
+
+    $num_pages = (int)( $db->query("SELECT count(id) FROM ".DB_TABLES["book"]." WHERE ".
+                                   "name LIKE '%${searched_string}%' OR ".
+                                   "author LIKE '%${searched_string}%' ")->fetch_assoc()["count(id)"] ) / $count;
+    $num_pages = (int)ceil($num_pages);
+    $pages_navigation = Page::getPageNavigation($num_pages, $page_num, "/control/products/search/${searched_string}/");
+
+    ob_start(); include SERVER_VIEW_DIR."cp_books.html";
+    return ob_get_clean();
+  }
+
+  public static function getSearchResultsByInfoBlocks($searched_string, $page_num, $count) {
+    $db = DB::getInstance();
+    $list = "";
+
+    $offset = ($page_num * $count) - $count;
+    $selection = $db->query("SELECT id, title, access_level FROM ".DB_TABLES["i-block"]." WHERE ".
+                            "title LIKE '%${searched_string}%' ".
+                            "ORDER BY id LIMIT ".$count." OFFSET ".$offset);
+    if (!DB::checkDBResult($selection)) return null;
+
+    while ($row = $selection->fetch_assoc()) {
+      $ib = array("id" => $row["id"], "title" => $row["title"], "access_level" => $row["access_level"]);
+      ob_start(); include SERVER_VIEW_DIR."cp_small_info_block.html";
+      $list .= ob_get_clean();
+    }
+
+    $num_pages = (int)( $db->query("SELECT count(id) FROM ".DB_TABLES["i-block"]." ".
+                                   "WHERE title LIKE '%${searched_string}%' ")->fetch_assoc()["count(id)"] ) / $count;
+    $num_pages = (int)ceil($num_pages);
+    $pages_navigation = Page::getPageNavigation($num_pages, $page_num, "/control/info-blocks/search/${searched_string}/");
 
     ob_start(); include SERVER_VIEW_DIR."cp_info_blocks.html";
     return ob_get_clean();

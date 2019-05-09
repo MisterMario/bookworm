@@ -4,7 +4,7 @@
       <form action="" method="post" class="search-form">
         <input type="hidden" name="form_name" value="control_info_blocks">
         <label for="search-string">Поиск по инфо-блокам:</label>
-        <input type="text" name="search-string" placeholder="Заголовок блока" autocomplete="off">
+        <input type="text" name="search-string" placeholder="Заголовок блока" autocomplete="off" value="<?php if (isset($searched_string)) echo $searched_string; ?>">
         <input type="submit" name="action" value="search_item">
       </form>
     </div>
