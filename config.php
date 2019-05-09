@@ -6,6 +6,7 @@ define("SERVER_VIEW_DIR", ROOT_DIR."view/");
 define("CLIENT_VIEW_DIR", "/view/");
 define("JS_DIR", SERVER_VIEW_DIR."js/");
 define("MODULES_DIR", ROOT_DIR."modules/");
+define("VIEW_MODULES_DIR", MODULES_DIR."view/"); // Логика представления
 define("P_DIR", ROOT_DIR."products/");
 define("MAX_FILE_SIZE", 500 * 1024); // Максимальный размер аватарки в КБ
 define("MAX_FILE_WIDTH", 500);
