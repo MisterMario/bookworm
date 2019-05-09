@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1
--- Время создания: Май 07 2019 г., 15:12
+-- Время создания: Май 09 2019 г., 14:37
 -- Версия сервера: 10.1.31-MariaDB
 -- Версия PHP: 7.2.4
 
@@ -99,12 +99,9 @@ CREATE TABLE `book_in_cart` (
 --
 
 INSERT INTO `book_in_cart` (`id`, `user_id`, `book_id`, `count`) VALUES
-(1, 2, 2, 2),
-(2, 2, 3, 2),
-(3, 2, 7, 4),
-(4, 2, 6, 4),
-(5, 2, 5, 14),
-(6, 2, 10, 8);
+(1, 2, 3, 1),
+(2, 2, 2, 1),
+(3, 2, 1, 11);
 
 -- --------------------------------------------------------
 
@@ -147,7 +144,19 @@ INSERT INTO `book_in_order` (`id`, `order_id`, `book_id`, `count`) VALUES
 (21, 11, 7, 2),
 (22, 11, 6, 2),
 (23, 11, 5, 7),
-(24, 11, 10, 4);
+(24, 11, 10, 4),
+(25, 12, 2, 3),
+(26, 12, 3, 2),
+(27, 13, 2, 1),
+(28, 13, 1, 1),
+(29, 13, 3, 1),
+(30, 13, 4, 2),
+(31, 14, 2, 1),
+(32, 14, 11, 1),
+(33, 14, 10, 3),
+(34, 15, 1, 1),
+(35, 15, 2, 1),
+(36, 15, 5, 1);
 
 -- --------------------------------------------------------
 
@@ -167,6 +176,13 @@ CREATE TABLE `customer` (
   `city` varchar(64) DEFAULT NULL,
   `address` varchar(128) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Дамп данных таблицы `customer`
+--
+
+INSERT INTO `customer` (`id`, `order_id`, `firstname`, `lastname`, `phone_number`, `email`, `zip_code`, `state`, `city`, `address`) VALUES
+(1, 15, 'Андрей', 'Сосновский', '375297752396', 'andrysosna@gmail.com', 823142, 'Минская', 'Солигорск', 'ул. Боярышника, д. 34, кв. 76');
 
 -- --------------------------------------------------------
 
@@ -253,7 +269,11 @@ INSERT INTO `order_` (`id`, `user_id`, `books_of_count`, `total_price`, `date_of
 (8, 3, 9, 1686, '2019-01-14', '2019-01-15', 3, 1, 5, 5),
 (9, 3, 9, 1686, '2019-01-14', '2019-01-21', 1, 3, 4, 1),
 (10, 3, 9, 1686, '2019-01-14', '2019-01-16', 4, 1, 1, 1),
-(11, 2, 17, 2343, '2019-01-14', '2019-01-21', 1, 2, 3, 5);
+(11, 2, 17, 2343, '2019-01-14', '2019-01-21', 1, 2, 3, 5),
+(12, 2, 5, 695, '2019-05-08', '2019-05-10', 1, 2, 2, 1),
+(13, 2, 5, 906, '2019-05-08', '2019-05-14', 2, 3, 1, 1),
+(14, 2, 5, 924, '2019-05-08', '2019-05-15', 3, 1, 1, 1),
+(15, 1, 3, 518, '2019-05-09', '2019-05-10', 2, 1, 3, 1);
 
 -- --------------------------------------------------------
 
@@ -296,8 +316,8 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id`, `firstname`, `lastname`, `gender`, `phone_number`, `email`, `zip_code`, `state`, `city`, `address`, `password`, `level`, `tmp`) VALUES
-(1, 'неавторизованный', 'пользователь', 1, '', '', NULL, NULL, NULL, NULL, '', 2, NULL),
-(2, 'Кирилл', 'Савицкий', 1, '+375297752396', 'kirilsavitskiy@mail.ru', 253546, 'Минская', 'Солигорск', 'ул. Пипиркина, д. 25', '375297752396', 4, 'f1m5aobd1u1ozbpzpmt6vvab8wh637v8'),
+(1, 'Системный', 'пользователь', 1, '', 'Не трогать', NULL, NULL, NULL, NULL, '', 2, ''),
+(2, 'Кирилл', 'Савицкий', 1, '+375297752396', 'kirilsavitskiy@mail.ru', 253546, 'Минская', 'Солигорск', 'ул. Пипиркина, д. 25', '375297752396', 4, '4od8k2zkk7t898oyvaxf3vy2k9aq2bis'),
 (3, 'Александра', 'Питчер', 2, '375448512377', 'lexypitcher@gmail.com', 0, '', '', '', '1992lexy', 2, ''),
 (4, 'Александра', 'Мельникова', 2, '375291582238', 'alexamelka@mail.com', 38362, 'TN', 'Oakfield', '1827 Walt Nuzum Farm Road', 'alexa2539', 2, ''),
 (5, 'Ярослав', 'Крестовский', 1, '375294472333', 'yariksharik@mail.ru', NULL, NULL, NULL, NULL, 'yarik7233kek', 2, NULL),
@@ -390,19 +410,19 @@ ALTER TABLE `book`
 -- AUTO_INCREMENT для таблицы `book_in_cart`
 --
 ALTER TABLE `book_in_cart`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT для таблицы `book_in_order`
 --
 ALTER TABLE `book_in_order`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 
 --
 -- AUTO_INCREMENT для таблицы `customer`
 --
 ALTER TABLE `customer`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT для таблицы `dynamic_page`
@@ -426,7 +446,7 @@ ALTER TABLE `info_block`
 -- AUTO_INCREMENT для таблицы `order_`
 --
 ALTER TABLE `order_`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT для таблицы `review`
@@ -438,7 +458,7 @@ ALTER TABLE `review`
 -- AUTO_INCREMENT для таблицы `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- Ограничения внешнего ключа сохраненных таблиц
