@@ -1,11 +1,7 @@
 <?php
 
-// Костыль для сервер - в итоговой версии я его отброшу
-$root_dir = $_SERVER["DOCUMENT_ROOT"];
-if ($root_dir[strlen($root_dir)-1] != "/") $root_dir .= "/";
-
 # Данные для работы сайта
-define("ROOT_DIR", $root_dir);
+define("ROOT_DIR", dirname(__FILE__)."/");
 define("SERVER_VIEW_DIR", ROOT_DIR."view/");
 define("CLIENT_VIEW_DIR", "/view/");
 define("JS_DIR", SERVER_VIEW_DIR."js/");

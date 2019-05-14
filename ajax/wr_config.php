@@ -1,9 +1,4 @@
 <?php
-
-// Костыль для сервер - в итоговой версии я его отброшу
-$root_dir = $_SERVER["DOCUMENT_ROOT"];
-if ($root_dir[strlen($root_dir)-1] != "/") $root_dir .= "/";
-
 // Скрипт обертка. Служит для удобного подключения конфига скриптами, находящимися в этом каталоге
-require_once($root_dir);
+require_once(dirname(__FILE__)."/");
 ?>
