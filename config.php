@@ -1,7 +1,11 @@
 <?php
 
+// Костыль для сервер - в итоговой версии я его отброшу
+$root_dir = $_SERVER["DOCUMENT_ROOT"];
+if ($root_dir[strlen($root_dir)-1] != "/") $root_dir .= "/";
+
 # Данные для работы сайта
-define("ROOT_DIR", $_SERVER["DOCUMENT_ROOT"]);
+define("ROOT_DIR", $root_dir);
 define("SERVER_VIEW_DIR", ROOT_DIR."view/");
 define("CLIENT_VIEW_DIR", "/view/");
 define("JS_DIR", SERVER_VIEW_DIR."js/");
@@ -26,9 +30,9 @@ require_once(MODULES_DIR."user.class.php");
 # Данные для связи с БД
 define("DB_SETTINGS", array(
   "host" => "127.0.0.1",
-  "user" => "root",
-  "pass" => "",
-  "name" => "internet_market"
+  "user" => "bookworm",
+  "pass" => "2M9j6W3m",
+  "name" => "bookworm"
 ));
 define("DB_TABLES", array(
   "book" => "book",
