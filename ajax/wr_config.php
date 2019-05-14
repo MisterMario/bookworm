@@ -1,4 +1,4 @@
 <?php
 // Скрипт обертка. Служит для удобного подключения конфига скриптами, находящимися в этом каталоге
-require_once(strtok(dirname(__FILE__), "ajax")."config.php"); // удаление пути до текущей папки "ajax"
+require_once(preg_replace("/ajax$/", "", dirname(__FILE__))."config.php"); // удаление пути до текущей папки "ajax"
 ?>

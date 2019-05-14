@@ -4,3 +4,23 @@ RewriteEngine On
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^(.*)$ /index.php
+
+Options -Indexes
+
+<Files ".gitignore">
+    Order Deny,Allow
+    Deny from all
+    Allow from 127.0.0.1
+</Files>
+
+<Files "config.php">
+    Order Deny,Allow
+    Deny from all
+    Allow from 127.0.0.1
+</Files>
+
+<Files "*.md">
+    Order Deny,Allow
+    Deny from all
+    Allow from 127.0.0.1
+</Files>
