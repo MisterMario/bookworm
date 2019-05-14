@@ -13,7 +13,7 @@ function animateDropResults() {
   if (value.length != 0) {
 
     ajax('/ajax/ajax_search.php', {search_string: value}, function(data) {
-      //console.log(data);
+
       if (data.status) {
         $('#content-head #search-results #result-lines').html(data.html);
         $('#content-head #search-results #more-results a').attr('href', 'http://bw.loc/search/' + value + "/");

@@ -6,7 +6,11 @@
 $data = json_decode(file_get_contents("php://input"), true);
 $answer = array("status" => false, "html" => "");
 
+
 require_once("wr_config.php");
+require_once(VIEW_MODULES_DIR."genre.class.php");
+require_once(VIEW_MODULES_DIR."search.class.php");
+
 
 if (isset($data["search_string"])) {
 
