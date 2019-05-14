@@ -20,8 +20,10 @@ $user = Auth::createUser();
 if ($data["mode"] == "register") {
 
   $answer["message"] = Validate::registerForm($data, true);
-  if (mb_strlen($answer["message"], "utf-8") == 0)
+  if (mb_strlen($answer["message"], "utf-8") == 0) {
+    $data["level"] = 2;
     $answer["status"] = User::add($data);
+  }
 
 } elseif (!$user) {
 
