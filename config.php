@@ -1,6 +1,7 @@
 <?php
 
 # Данные для работы сайта
+define("HOST_NAME", $_SERVER["SERVER_NAME"]);
 define("ROOT_DIR", dirname(__FILE__)."/");
 define("SERVER_VIEW_DIR", ROOT_DIR."view/");
 define("CLIENT_VIEW_DIR", "/view/");
