@@ -16,7 +16,7 @@ function animateDropResults() {
 
       if (data.status) {
         $('#content-head #search-results #result-lines').html(data.html);
-        $('#content-head #search-results #more-results a').attr('href', window.location.host + '/search/' + value + "/");
+        $('#content-head #search-results #more-results a').attr('href', '/search/' + value + "/");
         if (drop_list.css('display') == 'none')
           drop_list.slideDown(500);
       } else if (drop_list.css('dislplay') != 'none') {
@@ -33,5 +33,5 @@ function animateDropResults() {
 
 function goToLink(self) {
   self = $(self);
-  window.location.href = "http://bw.loc" + self.children('.link').text();
+  window.location.href = self.children('.link').text();
 }
