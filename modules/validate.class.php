@@ -95,7 +95,7 @@ class Validate {
     } elseif (!preg_match("/^([0-9]|\+){1,}$/u", $data["age_restrictions"])) {
       $msg = "Ошибка! Некорректное значение поля: возрастные ограничения!";
 
-    } elseif (!preg_match("/^[0-9]{1,}$/u", $data["isbn"])) {
+    } elseif (!preg_match("/^978\-[0-9]\-[0-9]{5}\-[0-9]{3}\-[0-9]$/u", $data["isbn"])) {
       $msg = "Ошибка! Некорректное значение поля: ISBN!";
 
     } elseif (!preg_match("/^[0-9]{1,}$/u", $data["price"])) {
