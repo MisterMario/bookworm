@@ -3,3 +3,10 @@
     Deny from all
     Allow from 127.0.0.1
 </Files>
+
+# Этот файл хранит исходные (не сжатые CSS стили)
+<Files "styles.original.css">
+    Order Deny,Allow
+    Deny from all
+    Allow from 127.0.0.1
+</Files>
