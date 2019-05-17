@@ -1,12 +1,13 @@
 <div id="my-contacts">
   <div id="personal-data" class="rect">
     <h2>Информация о товаре:</h2>
-    <form action="" method="post">
+    <form action="" method="post" id="book_editor_form" enctype="multipart/form-data">
       <input type="hidden" name="item_id" value="<?php echo $book["id"]; ?>">
       <div class="form-2-blocks">
         <div class="one-block">
-          <img src="<?php echo CLIENT_VIEW_DIR."products/".$book["image"]; ?>" alt="">
-          <input type="button" name="load_photo" value="Загрузить">
+          <img src="<?php echo CLIENT_VIEW_DIR."products/".$book["image"]; ?>" id="book-photo" alt="">
+          <input type="file" id="upload_photo" name="upload_photo" class="hidden">
+          <input type="button" name="load_photo" value="Загрузить" onclick="$('#upload_photo').click();">
         </div>
         <div class="two-block">
           <div class="form-row">
@@ -88,6 +89,6 @@
     </form>
   </div>
   <div id="my-contacts-control" class="form-controls">
-    <input type="button" name="save-changes" value="<?php echo $isEdit ? "Сохранить изменения" : "Добавить товар" ?>" class="green-btn" onclick="sendBookInfo(<?php echo $isEdit ? "true" : "false"; ?>)">
+    <input type="button" name="save-changes" value="<?php echo $isEdit ? "Сохранить изменения" : "Добавить товар" ?>" class="green-btn" onclick="checkAndSendBookInfo(<?php echo $isEdit ? "true" : "false"; ?>)">
   </div>
 </div>

@@ -1,8 +1,30 @@
-function sendBookInfo(isEdit) {
-  var book_info;
+function sendBookInfo(isEdit, book_info) {
+  console.log(book_info);
+  if (isEdit) { // Если информация редактируется
+    book_info.mode = 'book_edit';
+    ajax('/ajax/ajax_uploader.php', book_info, function(data) {
+      if (data.status) {
+        showMessageBox('Информация о товаре обновлена!');
+      } else showMessageBox(data.message, 1);
+      //$('body').html(data); // Для отладки
+    });
+  } else {
+    book_info.mode = "book_new";
+    ajax('/ajax/ajax_uploader.php', book_info, function(data) {
+      if (data.status) {
+        showMessageBox('Товар успешно добавлен!');
+      } else showMessageBox(data.message, 1);
+      //$('body').html(data); // Для отладки
+    });
+  }
+}
+
+function checkAndSendBookInfo(isEdit) {
+  var book_info, files_arr = $('#upload_photo').prop('files');
 
   book_info = {
     id: $('#personal-data input[name=item_id]').val(),
+    image: '',
     title: $('#personal-data input[name=title]').val(),
     author: $('#personal-data input[name=author]').val(),
     genre_id: Number($('#personal-data select[name=genre_code] option:selected').val()),
@@ -17,22 +39,25 @@ function sendBookInfo(isEdit) {
     annotation: $('#personal-data textarea[name=annotation]').val(),
   };
 
-  if (isEdit) { // Если информация редактируется
-    book_info.mode = 'book_edit';
-    ajax('/ajax/validator.php', book_info, function(data) {
-      if (data.status) {
-        showMessageBox('Информация о товаре обновлена!');
-      } else showMessageBox(data.message, 1);
-      //$('body').html(data); // Для отладки
-    });
-  } else {
-    book_info.mode = "book_new";
-    ajax('/ajax/validator.php', book_info, function(data) {
-      if (data.status) {
-        showMessageBox('Товар успешно добавлен!');
-      } else showMessageBox(data.message, 1);
-      //$('body').html(data); // Для отладки
-    });
+  if (files_arr.length != 0 && files_arr[0].type != "image/png")
+    showMessageBox('Загруженная картинка имеет неверный формат!');
+
+  else if (files_arr.length == 0)
+    sendBookInfo(isEdit, book_info);
+
+  else {
+    file_reader = new FileReader();
+
+    file_reader.onload = function(event) { // Это событие, которое происходит, когда файл будет преобразован в base64 строку
+      book_info.image = event.target.result;
+      sendBookInfo(isEdit, book_info);
+    }
+
+    file_reader.onerror = function (event) {
+      showMessageBox('Не удается прочитать загружаемый файл (фото книги)!');
+    }
+
+    file_reader.readAsText(files_arr[0]); // <== чтение картинки из формы
   }
 }
 
