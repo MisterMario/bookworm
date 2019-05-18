@@ -221,28 +221,28 @@ class Page {
       case 12:
         require_once(VIEW_MODULES_DIR."control_panel.class.php");
         $this->title .= "Поиск пользователей";
-        $this->section_name = "Поиск пользователей: ".$page_info["item_code"];
+        $this->section_name = "Поиск пользователей";
         $this->content = ControlPanel::getSearchResultsByUsers($page_info["item_code"], $page_info["page_num"], 12);
         break;
 
       case 13:
         require_once(VIEW_MODULES_DIR."control_panel.class.php");
         $this->title .= "Поиск по товарам";
-        $this->section_name = "Поиск товара: ".$page_info["item_code"];
+        $this->section_name = "Поиск по товарам";
         $this->content = ControlPanel::getSearchResultsByProducts($page_info["item_code"], $page_info["page_num"], 12);
         break;
 
       case 14:
         require_once(VIEW_MODULES_DIR."control_panel.class.php");
         $this->title .= "Поиск инфо-блоков";
-        $this->section_name = "Поиск инфо-блока: ".$page_info["item_code"];
+        $this->section_name = "Поиск инфо-блоков";
         $this->content = ControlPanel::getSearchResultsByInfoBlocks($page_info["item_code"], $page_info["page_num"], 12);
         break;
 
       case 15:
         require_once(VIEW_MODULES_DIR."control_panel.class.php");
         $this->title .= "Поиск по жанрам";
-        $this->section_name = "Поиск жанра: ".$page_info["item_code"];
+        $this->section_name = "Поиск по жанрам";
         $this->content = ControlPanel::getSearchResultsByGenres($page_info["item_code"], $page_info["page_num"], 12);
         break;
 
