@@ -114,6 +114,14 @@ form.add-to-basket input[type="button"]:hover {
   margin-left: 6px;
   background: #e13c2b;
 }
+p.error-message {
+  text-align: center!important;
+  padding: 80px 0!important;
+}
+tr.error-message td {
+  text-align: center!important;
+  padding: 80px 0!important;
+}
 /* Строчный список из блоков */
 ul.inline {
   letter-spacing: -.36em;
