@@ -1,21 +1,40 @@
+/* Так как браузер кэширует все изображения, то приходится менять url изобржения,
+   для того, чтобы оно обновилось */
+
+function updateBookImage() {
+  var image = $('img#book-photo'),
+      src = image.attr('src'),
+      new_version_code = '?v=' + Math.floor(Math.random() * (999 - 100 + 1) + 100),
+      version_pos = src.indexOf('?v=');
+
+  if (version_pos != -1)
+    src = src.substr(0, version_pos);
+
+  image.attr('src', src + new_version_code);
+}
+
 function sendBookInfo(isEdit, book_info) {
   console.log(book_info);
   if (isEdit) { // Если информация редактируется
+
     book_info.mode = 'book_edit';
-    ajax('/ajax/ajax_uploader.php', book_info, function(data) {
+    ajax('/ajax/validator.php', book_info, function(data) {
       if (data.status) {
+        if (book_info.image.length != 0) updateBookImage();
         showMessageBox('Информация о товаре обновлена!');
       } else showMessageBox(data.message, 1);
-      //$('body').html(data); // Для отладки
+      //$('body').html(data);
     });
+
   } else {
+
     book_info.mode = "book_new";
-    ajax('/ajax/ajax_uploader.php', book_info, function(data) {
+    ajax('/ajax/validator.php', book_info, function(data) {
       if (data.status) {
         showMessageBox('Товар успешно добавлен!');
       } else showMessageBox(data.message, 1);
-      //$('body').html(data); // Для отладки
     });
+
   }
 }
 
@@ -49,7 +68,8 @@ function checkAndSendBookInfo(isEdit) {
     file_reader = new FileReader();
 
     file_reader.onload = function(event) { // Это событие, которое происходит, когда файл будет преобразован в base64 строку
-      book_info.image = event.target.result;
+      // Часть строки, которая удаляется лишь мешает работе base64_decode()
+      book_info.image = event.target.result.replace('data:' + files_arr[0].type + ';base64,', '');
       sendBookInfo(isEdit, book_info);
     }
 
@@ -57,7 +77,7 @@ function checkAndSendBookInfo(isEdit) {
       showMessageBox('Не удается прочитать загружаемый файл (фото книги)!');
     }
 
-    file_reader.readAsText(files_arr[0]); // <== чтение картинки из формы
+    file_reader.readAsDataURL(files_arr[0]); // <== чтение картинки из формы
   }
 }
 

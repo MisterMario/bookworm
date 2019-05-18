@@ -65,8 +65,24 @@ class Validate {
     return $msg;
   }
 
+  public static function image($base64_image) {
+    $image = base64_decode($base64_image);
+
+    if (!$image) return "Ошибка при декодировании загруженного изображения!";
+
+    $image_size = getimagesizefromstring($image);
+    if ($image_size[0] > 684 || $image_size[1] > 1016) return "Ошибка! Файл имеет недопустмые размеры!";
+
+    return "";
+  }
+
   public static function bookInformation($data) {
     $msg = "";
+
+    if (!empty($data["image"])) { // Если передавалась картинка - ее тоже нужно валидировать
+      $msg = Validate::image($data["image"]);
+      if (strlen($msg) != 0) return $msg;
+    }
 
     if (empty($data["title"]) || empty($data["author"]) || empty($data["language"]) ||
         empty($data["keywords"]) || empty($data["series"]) || empty($data["rightholder"]) ||

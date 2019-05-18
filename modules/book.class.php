@@ -19,31 +19,49 @@ class Book {
                              "'".$book["price"]."', ".
                              "'".$book["count"]."')");
   }
+
   public static function edit($book) {
     $db = DB::getInstance();
-    return $db->query("UPDATE ".DB_TABLES["book"].
-                             " SET name='".$book["name"]."', ".
-                                  "author='".$book["author"]."', ".
-                                  "genre_id='".$book["genre_id"]."', ".
-                                  "language='".$book["language"]."', ".
-                                  "tags='".$book["keywords"]."', ".
-                                  "series='".$book["series"]."', ".
-                                  "rightholder='".$book["rightholder"]."', ".
-                                  //"date_of_cos='".$book["date_of_cos"]."', ". - думаю этр поле можно не обновлять
-                                  "age_restrictions='".$book["age_restrictions"]."', ".
-                                  "isbn='".$book["isbn"]."', ".
-                                  "annotation='".$book["annotation"]."', ".
-                                  "price='".$book["price"]."', ".
-                                  "count='".$book["count"]."'".
-                              " WHERE id=".$book["id"]." LIMIT 1");
+    $isSuccessful = true;
+
+    if (!empty($book["image"]))
+      $isSuccessful = self::setImage($book["id"], $book["image"]);
+
+    if ($isSuccessful)
+      $isSuccessful = $db->query("UPDATE ".DB_TABLES["book"].
+                               " SET name='".$book["name"]."', ".
+                                    "author='".$book["author"]."', ".
+                                    "genre_id='".$book["genre_id"]."', ".
+                                    "language='".$book["language"]."', ".
+                                    "tags='".$book["keywords"]."', ".
+                                    "series='".$book["series"]."', ".
+                                    "rightholder='".$book["rightholder"]."', ".
+                                    //"date_of_cos='".$book["date_of_cos"]."', ". - думаю этр поле можно не обновлять
+                                    "age_restrictions='".$book["age_restrictions"]."', ".
+                                    "isbn='".$book["isbn"]."', ".
+                                    "annotation='".$book["annotation"]."', ".
+                                    "price='".$book["price"]."', ".
+                                    "count='".$book["count"]."'".
+                                " WHERE id=".$book["id"]." LIMIT 1");
+    return $isSuccessful;
   }
+
   public static function removeById($id) {
     $db = DB::getInstance();
     return $db->query("DELETE FROM ".DB_TABLES["book"]." WHERE id='".$id."' LIMIT 1");
   }
+
   public static function clean() { // Полностью чистит таблицу. Функция для администратора
     $db = DB::getInstance();
     return $db->query("DELETE FROM ".DB_TABLES["book"]);
+  }
+
+  public static function setImage($book_id, $base64_image) {
+    $image = base64_decode($base64_image);
+    if ($image)
+      return file_put_contents(P_DIR."${book_id}.png", $image);
+
+    return false;
   }
 }
 
