@@ -13,6 +13,7 @@ require_once(MODULES_DIR."validate.class.php");
 require_once(MODULES_DIR."book.class.php");
 require_once(MODULES_DIR."info_block.class.php");
 require_once(MODULES_DIR."review.class.php");
+require_once(MODULES_DIR."genre.class.php");
 
 session_start();
 $user = Auth::createUser();
@@ -95,6 +96,18 @@ if ($data["mode"] == "register") {
   $answer["message"] = Validate::infoBlock($data);
   if (mb_strlen($answer["message"], "utf-8") == 0)
     $answer["status"] = InfoBlock::add($data);
+
+} elseif ($data["mode"] == "genre_edit") {
+
+  $answer["message"] = Validate::genre($data);
+  if (mb_strlen($answer["message"], "utf-8") == 0)
+    $answer["status"] = Genre::edit($data);
+
+} elseif ($data["mode"] == "genre_new") {
+
+  $answer["message"] = Validate::genre($data);
+  if (mb_strlen($answer["message"], "utf-8") == 0)
+    $answer["status"] = Genre::add($data);
 
 }  elseif ($data["mode"] == "add_user" || $data["mode"] == "edit_user") {
 

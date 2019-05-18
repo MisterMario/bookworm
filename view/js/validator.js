@@ -112,6 +112,31 @@ function sendInfoBlock(isEdit) {
   }
 }
 
+function sendGenreInfo(isEdit) {
+  var genre = {
+    id: $('#personal-data input[name=item_id]').val(),
+    name: $('#personal-data input[name=name]').val(),
+  }
+
+  if (isEdit) {
+    genre.mode = "genre_edit"
+    ajax('/ajax/validator.php', genre, function(data) {
+      if (data.status) {
+        showMessageBox('Информация о жанре успешно обновлена!');
+      } else showMessageBox(data.message, 1);
+      //$('body').html(data); // Для отладки
+    });
+  } else {
+    genre.mode = "genre_new"
+    ajax('/ajax/validator.php', genre, function(data) {
+      if (data.status) {
+        showMessageBox('Жанр успешно добавлен!');
+      } else showMessageBox(data.message, 1);
+      //$('body').html(data); // Для отладки
+    });
+  }
+}
+
 function sendMyContacts() {
   var user_info = {
     mode: 'my_contacts_edit',

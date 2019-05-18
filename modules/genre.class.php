@@ -10,7 +10,7 @@ class Genre {
   public static function edit($genre) {
     $db = DB::getInstance();
     return $db->query("UPDATE ".DB_TABLES["genre"].
-                             " SET name='".$genre["name"].
+                             " SET name='".$genre["name"]."'".
                              " WHERE id='".$genre["id"]."' LIMIT 1");
   }
   public static function removeById($id) {

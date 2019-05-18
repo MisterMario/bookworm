@@ -145,6 +145,20 @@ class Validate {
     return $msg;
   }
 
+  public static function genre($data) {
+    $msg = "";
+
+    if (empty($data["name"])) {
+      $msg = "Ошибка! Не указано имя жанра!";
+
+    } elseif (!preg_match("/^[а-яА-Яa-zA-Z ]{1,}$/u", $data["name"])) {
+      $msg = "Ошибка! Некорректное наименование жанра!";
+
+    }
+
+    return $msg;
+  }
+
   public static function review($data) {
     $msg = "";
 
