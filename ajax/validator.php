@@ -72,8 +72,16 @@ if ($data["mode"] == "register") {
 
   $answer["message"] = Validate::bookInformation($data);
   if (mb_strlen($answer["message"], "utf-8") == 0) {
+
     $data["name"] = $data["title"];
-    $answer["status"] = Book::add($data);
+    $new_item_id = Book::add($data);
+
+    if ($new_item_id){
+      $answer["status"] = true;
+      $answer["message"] = $new_item_id;
+    }
+    else
+      $answer["message"] = "Серверная ошибка при добавлении товара!";
   }
 
 } elseif ($data["mode"] == "i_block_edit") {

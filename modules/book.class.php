@@ -3,7 +3,9 @@
 class Book {
   public static function add($book) { // Принимает массив с информацией о книге
     $db = DB::getInstance();
-    return $db->query("INSERT INTO ".DB_TABLES["book"]."(name, author, genre_id, language, tags, series, ".
+    $result = true;
+
+    $result = $db->query("INSERT INTO ".DB_TABLES["book"]."(name, author, genre_id, language, tags, series, ".
                       "rightholder, date_of_cos, age_restrictions, isbn, annotation, price, count)".
                       "VALUES('".$book["name"]."', ".
                              "'".$book["author"]."', ".
@@ -18,17 +20,23 @@ class Book {
                              "'".$book["annotation"]."', ".
                              "'".$book["price"]."', ".
                              "'".$book["count"]."')");
+
+    if ($result && !empty($book["image"]))
+      $result = self::setImage($db->insert_id, $book["image"]);
+
+    // Маленькое нововведение: теперь методы ADD в случае успеха возвращают ID нового элемента
+    return $result ? $db->insert_id : false;
   }
 
   public static function edit($book) {
     $db = DB::getInstance();
-    $isSuccessful = true;
+    $result = true;
 
     if (!empty($book["image"]))
-      $isSuccessful = self::setImage($book["id"], $book["image"]);
+      $result = self::setImage($book["id"], $book["image"]);
 
-    if ($isSuccessful)
-      $isSuccessful = $db->query("UPDATE ".DB_TABLES["book"].
+    if ($result)
+      $result = $db->query("UPDATE ".DB_TABLES["book"].
                                " SET name='".$book["name"]."', ".
                                     "author='".$book["author"]."', ".
                                     "genre_id='".$book["genre_id"]."', ".
@@ -43,7 +51,7 @@ class Book {
                                     "price='".$book["price"]."', ".
                                     "count='".$book["count"]."'".
                                 " WHERE id=".$book["id"]." LIMIT 1");
-    return $isSuccessful;
+    return $result;
   }
 
   public static function removeById($id) {

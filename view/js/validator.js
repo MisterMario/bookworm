@@ -1,20 +1,21 @@
 /* Так как браузер кэширует все изображения, то приходится менять url изобржения,
    для того, чтобы оно обновилось */
 
-function updateBookImage() {
+function updateBookImage(item_id = null) {
   var image = $('img#book-photo'),
-      src = image.attr('src'),
       new_version_code = '?v=' + Math.floor(Math.random() * (999 - 100 + 1) + 100),
-      version_pos = src.indexOf('?v=');
+      src = image.attr('src');
 
   if (version_pos != -1)
     src = src.substr(0, version_pos);
+  else
+    src = src.replace(/default\.png/, item_id + '.png');
 
   image.attr('src', src + new_version_code);
 }
 
 function sendBookInfo(isEdit, book_info) {
-  console.log(book_info);
+
   if (isEdit) { // Если информация редактируется
 
     book_info.mode = 'book_edit';
@@ -31,6 +32,7 @@ function sendBookInfo(isEdit, book_info) {
     book_info.mode = "book_new";
     ajax('/ajax/validator.php', book_info, function(data) {
       if (data.status) {
+        if (book_info.image.length != 0) updateBookImage(data.message);
         showMessageBox('Товар успешно добавлен!');
       } else showMessageBox(data.message, 1);
     });
