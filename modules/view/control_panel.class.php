@@ -79,6 +79,26 @@ class ControlPanel {
     return ob_get_clean();
   }
 
+  public static function getGenresListHTML($page_num, $count) {
+    $db = DB::getInstance();
+    $list = "";
+
+    $offset = ($page_num * $count) - $count;
+    $res = $db->query("SELECT id, name FROM ".DB_TABLES["genre"]." ORDER BY id LIMIT ".$count." OFFSET ".$offset);
+    if (gettype($res) == "boolean" || $res->num_rows == 0) return null;
+
+    while ($genre = $res->fetch_assoc()) {
+      ob_start(); include SERVER_VIEW_DIR."cp_small_genre.html";
+      $list .= ob_get_clean();
+    }
+    $num_pages = (int)( $db->query("SELECT count(id) FROM ".DB_TABLES["genre"])->fetch_assoc()["count(id)"] ) / $count;
+    $num_pages = (int)ceil($num_pages);
+    $pages_navigation = Page::getPageNavigation($num_pages, $page_num, "/control/genres/");
+
+    ob_start(); include SERVER_VIEW_DIR."cp_genres.html";
+    return ob_get_clean();
+  }
+
   // $count - число пользователей, отображаемых на одной странице
   public static function getSearchResultsByUsers($searched_string, $page_num, $count) {
     $db = DB::getInstance();
@@ -163,6 +183,30 @@ class ControlPanel {
     $pages_navigation = Page::getPageNavigation($num_pages, $page_num, "/control/info-blocks/search/${searched_string}/");
 
     ob_start(); include SERVER_VIEW_DIR."cp_info_blocks.html";
+    return ob_get_clean();
+  }
+
+  public static function getSearchResultsByGenres($searched_string, $page_num, $count) {
+    $db = DB::getInstance();
+    $list = "";
+
+    $offset = ($page_num * $count) - $count;
+    $selection = $db->query("SELECT id, name FROM ".DB_TABLES["genre"]." WHERE ".
+                            "name LIKE '%${searched_string}%' ".
+                            "ORDER BY id LIMIT ".$count." OFFSET ".$offset);
+    if (!DB::checkDBResult($selection)) return null;
+
+    while ($genre = $selection->fetch_assoc()) {
+      ob_start(); include SERVER_VIEW_DIR."cp_small_genre.html";
+      $list .= ob_get_clean();
+    }
+
+    $num_pages = (int)( $db->query("SELECT count(id) FROM ".DB_TABLES["genre"]." ".
+                                   "WHERE name LIKE '%${searched_string}%' ")->fetch_assoc()["count(id)"] ) / $count;
+    $num_pages = (int)ceil($num_pages);
+    $pages_navigation = Page::getPageNavigation($num_pages, $page_num, "/control/genres/search/${searched_string}/");
+
+    ob_start(); include SERVER_VIEW_DIR."cp_genres.html";
     return ob_get_clean();
   }
 }

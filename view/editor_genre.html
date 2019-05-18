@@ -1,0 +1,17 @@
+<div id="my-contacts">
+  <div id="personal-data" class="rect">
+    <h2>Жанр:</h2>
+    <form action="" method="post">
+      <input type="hidden" name="item_id" value="<?php echo $genre["id"]; ?>">
+      <div class="form-row">
+        <label for="name">Наименование: <span>*</span></label>
+        <div class="input">
+          <input type="text" name="name" placeholder="Классика" value="<?php echo $genre["name"]; ?>">
+        </div>
+      </div>
+    </form>
+  </div>
+  <div id="my-contacts-control" class="form-controls">
+    <input type="button" name="save-changes" value="<?php echo $isEdit ? "Сохранить изменения" : "Добавить жанр"; ?>" class="green-btn" onclick="sendGenreInfo(<?php echo $isEdit ? "true" : "false"; ?>)">
+  </div>
+</div>

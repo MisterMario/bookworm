@@ -1276,7 +1276,7 @@ form.search-form input[type="submit"] {
   border: 3px solid #009688;
   display: inline-block;
   letter-spacing: 0;
-  margin-right: 28px;
+  margin-right: 26.7px;
 }
 #inside-content-body .control-block:last-child {
   margin-right: 0;
@@ -1302,7 +1302,7 @@ form.search-form input[type="submit"] {
   background: url(../images/list.png) center 38px no-repeat;
 }
 #inside-content-body #control-genres.control-block {
-  background: url(../images/list.png) center 38px no-repeat;
+  background: url(../images/catalog-icon.png) center 38px no-repeat;
 }
 /* Страница: управление * */
 #inside-content-body #management-head {

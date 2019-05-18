@@ -69,6 +69,26 @@ switch ($_POST["form_name"]) {
       }
     }
     break;
+
+  case "control_genres":
+    require_once(MODULES_DIR."genre.class.php");
+    if ( isset($_POST["new"]) )
+      header("Location: /edit/genre/0");
+    elseif ( isset($_POST["remove_all"]) ) Genre::clean();
+    else {
+      switch ($_POST["action"]) {
+        case "search_item":
+          header("Location: /control/genres/search/".$_POST["search-string"]);
+          break;
+        case 'edit_row':
+          header("Location: /edit/genre/".$_POST["item_id"]);
+          break;
+        case "delete_row":
+          Genre::removeById($_POST["item_id"]);
+          break;
+      }
+    }
+    break;
 }
 
  ?>

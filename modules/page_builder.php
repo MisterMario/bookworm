@@ -132,6 +132,13 @@ class Page {
             $this->section_name = "Панель управления";
             $this->content = ControlPanel::getMenuHTML();
             break;
+
+          case 6:
+            require_once(VIEW_MODULES_DIR."control_panel.class.php");
+            $this->title .= "Управление жанрами";
+            $this->section_name = "Управление жанрами";
+            $this->content = ControlPanel::getGenresListHTML($page_info["page_num"], 12);
+            break;
         }
         break;
 
@@ -179,7 +186,20 @@ class Page {
           case 4: // еще не реализован
             $this->title .= "Редактирование заказа";
             $this->section_name = "Редактирование заказа";
-            $this->content = OrderInfo::getEditHTML($page_info["page_num"], true);
+            $this->content = GenresEditor::getEditHTML($page_info["page_num"], true);
+            break;
+
+          case 5:
+            require_once(VIEW_MODULES_DIR."genres_editor.class.php");
+            if ($page_info["page_num"] != 0) {
+              $this->title .= "Редактирование жанра";
+              $this->section_name = "Редактирование жанра";
+              $this->content = GenresEditor::getEditHTML($page_info["page_num"]);
+            } else {
+              $this->title .= "Добавление жанра";
+              $this->section_name = "Добавление жанра";
+              $this->content = GenresEditor::getNewHTML();
+            }
             break;
         }
         break;
@@ -217,6 +237,13 @@ class Page {
         $this->title .= "Поиск инфо-блоков";
         $this->section_name = "Поиск инфо-блока: ".$page_info["item_code"];
         $this->content = ControlPanel::getSearchResultsByInfoBlocks($page_info["item_code"], $page_info["page_num"], 12);
+        break;
+
+      case 15:
+        require_once(VIEW_MODULES_DIR."control_panel.class.php");
+        $this->title .= "Поиск по жанрам";
+        $this->section_name = "Поиск жанра: ".$page_info["item_code"];
+        $this->content = ControlPanel::getSearchResultsByGenres($page_info["item_code"], $page_info["page_num"], 12);
         break;
 
       case 403:

@@ -15,13 +15,16 @@ class SEF {
   const PATTERN_FOR_CONTROL_USERS = "/^\/control\/users(\/[0-9]{1,}){0,1}\/{0,1}$/";
   const PATTERN_FOR_CONTROL_INFO_BLOCKS = "/^\/control\/info-blocks(\/[0-9]{1,}){0,1}\/{0,1}$/";
   const PATTERN_FOR_CONTROL_ORDERS = "/^\/control\/orders(\/[0-9]{1,}){0,1}\/{0,1}$/";
+  const PATTERN_FOR_CONTROL_GENRES = "/^\/control\/genres(\/[0-9]{1,}){0,1}\/{0,1}$/";
   const PATTERN_FOR_EDIT_PRODUCT = "/^\/edit\/product\/[0-9]{1,}\/{0,1}$/";
   const PATTERN_FOR_EDIT_USER = "/^\/edit\/user\/[0-9]{1,}\/{0,1}$/";
   const PATTERN_FOR_EDIT_INFO_BLOCK = "/^\/edit\/info-block\/[0-9]{1,}\/{0,1}$/";
   const PATTERN_FOR_EDIT_ORDER = "/^\/edit\/order\/[0-9]{1,}\/{0,1}$/";
+  const PATTERN_FOR_EDIT_GENRE = "/^\/edit\/genre\/[0-9]{1,}\/{0,1}$/";
   const PATTERN_FOR_SEARCH = "/^\/search\/[a-zA-Zа-яА-Я0-9\s\.\!:@;,_-]{1,}(\/{0,1}|(\/[0-9]{1,}\/{0,1}))$/u";
   const PATTERN_FOR_SEARCH_BY_USERS = "/^\/control\/users\/search\/[a-zA-Zа-яА-Я0-9\s\.\!:@;,_-]{1,}(\/{0,1}|(\/[0-9]{1,}\/{0,1}))$/u";
   const PATTERN_FOR_SEARCH_BY_PRODUCTS = "/^\/control\/products\/search\/[a-zA-Zа-яА-Я0-9\s\.\!:@;,_-]{1,}(\/{0,1}|(\/[0-9]{1,}\/{0,1}))$/u";
+  const PATTERN_FOR_SEARCH_BY_GENRES = "/^\/control\/genres\/search\/[a-zA-Zа-яА-Я0-9\s\.\!:@;,_-]{1,}(\/{0,1}|(\/[0-9]{1,}\/{0,1}))$/u";
   const PATTERN_FOR_SEARCH_BY_INFO_BLOCKS = "/^\/control\/info-blocks\/search\/[a-zA-Zа-яА-Я0-9\s\.\!:@;,_-]{1,}(\/{0,1}|(\/[0-9]{1,}\/{0,1}))$/u";
   const PATTERN_FOR_CART = "/^\/cart\/{0,1}$/"; // Корзина для неавторизованного пользователя
 
@@ -92,6 +95,11 @@ class SEF {
 
       $pi = array("page_code" => 8, "item_code" => 5, "page_num" => 0);
 
+    } elseif (preg_match(self::PATTERN_FOR_CONTROL_GENRES, $uri)) {
+
+      preg_match_all("/[0-9]{1,}/", $uri, $numbers);
+      $pi = array("page_code" => 8, "item_code" => 6, "page_num" => count($numbers[0]) != 0 ? (int)$numbers[0][0] : 1);
+
     } elseif (preg_match(self::PATTERN_FOR_EDIT_PRODUCT, $uri)) {
 
       preg_match_all("/[0-9]{1,}/", $uri, $numbers);
@@ -111,6 +119,11 @@ class SEF {
 
       preg_match_all("/[0-9]{1,}/", $uri, $numbers);
       $pi = array("page_code" => 9, "item_code" => 4, "page_num" => (int)$numbers[0][0]);
+
+    } elseif (preg_match(self::PATTERN_FOR_EDIT_GENRE, $uri)) {
+
+      preg_match_all("/[0-9]{1,}/", $uri, $numbers);
+      $pi = array("page_code" => 9, "item_code" => 5, "page_num" => (int)$numbers[0][0]);
 
     } elseif (preg_match(self::PATTERN_FOR_SEARCH, $uri)) { // Поиск по сайту
 
@@ -139,6 +152,12 @@ class SEF {
       $parts = preg_split("/\//", $uri);
       $page_num = count($parts) >= 6 && strlen($parts[5]) > 0 ? (int)$parts[5] : 1;
       $pi = array("page_code" => 14, "item_code" => $parts[4], "page_num" => $page_num);
+
+    } elseif (preg_match(self::PATTERN_FOR_SEARCH_BY_GENRES, $uri)) { // Поиск по пользователям
+
+      $parts = preg_split("/\//", $uri);
+      $page_num = count($parts) >= 6 && strlen($parts[5]) > 0 ? (int)$parts[5] : 1;
+      $pi = array("page_code" => 15, "item_code" => $parts[4], "page_num" => $page_num);
 
     }
     return $pi;
