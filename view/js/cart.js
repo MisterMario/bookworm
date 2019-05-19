@@ -55,8 +55,12 @@ function removeFromCart(self) {
 
   ajax('/ajax/ajax_cart.php', params, function(data) {
     if (data.status) {
-      product.slideUp(500, function(){ product.remove(); });
-      updateCartStatus();
+
+      product.slideUp(500, function() {
+        product.remove();
+        updateCartStatus();
+      });
+
     } else showMessageBox('Возникла ошибка при удалении товара!', 1);
   });
 }
@@ -71,12 +75,19 @@ function removeFromNoDBCart(self) {
 
   row = regex.exec(nodb_cart)[0];
   nodb_cart = nodb_cart.replace(row + '\n', '');
-  $.cookie('bw-nodb-cart', nodb_cart, {path: '/', expires: 1});
 
-  product.slideUp(500, function(){ product.remove(); });
+  // Если куки, отвечающие за корзину опустошились - можно их стирать, а не хранить пустыми.
+  // Сейчас это необходимо делать. Потом код содержащийся в else лучше удалить, оставить только перезапись кук
+  // и убрать условие (if)
+  if (nodb_cart.length != 0)
+    $.cookie('bw-nodb-cart', nodb_cart, {path: '/', expires: 1});
+  else
+    $.removeCookie('bw-nodb-cart', {path: '/'});
 
-  // Определение нового состояния корзины
-  updateCartStatus();
+  product.slideUp(500, function() {
+    product.remove();
+    updateCartStatus(); // Определение нового состояния корзины
+  });
 }
 
 function clearCart() {
@@ -84,17 +95,15 @@ function clearCart() {
   ajax('/ajax/ajax_cart.php', params, function(data) {
     if (data.status) {
       $('.product').remove();
-      $('#sum-total h2:first-child span').html('0');
-      $('#sum-total h2:last-child span').html('0 BYR');
+      updateCartStatus();
     } else showMessageBox('Возникла ошибка при очистке корзины!', 1);
   });
 }
 
 function clearNoDBCart() {
   $('.product').remove();
-  $('#sum-total h2:first-child span').html('0');
-  $('#sum-total h2:last-child span').html('0 BYR');
   $.removeCookie('bw-nodb-cart', {path: '/'});
+  updateCartStatus();
 }
 
 function minus(self) {
@@ -221,7 +230,8 @@ function getCartStatusFromCookies() { // В будущем можно попро
   return cart_status;
 }
 
-function updateCartStatus(total_sum, count) { // Метод работает только в случае, если пользователь находится на странице "Корзина"
+function updateCartStatus() { // Метод работает только в случае, если пользователь находится на странице "Корзина"
+  var total_sum, count;
 
   if ($('#inside-content-body #basket').length != 0) { // Если текущая страница "Корзина"
     var cart_status = getCartStatusFromHTML();
