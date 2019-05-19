@@ -20,7 +20,7 @@ $user = Auth::createUser();
 
 if ($data["mode"] == "register" && !$user) {
 
-  $answer["message"] = Validate::registerForm($data, true);
+  $answer["message"] = Validate::registerForm($data, true, true);
   if (mb_strlen($answer["message"], "utf-8") == 0) {
     $data["level"] = 2;
     $answer["status"] = User::add($data);
@@ -113,9 +113,9 @@ if ($data["mode"] == "register" && !$user) {
 
   if (!empty($data["state"]) || !empty($data["city"]) ||
       !empty($data["address"]) || !empty($data["zip_code"]))
-    $answer["message"] = Validate::userContacts($data, true);
+    $answer["message"] = Validate::userContacts($data, true, $data["mode"] == "add_user" ? true : false);
   else
-    $answer["message"] = Validate::registerForm($data);
+    $answer["message"] = Validate::registerForm($data, $data["mode"] == "add_user" ? true : false, true);
 
   if ($answer["message"] == "")
     if ($data["mode"] == "add_user")

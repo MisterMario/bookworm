@@ -151,7 +151,7 @@ class User {
   public static function edit($data) { // Изменяет информацию о конкретном пользователе
     $db = DB::getInstance();
 
-    if (strlen($password) != 0) {
+    if (strlen($data["password"]) != 0) {
       require_once(MODULES_DIR."cryptor.class.php");
       $data["password"] = Cryptor::encryptText($data["password"]);
     }

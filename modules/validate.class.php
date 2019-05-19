@@ -32,6 +32,22 @@ class Validate {
     } elseif ($checkPassword && (mb_strlen($data["password"], "utf-8") < 6 || mb_strlen($data["password"], "utf-8") > 64)) {
       $msg = "Ошибка! Пароль должен иметь длину от 6 до 64 символов!";
 
+    } else { // Проверки, которые требуют дополнительных действий
+
+      $db = DB::getInstance();
+      $selection = $db->query("SELECT phone_number, email FROM ".DB_TABLES["user"].
+                            " WHERE (email='${data["email"]}' OR phone_number='${data["phone_number"]}') ".
+                            ($data["mode"] == "edit_user" ? "AND id NOT LIKE '${data["id"]}'" : "")." LIMIT 1");
+
+      if (DB::checkDBResult($selection)) {
+        $selection = $selection->fetch_assoc();
+
+        if ($selection["email"] == $data["email"])
+          $msg = "Ошибка! Пользователь с такой почтой (e-mail) уже зарегистрирован!";
+        else
+          $msg = "Ошибка! Этот номер телефона уже привязан к другой учетной записи!";
+      }
+
     }
 
     return $msg;
@@ -120,7 +136,15 @@ class Validate {
     } elseif (!preg_match("/^[0-9]{1,}$/u", $data["count"])) {
       $msg = "Ошибка! Некорректное количество товаров!";
 
-    } /*elseif (!preg_match("/^[а-яА-Яa-zA-Z\-\«\»\"!\(\) ]{1,}$/u", $data["annotation"])) {
+    } else { // Проверки, требующие дополнительных действий
+
+      $db = DB::getInstance();
+      $isbn = $db->query("SELECT id FROM ".DB_TABLES["book"]." WHERE isbn='${data["isbn"]}' ".
+                         ($data["mode"] == "book_edit" ? "AND id NOT LIKE '${data["id"]}'" : "")." LIMIT 1");
+      if (DB::checkDBResult($isbn))
+        $msg = "Ошибка! Книга с таким идентификатором (ISBN) уже есть в каталоге!";
+
+    }/*elseif (!preg_match("/^[а-яА-Яa-zA-Z\-\«\»\"!\(\) ]{1,}$/u", $data["annotation"])) {
       $msg = "Ошибка! Аннотация содержит недопустимые символы!";
 
     }*/
@@ -153,6 +177,14 @@ class Validate {
 
     } elseif (!preg_match("/^[а-яА-Яa-zA-Z ]{1,}$/u", $data["name"])) {
       $msg = "Ошибка! Некорректное наименование жанра!";
+
+    } else {
+
+      $db = DB::getInstance();
+      $genre_name = $db->query("SELECT id FROM ".DB_TABLES["genre"]." WHERE name='${data["name"]}' ".
+                               ($data["mode"] == "genre_edit" ? "AND id NOT LIKE '${data["id"]}'" : "")." LIMIT 1");
+      if (DB::checkDBResult($genre_name))
+        $msg = "Ошибка! Такой жанр уже есть в системе!";
 
     }
 
