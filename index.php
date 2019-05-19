@@ -21,7 +21,7 @@ if (!$page_info["page_code"])
 elseif ($user) {
   if ($user->getLevel() == 2 && !in_array($page_info["page_code"], PF_SIMPLE_USER))
     $page_info["page_code"] = 403;
-  elseif ($user->getLevel() == 3 && !in_array($page_info["page_code"], PF_ADMIN))
+  elseif ($user->getLevel() == 4 && !in_array($page_info["page_code"], PF_ADMIN))
     $page_info["page_code"] = 403;
 } elseif (!in_array($page_info["page_code"], PF_NO_USER))
   $page_info["page_code"] = 403;
