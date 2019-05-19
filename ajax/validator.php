@@ -18,7 +18,7 @@ require_once(MODULES_DIR."genre.class.php");
 session_start();
 $user = Auth::createUser();
 
-if ($data["mode"] == "register") {
+if ($data["mode"] == "register" && !$user) {
 
   $answer["message"] = Validate::registerForm($data, true);
   if (mb_strlen($answer["message"], "utf-8") == 0) {
@@ -59,7 +59,7 @@ if ($data["mode"] == "register") {
 
 } elseif ($user->getLevel() < 4) {
 
-  $answer["message"] = "У вас недостаточно прав для выполнения этого запроса!";
+  $answer["message"] = "Этот запрос вам недоступен (нет прав)!";
 
 } else if ($data["mode"] == "book_edit") {
 
