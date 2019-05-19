@@ -32,6 +32,7 @@ if ($data["mode"] == "register" && !$user) {
 
 } elseif ($data["mode"] == "my_contacts_edit") {
 
+  $data["id"] = $user->getId(); // При валидации данных в userContacts() требуется ID пользователя
   $answer["message"] = Validate::userContacts($data, true);
   if (mb_strlen($answer["message"], "utf-8") == 0)
     $answer["status"] = $user->setData($data);

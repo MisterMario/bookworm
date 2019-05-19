@@ -37,7 +37,7 @@ class Validate {
       $db = DB::getInstance();
       $selection = $db->query("SELECT phone_number, email FROM ".DB_TABLES["user"].
                             " WHERE (email='${data["email"]}' OR phone_number='${data["phone_number"]}') ".
-                            ($data["mode"] == "edit_user" ? "AND id NOT LIKE '${data["id"]}'" : "")." LIMIT 1");
+                            (($data["mode"] == "edit_user" || $data["mode"] == "my_contacts_edit") ? "AND id NOT LIKE '${data["id"]}'" : "")." LIMIT 1");
 
       if (DB::checkDBResult($selection)) {
         $selection = $selection->fetch_assoc();
