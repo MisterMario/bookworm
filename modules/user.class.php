@@ -137,6 +137,10 @@ class User {
   /* Статические методы для управления пользователями */
   public static function add($data) {
     $db = DB::getInstance();
+
+    require_once(MODULES_DIR."cryptor.class.php");
+    $data["password"] = Cryptor::encryptText($data["password"]);
+
     return $db->query("INSERT INTO ".DB_TABLES["user"]."(firstname, lastname, gender, phone_number, email, password, level".
                        ((isset($data["state"]) && !empty($data["state"])) ? ", state, city, address, zip_code) " : ") ").
                        "VALUES('${data["firstname"]}', '${data["lastname"]}', '${data["gender"]}', ".
@@ -146,6 +150,12 @@ class User {
   }
   public static function edit($data) { // Изменяет информацию о конкретном пользователе
     $db = DB::getInstance();
+
+    if (strlen($password) != 0) {
+      require_once(MODULES_DIR."cryptor.class.php");
+      $data["password"] = Cryptor::encryptText($data["password"]);
+    }
+
     return $db->query("UPDATE ".DB_TABLES["user"]." SET firstname='".$data["firstname"]."', ".
                                                        "lastname='".$data["lastname"]."', ".
                                                        "gender='".$data["gender"]."', ".
