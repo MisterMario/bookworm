@@ -4,7 +4,8 @@
 function updateBookImage(item_id = null) {
   var image = $('img#book-photo'),
       new_version_code = '?v=' + Math.floor(Math.random() * (999 - 100 + 1) + 100),
-      src = image.attr('src');
+      src = image.attr('src'),
+      version_pos = src.indexOf('?v=');
 
   if (version_pos != -1)
     src = src.substr(0, version_pos);
