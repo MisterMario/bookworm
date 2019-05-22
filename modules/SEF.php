@@ -141,19 +141,19 @@ class SEF {
       $page_num = count($parts) >= 6 && strlen($parts[5]) > 0 ? (int)$parts[5] : 1;
       $pi = array("page_code" => 12, "item_code" => $parts[4], "page_num" => $page_num);
 
-    } elseif (preg_match(self::PATTERN_FOR_SEARCH_BY_PRODUCTS, $uri)) { // Поиск по пользователям
+    } elseif (preg_match(self::PATTERN_FOR_SEARCH_BY_PRODUCTS, $uri)) { // Поиск по товарам
 
       $parts = preg_split("/\//", $uri);
       $page_num = count($parts) >= 6 && strlen($parts[5]) > 0 ? (int)$parts[5] : 1;
       $pi = array("page_code" => 13, "item_code" => $parts[4], "page_num" => $page_num);
 
-    } elseif (preg_match(self::PATTERN_FOR_SEARCH_BY_INFO_BLOCKS, $uri)) { // Поиск по пользователям
+    } elseif (preg_match(self::PATTERN_FOR_SEARCH_BY_INFO_BLOCKS, $uri)) { // Поиск по инфо-блокам
 
       $parts = preg_split("/\//", $uri);
       $page_num = count($parts) >= 6 && strlen($parts[5]) > 0 ? (int)$parts[5] : 1;
       $pi = array("page_code" => 14, "item_code" => $parts[4], "page_num" => $page_num);
 
-    } elseif (preg_match(self::PATTERN_FOR_SEARCH_BY_GENRES, $uri)) { // Поиск по пользователям
+    } elseif (preg_match(self::PATTERN_FOR_SEARCH_BY_GENRES, $uri)) { // Поиск по жанрам
 
       $parts = preg_split("/\//", $uri);
       $page_num = count($parts) >= 6 && strlen($parts[5]) > 0 ? (int)$parts[5] : 1;
