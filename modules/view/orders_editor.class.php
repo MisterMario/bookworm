@@ -34,14 +34,14 @@ class OrdersEditor {
     //ob_start();
     while ($book = $book_list_from_order_selection->fetch_assoc()) {
       $book["id"] = $book["book_id"]; // так как ID тут взят не из таблицы "book", а из таблицы "book_in_order"
-      $book["total_price"] = (int)$book["count"] * (int)$book["price"];
-      $book["image"] = ;
+      $book["total_sum"] = (int)$book["count"] * (int)$book["price"];
+      $book["image"] = "kek";
       ob_start(); include SERVER_VIEW_DIR."cp_small_book.html";
       $book_list .= ob_get_clean();
       //var_dump($book); echo "<br /><br />";
     }
     //echo ob_get_clean();
-    var_dump($book_list);
+    //var_dump($book_list);
 
     ob_start(); include SERVER_VIEW_DIR."editor_order.html";
     return ob_get_clean();
