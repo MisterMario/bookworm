@@ -1,0 +1,16 @@
+<tr>
+  <td><?php echo $order["id"]; ?></td>
+  <td><?php echo $order["name"]; ?></td>
+  <td><?php echo $order["books_count"]; ?></td>
+  <td><?php echo $order["total_price"]; ?></td>
+  <td>
+    <div class="t-row-control">
+      <form action="" method="post">
+        <input type="hidden" name="form_name" value="control_orders">
+        <input type="hidden" name="item_id" value="<?php echo $order["id"]; ?>">
+        <input type="submit" name="action" value="edit_row">
+        <input type="submit" name="action" value="delete_row">
+      </form>
+    </div>
+  </td>
+</tr>

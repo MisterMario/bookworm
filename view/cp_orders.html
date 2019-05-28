@@ -1,0 +1,32 @@
+<div id="management-of-info-blocks">
+  <div id="management-head">
+    <div id="management-search">
+      <form action="" method="post" class="search-form">
+        <input type="hidden" name="form_name" value="control_orders">
+        <label for="search-string">Поиск по заказам:</label>
+        <input type="text" name="search-string" placeholder="ФИО заказчика, e-mail заказчика" autocomplete="off" value="<?php if (isset($searched_string)) echo $searched_string; ?>">
+        <input type="submit" name="action" value="search_item">
+      </form>
+    </div>
+    <div id="management-control">
+      <form action="" method="post">
+        <input type="hidden" name="form_name" value="control_orders">
+        <input type="submit" name="remove_all" value="Удалить все">
+      </form>
+    </div>
+  </div>
+  <div id="management-body">
+    <table class="control-table">
+      <tr>
+        <th>ID</th>
+        <th>ФИ заказчика</th>
+        <th>E-mail</th>
+        <th>Количество товаров</th>
+        <th>Стоимость заказа</th>
+        <th>Дата оформления</th>
+      </tr>
+      <?php echo $list; ?>
+    </table>
+    <?php echo $pages_navigation; ?>
+  </div>
+</div>
