@@ -110,6 +110,51 @@ class ControlPanel {
     return ob_get_clean();
   }
 
+  public static function getOrdersListHTML($page_num, $count) {
+    $db = DB::getInstance();
+    $list = ""; $pages_navigation = "";
+    $user_orders = array(); $customer_orders = array();
+    $orders_list = array();
+
+    $offset = ($page_num * $count) - $count;
+    $orders_selection = $db->query("SELECT * FROM ".DB_TABLES["order"]." ORDER BY id LIMIT ".$count." OFFSET ".$offset);
+
+    while ($order = $orders_selection->fetch_assoc()) {
+      if ($order["user_id"] != 1)
+        $user_orders[] += $order["id"];
+      else
+        $customer_orders[] += $order["id"];
+      $orders_list[$order["id"]] = $order;
+    }
+
+    if (count($user_orders) != 0) {
+      $selection_user_orders = $db->query("SELECT firstname, lastname, email FROM ".DB_TABLES["user"].
+                                          " WHERE id IN (".implode(", ", $user_orders).")");
+      while ($user = $selection_user_orders->fetch_assoc()) {
+        for ($i=0; $i < count($orders_list); $i++) {
+          if ($orders_list[$i]["user_id"] == $user["id"])
+            foreach ($user as $key => $value) {
+              $orders_list[$i][$key] = $value;
+            }
+        }
+      }
+    }
+
+    if (DB::checkDBResult($orders_selection)) {
+
+      while ($order = $orders_selection->fetch_assoc()) {
+        ob_start(); include SERVER_VIEW_DIR."cp_small_order.html";
+        $list .= ob_get_clean();
+      }
+      $num_pages = (int)( $db->query("SELECT count(id) FROM ".DB_TABLES["order"])->fetch_assoc()["count(id)"] ) / $count;
+      $num_pages = (int)ceil($num_pages);
+      $pages_navigation = Page::getPageNavigation($num_pages, $page_num, "/control/orders/");
+
+    } else $list = self::getErrorMessage(9);
+    ob_start(); include SERVER_VIEW_DIR."cp_orders.html";
+    return ob_get_clean();
+  }
+
   // $count - число пользователей, отображаемых на одной странице
   public static function getSearchResultsByUsers($searched_string, $page_num, $count) {
     $db = DB::getInstance();
@@ -267,6 +312,14 @@ class ControlPanel {
       case 8:
         $error_message = "Инфо-блоки отсутствуют!<br />Если желаете - добавьте их!";
         $html_file = "error_no_info_blocks.html";
+        break;
+      case 9:
+        $error_message .= "заказа!";
+        $html_file = "error_no_orders.html";
+        break;
+      case 10:
+        $error_message = "Никто не оставлял заказов!<br />Если вам скучно - оформите парочку!";
+        $html_file = "error_no_orders.html";
         break;
     }
 

@@ -93,7 +93,8 @@ class SEF {
 
     } elseif (preg_match(self::PATTERN_FOR_CONTROL_ORDERS, $uri)) {
 
-      $pi = array("page_code" => 8, "item_code" => 5, "page_num" => 0);
+      preg_match_all("/[0-9]{1,}/", $uri, $numbers);
+      $pi = array("page_code" => 8, "item_code" => 5, "page_num" => count($numbers[0]) != 0 ? (int)$numbers[0][0] : 1);
 
     } elseif (preg_match(self::PATTERN_FOR_CONTROL_GENRES, $uri)) {
 

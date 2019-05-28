@@ -133,6 +133,13 @@ class Page {
             $this->content = ControlPanel::getMenuHTML();
             break;
 
+          case 5:
+            require_once(VIEW_MODULES_DIR."control_panel.class.php");
+            $this->title .= "Управление заказами";
+            $this->section_name = "Управление заказами";
+            $this->content = ControlPanel::getOrdersListHTML($page_info["page_num"], 12);
+            break;
+
           case 6:
             require_once(VIEW_MODULES_DIR."control_panel.class.php");
             $this->title .= "Управление жанрами";
