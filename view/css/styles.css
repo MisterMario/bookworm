@@ -1411,6 +1411,66 @@ form.search-form input[type="submit"] {
 #inside-content-body form .form-2-blocks .two-block .form-row .input {
   margin-right: 0;
 }
+/* Страница: редактирование заказа */
+#two-indetical-blocks {
+  width: 100%;
+  overflow: hidden;
+  border: 3px solid #009688;
+}
+#two-indetical-blocks .block {
+  width: 458px;
+  border: 0;
+  float: left;
+  margin-right: 0;
+}
+#two-indetical-blocks .order-info {
+  border-bottom: 3px solid #009688;
+}
+#two-indetical-blocks .order .order-control-panel {
+  padding: 10px 13px;
+}
+#two-indetical-blocks .order .order-control-panel ul {
+  float: left;
+  letter-spacing: -0.36em;
+}
+#two-indetical-blocks .order .order-control-panel ul li {
+  width: 44px;
+  height: 44px;
+  margin: 0 1px 0 0;
+  display: inline-block;
+  cursor: pointer;
+}
+#two-indetical-blocks .order .order-control-panel ul li.status-1 {
+  background: #fe9205 url(../images/order-mini-status-1.png) center center no-repeat;
+}
+#two-indetical-blocks .order .order-control-panel ul li.status-2 {
+  background: #4eb8ae url(../images/order-mini-status-2.png) center center no-repeat;
+}
+#two-indetical-blocks .order .order-control-panel ul li.status-3 {
+  background: #009688 url(../images/order-mini-status-3.png) center center no-repeat;
+}
+#two-indetical-blocks .order .order-control-panel ul li.status-4 {
+  background: #00a651 url(../images/order-mini-status-4.png) center center no-repeat;
+}
+#two-indetical-blocks .order .order-control-panel ul li.status-5 {
+  background: #ed1c24 url(../images/order-mini-status-5.png) center center no-repeat;
+}
+#two-indetical-blocks .order .order-control-panel input[type="button"] {
+  width: 207px;
+  height: 44px;
+  padding: 0;
+}
+#two-indetical-blocks .customer-info {
+  padding: 10px 0 13px 13px;
+  border-left: 3px solid #009688;
+}
+#two-indetical-blocks .customer-info ul {
+  margin-top: calc(16px - 0.4em);
+  line-height: 1.4em;
+}
+#two-indetical-blocks .customer-info h2:nth-child(3) {
+  margin-top: calc(16px - 0.4em);
+}
 /* Параметры форм */
 #inside-content-body form {
   width: 100%;
