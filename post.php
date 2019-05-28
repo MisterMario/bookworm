@@ -89,6 +89,24 @@ switch ($_POST["form_name"]) {
       }
     }
     break;
+
+  case "control_orders":
+    require_once(MODULES_DIR."order.class.php");
+    if ( isset($_POST["remove_all"]) ) Genre::clean();
+    else {
+      switch ($_POST["action"]) {
+        case "search_item":
+          header("Location: /control/orders/search/".$_POST["search-string"]);
+          break;
+        case 'edit_row':
+          header("Location: /edit/order/".$_POST["item_id"]);
+          break;
+        case "delete_row":
+          Order::removeById($_POST["item_id"]);
+          break;
+      }
+    }
+    break;
 }
 
  ?>

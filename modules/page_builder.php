@@ -190,10 +190,11 @@ class Page {
             }
             break;
 
-          case 4: // еще не реализован
+          case 4:
+            require_once(VIEW_MODULES_DIR."orders_editor.class.php");
             $this->title .= "Редактирование заказа";
             $this->section_name = "Редактирование заказа";
-            $this->content = GenresEditor::getEditHTML($page_info["page_num"], true);
+            $this->content = OrdersEditor::getEditHTML($page_info["page_num"], true);
             break;
 
           case 5:
