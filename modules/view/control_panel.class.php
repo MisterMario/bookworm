@@ -128,21 +128,33 @@ class ControlPanel {
     }
 
     if (count($user_orders) != 0) {
-      $selection_user_orders = $db->query("SELECT firstname, lastname, email FROM ".DB_TABLES["user"].
+      $selection_user_orders = $db->query("SELECT id, firstname, lastname, email FROM ".DB_TABLES["user"].
                                           " WHERE id IN (".implode(", ", $user_orders).")");
       while ($user = $selection_user_orders->fetch_assoc()) {
-        for ($i=0; $i < count($orders_list); $i++) {
+        for ($i=1; $i < count($orders_list); $i++) {
           if ($orders_list[$i]["user_id"] == $user["id"])
-            foreach ($user as $key => $value) {
-              $orders_list[$i][$key] = $value;
-            }
+            foreach ($user as $key => $value)
+              if ($key != "id")
+                $orders_list[$i][$key] = $value;
         }
+      }
+    }
+
+    if (count($customer_orders) != 0) {
+      $selection_customer_orders = $db->query("SELECT id, order_id, firstname, lastname, email FROM ".DB_TABLES["customer"].
+                                              " WHERE order_id IN (".implode(", ", $customer_orders).")");
+      while ($customer = $selection_customer_orders->fetch_assoc()) {
+        foreach ($customer as $key => $value)
+          if ($key != "id")
+            $orders_list[$customer["order_id"]][$key] = $value;
       }
     }
 
     if (DB::checkDBResult($orders_selection)) {
 
-      while ($order = $orders_selection->fetch_assoc()) {
+      for ($i=1; $i < count($orders_list); $i++) {
+        $order = $orders_list[$i];
+        $order["name"] = $order["firstname"]." ".$order["lastname"];
         ob_start(); include SERVER_VIEW_DIR."cp_small_order.html";
         $list .= ob_get_clean();
       }
