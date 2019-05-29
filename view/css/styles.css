@@ -509,7 +509,7 @@ form.search-form input[type="submit"] {
   cursor: pointer;
   font-size: 0;
   background: url(../images/search-icon.png) no-repeat center;
-  vertical-align: middle;
+  vertical-align: top;
 }
 /* Список результатов поиска */
 #main #content #content-head #search-results {
@@ -1389,8 +1389,12 @@ form.search-form input[type="submit"] {
   background: url(../images/btn-delete-row.png);
 }
 /* Страница: список заказов */
-select[name="select-order-status"] option {
+select[name="select-order-status"] {
   color: #000;
+  width: 210px;
+  margin: 0;
+  height: 46px;
+  padding: 0;
 }
 option.o-status-option-1 {
   background: #fe9205;
@@ -1432,12 +1436,12 @@ option.o-status-option-5 {
 }
 /* Страница: редактирование заказа */
 #two-indetical-blocks {
-  width: 100%;
+  width: calc(100% - 6px);
   overflow: hidden;
   border: 3px solid #009688;
 }
 #two-indetical-blocks .block {
-  width: 458px;
+  width: 455px;
   border: 0;
   float: left;
   margin-right: 0;
@@ -1475,7 +1479,7 @@ option.o-status-option-5 {
   background: #ed1c24 url(../images/order-mini-status-5.png) center center no-repeat;
 }
 #two-indetical-blocks .order .order-control-panel input[type="button"] {
-  width: 207px;
+  width: 204px;
   height: 44px;
   padding: 0;
 }
