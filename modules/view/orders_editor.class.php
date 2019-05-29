@@ -11,6 +11,7 @@ use DB;
 class OrdersEditor {
   public static function getEditHTML($id) {
     $db = DB::getInstance();
+    $isEdited = true;
 
     $order_selection = $db->query("SELECT * FROM ".DB_TABLES["order"]." WHERE id='".$id."' LIMIT 1");
     if (!DB::checkDBResult($order_selection)) return null;
@@ -55,7 +56,7 @@ class OrdersEditor {
       $book["id"] = $book["book_id"]; // так как ID тут взят не из таблицы "book", а из таблицы "book_in_order"
       $book["total_sum"] = (int)$book["count"] * (int)$book["price"];
       $book["image"] = Book::getImage($book["id"]);
-      ob_start(); include SERVER_VIEW_DIR."cp_small_book.html";
+      ob_start(); include SERVER_VIEW_DIR."book_in_order.html";
       $book_list .= ob_get_clean();
       //var_dump($book); echo "<br /><br />";
     }

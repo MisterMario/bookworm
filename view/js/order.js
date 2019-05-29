@@ -73,3 +73,49 @@ function cacncelOrder(self) {
     } else alert(data.message);
   });
 }
+
+/* Для страницы: редактор заказа */
+function removeProductFromHTML(self) { // Удаляет товар из разметки на текущей странице. Не затрагивает БД
+  var product = $(self).parent().parent();
+  product.slideUp(500, function() { product.remove(); updateOrderStatus(); });
+}
+
+function updateOrderStatus() {
+  var total_price = 0, books_num = 0,
+      product_list_html = $('#products-in-order .product');
+
+  for (var i = 0; i < product_list_html.length; i++) {
+    var info_list = $(product_list_html[i]).find('ul li'), regex = new RegExp('[0-9]+');
+    books_num += Number(regex.exec(info_list[2].innerHTML));
+    total_price += Number(regex.exec(info_list[3].innerHTML));
+  }
+  $('.order-info span#books-num').html(books_num);
+  $('.order-info span#total-price').html(total_price);
+}
+
+function setOrderStatus(status_code) {
+  var order = $('.order'),
+      status_name_html = order.find('span#status-name'),
+      current_status = (new RegExp('o-status-[0-9]', 'g')).exec(order.attr('class'))[0];
+
+  order.removeClass(current_status);
+  order.addClass('o-status-' + status_code);
+
+  switch (status_code) {
+    case 1:
+      status_name_html.html('ожидает подтверждения');
+      break;
+    case 2:
+      status_name_html.html('укомплектован');
+      break;
+    case 3:
+      status_name_html.html('в пути');
+      break;
+    case 4:
+      status_name_html.html('выполнен');
+      break;
+    case 5:
+      status_name_html.html('отменен');
+      break;
+  }
+}

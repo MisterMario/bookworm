@@ -12,6 +12,7 @@
     </ul>
   </div>
   <div id="product-control">
-    <input type="button" name="product-delete" onclick="" class="<?php if (!$isEdited) echo "hidden"; ?>">
+    <input type="hidden" name="item_id" value="<?php echo $book["id"]; ?>">
+    <input type="button" name="product-delete" onclick="removeProductFromHTML(this);" class="<?php if (!$isEdited) echo "hidden"; ?>">
   </div>
 </div>

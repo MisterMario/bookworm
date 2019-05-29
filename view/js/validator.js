@@ -300,7 +300,7 @@ function sendUser(isEdit) {
     showMessageBox('Заполните все данные для доставки или пропустите вовсе!', 1);
   else {
 
-    ajax("/ajax/validator.php", user_data, function(data) {
+    ajax('/ajax/validator.php', user_data, function(data) {
 
       if (data.status && !isEdit)
         showMessageBox('Пользователь успешно добавлен!');
@@ -312,4 +312,29 @@ function sendUser(isEdit) {
     });
 
   }
+}
+
+function sendEditedOrder() { // Страница ПУ: Редактор заказа
+  var data = {
+    mode: 'edit_order',
+    id: $('#hidden_information input[name=order_id]').val(),
+    status: $('#hidden_information input[name=order_status]').val(),
+    products: [],
+  }, product_id_list_html = $('#products-in-order .product input[name=item_id]'); // Получать нужно только ID товаров, и не более
+
+  if (product_id_list_html.length != 0) {
+
+    for (var i = 0; i < product_id_list_html.length; i++) {
+      data.products[i] = product_id_list_html[i].value;
+    }
+    ajax('/ajax/validator.php', data, function(data) {
+
+      if (data.status && !isEdit)
+        showMessageBox('Информация о заказе успешно обновлена!');
+      else
+        showMessageBox(data.message, 1);
+
+    });
+
+  } else showMessageBox('Ошибка! Нельзя заказать 0 товаров!', 1);
 }
