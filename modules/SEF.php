@@ -15,6 +15,7 @@ class SEF {
   const PATTERN_FOR_CONTROL_USERS = "/^\/control\/users(\/[0-9]{1,}){0,1}\/{0,1}$/";
   const PATTERN_FOR_CONTROL_INFO_BLOCKS = "/^\/control\/info-blocks(\/[0-9]{1,}){0,1}\/{0,1}$/";
   const PATTERN_FOR_CONTROL_ORDERS = "/^\/control\/orders(\/[0-9]{1,}){0,1}\/{0,1}$/";
+  const PATTERN_FOR_CONTROL_ORDERS_BY_STATUS = "/^\/control\/orders(\/status(\/[0-9]{1,}){0,1}\/{0,1}$/";
   const PATTERN_FOR_CONTROL_GENRES = "/^\/control\/genres(\/[0-9]{1,}){0,1}\/{0,1}$/";
   const PATTERN_FOR_EDIT_PRODUCT = "/^\/edit\/product\/[0-9]{1,}\/{0,1}$/";
   const PATTERN_FOR_EDIT_USER = "/^\/edit\/user\/[0-9]{1,}\/{0,1}$/";
@@ -166,6 +167,11 @@ class SEF {
       $parts = preg_split("/\//", $uri);
       $page_num = count($parts) >= 6 && strlen($parts[5]) > 0 ? (int)$parts[5] : 1;
       $pi = array("page_code" => 16, "item_code" => $parts[4], "page_num" => $page_num);
+
+    } elseif (preg_match(self::PATTERN_FOR_CONTROL_ORDERS_BY_STATUS, $uri)) {
+
+      preg_match_all("/[0-9]{1,}/", $uri, $numbers);
+      $pi = array("page_code" => 17, "item_code" => 5, "page_num" => count($numbers[0]) != 0 ? (int)$numbers[0][0] : 1);
 
     }
     return $pi;

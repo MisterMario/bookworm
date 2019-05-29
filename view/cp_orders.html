@@ -11,7 +11,7 @@
     <div id="management-control">
       <form action="" method="post">
         <input type="hidden" name="form_name" value="control_orders">
-        <select name="select-order-status" id="">
+        <select name="select-order-status" onchange="goToPageByOrderStatus();">
           <option value="0">Все заказы</option>
           <option value="1" class="o-status-option-1">Ожидают подтверждения</option>
           <option value="2" class="o-status-option-2">Укомплектованные</option>

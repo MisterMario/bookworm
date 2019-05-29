@@ -120,3 +120,13 @@ function setOrderStatus(status_code) {
       break;
   }
 }
+
+function goToPageByOrderStatus() {
+  var selected_status =  $('select[name=select-order-status] option:selected').val(),
+      location = '/control/orders/';
+
+  if (selected_status != 0)
+    location += 'status/' + selected_status + '/';
+
+  window.location = location;
+}
