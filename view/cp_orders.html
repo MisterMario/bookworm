@@ -4,7 +4,7 @@
       <form action="" method="post" class="search-form">
         <input type="hidden" name="form_name" value="control_orders">
         <label for="search-string">Поиск по заказам:</label>
-        <input type="text" name="search-string" placeholder="ФИ заказчика или e-mail заказчика" autocomplete="off" value="<?php if (isset($searched_string)) echo $searched_string; ?>">
+        <input type="text" name="search-string" placeholder="Фамилия, имя или e-mail заказчика" autocomplete="off" value="<?php if (isset($searched_string)) echo $searched_string; ?>">
         <input type="submit" name="action" value="search_item">
       </form>
     </div>

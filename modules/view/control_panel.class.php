@@ -304,18 +304,18 @@ class ControlPanel {
     $list = ""; $pages_navigation = "";
     $user_id_variety = "";
     $customer_id_variety = "";
-    $orders_list = array();
+    $order_list = array();
 
     $offset = ($page_num * $count) - $count;
     $user_id_selection = $db->query("SELECT id FROM ".DB_TABLES["user"]." WHERE ".
-                                    "firstname LIKE '%${searched_string}%' AND ".
-                                    "lastname LIKE '%${searched_string}%' AND ".
-                                    "email LIKE '%${searched_string}%' ".
-                                    "WHERE id NOT '1' ". // нельзя извлекать системного пользователя (его ID: 1)
+                                    "(firstname LIKE '%${searched_string}%' OR ".
+                                    "lastname LIKE '%${searched_string}%' OR ".
+                                    "email LIKE '%${searched_string}%') AND ".
+                                    "id NOT LIKE '1' ". // нельзя извлекать системного пользователя (его ID: 1)
                                     "ORDER BY id LIMIT ".$count." OFFSET ".$offset);
-    $customer_id_selection = $db->query("SELECT oder_id FROM ".DB_TABLES["customer"]." WHERE ".
-                                              "firstname LIKE '%${searched_string}%' AND ".
-                                              "lastname LIKE '%${searched_string}%' AND ".
+    $customer_id_selection = $db->query("SELECT id FROM ".DB_TABLES["customer"]." WHERE ".
+                                              "firstname LIKE '%${searched_string}%' OR ".
+                                              "lastname LIKE '%${searched_string}%' OR ".
                                               "email LIKE '%${searched_string}%' ".
                                               "ORDER BY id LIMIT ".$count." OFFSET ".$offset);
 
@@ -328,7 +328,7 @@ class ControlPanel {
     }
     if (DB::checkDBResult($customer_id_selection)) {
       while ($customer = $customer_id_selection->fetch_assoc()) {
-        $customer_id_variety .= $customer["order_id"].", ";
+        $customer_id_variety .= $customer["id"].", ";
       }
       $customer_id_variety = substr($customer_id_variety, 0, strlen($customer_id_variety)-2);
       $customer_id_variety = "(${customer_id_variety})";
@@ -336,7 +336,7 @@ class ControlPanel {
 
     if (strlen($user_id_variety) != 0 || strlen($customer_id_variety) != 0) {
 
-      if (count($user_id_variety) != 0) {
+      if (strlen($user_id_variety) != 0) {
         $user_order_selection = $db->query("SELECT o.id, o.total_price, o.books_of_count, o.status, o.date_of_issue, ".
                                            "u.firstname, u.lastname ".
                                            "FROM ".DB_TABLES["order"]." AS o ".
@@ -345,25 +345,25 @@ class ControlPanel {
 
         $i = 0;
         while ($order = $user_order_selection->fetch_assoc()) {
-          $orders_list[$i] = $order;
+          $order_list[$i] = $order;
           $i++;
         }
       }
 
-      if (count($customer_order_id_variety) != 0) {
+      if (strlen($customer_id_variety) != 0) {
         $customer_order_selection = $db->query("SELECT o.id, o.total_price, o.books_of_count, o.status, o.date_of_issue, ".
                                                "c.firstname, c.lastname ".
                                                "FROM ".DB_TABLES["order"]." AS o ".
                                                "JOIN ".DB_TABLES["customer"]." AS c ON o.id=c.order_id ".
                                                "WHERE c.id IN ${customer_id_variety}");
-        // $i не обнуляется, так использутся 1 массив на две выборки
+        $i = count($order_list);
         while ($order = $customer_order_selection->fetch_assoc()) {
-          $orders_list[$i] = $order;
+          $order_list[$i] = $order;
           $i++;
         }
       }
 
-      if (count($orders_list) != 0) {
+      if (count($order_list) != 0) {
 
         // Так как слиты дле выборки - все будет не по порядку. Сортируем с использованием "Buble Sort"
         for ($i=0; $i < count($order_list); $i++) {
@@ -377,6 +377,7 @@ class ControlPanel {
 
         foreach ($order_list as $order) {
           $order["name"] = $order["firstname"]." ".$order["lastname"];
+          $order["status_name"] = OrderInfo::getStatusName($order["status"]);
           ob_start(); include SERVER_VIEW_DIR."cp_small_order.html";
           $list .= ob_get_clean();
         }
