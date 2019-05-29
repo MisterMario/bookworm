@@ -173,7 +173,7 @@ class ControlPanel {
       $num_pages = (int)ceil($num_pages);
       $pages_navigation = Page::getPageNavigation($num_pages, $page_num, "/control/orders/");
 
-    } else $list = self::getErrorMessage(9);
+    } else $list = self::getErrorMessage(10);
     ob_start(); include SERVER_VIEW_DIR."cp_orders.html";
     return ob_get_clean();
   }
@@ -296,6 +296,104 @@ class ControlPanel {
     } else $list = self::getErrorMessage(1, $searched_string);
 
     ob_start(); include SERVER_VIEW_DIR."cp_genres.html";
+    return ob_get_clean();
+  }
+
+  public static function getSearchResultsByOrders($searched_string, $page_num, $count) {
+    $db = DB::getInstance();
+    $list = ""; $pages_navigation = "";
+    $user_id_variety = "";
+    $customer_id_variety = "";
+    $orders_list = array();
+
+    $offset = ($page_num * $count) - $count;
+    $user_id_selection = $db->query("SELECT id FROM ".DB_TABLES["user"]." WHERE ".
+                                    "firstname LIKE '%${searched_string}%' AND ".
+                                    "lastname LIKE '%${searched_string}%' AND ".
+                                    "email LIKE '%${searched_string}%' ".
+                                    "WHERE id NOT '1' ". // нельзя извлекать системного пользователя (его ID: 1)
+                                    "ORDER BY id LIMIT ".$count." OFFSET ".$offset);
+    $customer_id_selection = $db->query("SELECT oder_id FROM ".DB_TABLES["customer"]." WHERE ".
+                                              "firstname LIKE '%${searched_string}%' AND ".
+                                              "lastname LIKE '%${searched_string}%' AND ".
+                                              "email LIKE '%${searched_string}%' ".
+                                              "ORDER BY id LIMIT ".$count." OFFSET ".$offset);
+
+    if (DB::checkDBResult($user_id_selection)) {
+      while ($user = $user_id_selection->fetch_assoc()) {
+        $user_id_variety .= $user["id"].", ";
+      }
+      $user_id_variety = substr($user_id_variety, 0, strlen($user_id_variety)-2); // обрезка лишнего ", "
+      $user_id_variety = "(${user_id_variety})";
+    }
+    if (DB::checkDBResult($customer_id_selection)) {
+      while ($customer = $customer_id_selection->fetch_assoc()) {
+        $customer_id_variety .= $customer["order_id"].", ";
+      }
+      $customer_id_variety = substr($customer_id_variety, 0, strlen($customer_id_variety)-2);
+      $customer_id_variety = "(${customer_id_variety})";
+    }
+
+    if (strlen($user_id_variety) != 0 || strlen($customer_id_variety) != 0) {
+
+      if (count($user_id_variety) != 0) {
+        $user_order_selection = $db->query("SELECT o.id, o.total_price, o.books_of_count, o.status, o.date_of_issue, ".
+                                           "u.firstname, u.lastname ".
+                                           "FROM ".DB_TABLES["order"]." AS o ".
+                                           "JOIN ".DB_TABLES["user"]." AS u ON o.user_id=u.id ".
+                                           "WHERE o.user_id IN ${user_id_variety}");
+
+        $i = 0;
+        while ($order = $user_order_selection->fetch_assoc()) {
+          $orders_list[$i] = $order;
+          $i++;
+        }
+      }
+
+      if (count($customer_order_id_variety) != 0) {
+        $customer_order_selection = $db->query("SELECT o.id, o.total_price, o.books_of_count, o.status, o.date_of_issue, ".
+                                               "c.firstname, c.lastname ".
+                                               "FROM ".DB_TABLES["order"]." AS o ".
+                                               "JOIN ".DB_TABLES["customer"]." AS c ON o.id=c.order_id ".
+                                               "WHERE c.id IN ${customer_id_variety}");
+        // $i не обнуляется, так использутся 1 массив на две выборки
+        while ($order = $customer_order_selection->fetch_assoc()) {
+          $orders_list[$i] = $order;
+          $i++;
+        }
+      }
+
+      if (count($orders_list) != 0) {
+
+        // Так как слиты дле выборки - все будет не по порядку. Сортируем с использованием "Buble Sort"
+        for ($i=0; $i < count($order_list); $i++) {
+          for ($j=0; $j < count($order_list)-$i-1; $j++)
+            if ((int)$order_list[$j]["id"] > (int)$order_list[$j + 1]["id"]) {
+              $order = $order_list[$j];
+              $order_list[$j] = $order_list[$j + 1];
+              $order_list[$j + 1] = $order;
+            }
+        }
+
+        foreach ($order_list as $order) {
+          $order["name"] = $order["firstname"]." ".$order["lastname"];
+          ob_start(); include SERVER_VIEW_DIR."cp_small_order.html";
+          $list .= ob_get_clean();
+        }
+
+        $num_pages = (int)( $db->query("SELECT count(id) FROM ".DB_TABLES["genre"]." ".
+                                       "WHERE name LIKE '%${searched_string}%' ")->fetch_assoc()["count(id)"] ) / $count;
+        $num_pages = (int)ceil($num_pages);
+        $pages_navigation = Page::getPageNavigation($num_pages, $page_num, "/control/genres/search/${searched_string}/");
+
+      }
+
+    }
+
+    if (strlen($list) == 0)
+      $list = self::getErrorMessage(9, $searched_string);
+
+    ob_start(); include SERVER_VIEW_DIR."cp_orders.html";
     return ob_get_clean();
   }
 

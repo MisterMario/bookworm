@@ -254,6 +254,13 @@ class Page {
         $this->content = ControlPanel::getSearchResultsByGenres($page_info["item_code"], $page_info["page_num"], 12);
         break;
 
+      case 16:
+        require_once(VIEW_MODULES_DIR."control_panel.class.php");
+        $this->title .= "Поиск по заказам";
+        $this->section_name = "Поиск по заказам";
+        $this->content = ControlPanel::getSearchResultsByOrders($page_info["item_code"], $page_info["page_num"], 12);
+        break;
+
       case 403:
         $this->title .= "Ошибка доступа!";
     }

@@ -26,6 +26,7 @@ class SEF {
   const PATTERN_FOR_SEARCH_BY_PRODUCTS = "/^\/control\/products\/search\/[a-zA-Zа-яА-Я0-9\s\.\!:@;,_-]{1,}(\/{0,1}|(\/[0-9]{1,}\/{0,1}))$/u";
   const PATTERN_FOR_SEARCH_BY_GENRES = "/^\/control\/genres\/search\/[a-zA-Zа-яА-Я0-9\s\.\!:@;,_-]{1,}(\/{0,1}|(\/[0-9]{1,}\/{0,1}))$/u";
   const PATTERN_FOR_SEARCH_BY_INFO_BLOCKS = "/^\/control\/info-blocks\/search\/[a-zA-Zа-яА-Я0-9\s\.\!:@;,_-]{1,}(\/{0,1}|(\/[0-9]{1,}\/{0,1}))$/u";
+  const PATTERN_FOR_SEARCH_BY_ORDERS = "/^\/control\/orders\/search\/[a-zA-Zа-яА-Я0-9\s\.\!:@;,_-]{1,}(\/{0,1}|(\/[0-9]{1,}\/{0,1}))$/u";
   const PATTERN_FOR_CART = "/^\/cart\/{0,1}$/"; // Корзина для неавторизованного пользователя
 
   public static function getPageInfo($uri) {
@@ -159,6 +160,12 @@ class SEF {
       $parts = preg_split("/\//", $uri);
       $page_num = count($parts) >= 6 && strlen($parts[5]) > 0 ? (int)$parts[5] : 1;
       $pi = array("page_code" => 15, "item_code" => $parts[4], "page_num" => $page_num);
+
+    } elseif (preg_match(self::PATTERN_FOR_SEARCH_BY_ORDERS, $uri)) { // Поиск по жанрам
+
+      $parts = preg_split("/\//", $uri);
+      $page_num = count($parts) >= 6 && strlen($parts[5]) > 0 ? (int)$parts[5] : 1;
+      $pi = array("page_code" => 16, "item_code" => $parts[4], "page_num" => $page_num);
 
     }
     return $pi;

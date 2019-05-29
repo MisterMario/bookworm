@@ -92,7 +92,7 @@ switch ($_POST["form_name"]) {
 
   case "control_orders":
     require_once(MODULES_DIR."order.class.php");
-    if ( isset($_POST["remove_all"]) ) Genre::clean();
+    if ( isset($_POST["remove_all"]) ) Order::clean();
     else {
       switch ($_POST["action"]) {
         case "search_item":
@@ -102,7 +102,7 @@ switch ($_POST["form_name"]) {
           header("Location: /edit/order/".$_POST["item_id"]);
           break;
         case "delete_row":
-          Order::removeById($_POST["item_id"]);
+          Order::delete($_POST["item_id"]);
           break;
       }
     }

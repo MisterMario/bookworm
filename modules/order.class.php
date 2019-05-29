@@ -98,12 +98,13 @@ class Order {
 
   public static function delete($id) {
     $db = DB::getInstance();
+    self::deleteBooksFromOrder($id);
     return $db->query("DELETE FROM ".DB_TABLES["order"]." WHERE id=".$id." LIMIT 1");
   }
 
   private static function deleteBooksFromOrder($id) {
     $db = DB::getInstance();
-    $db->query("DELETE FROM ".DB_TABLES["book_ic"]." WHERE order_id=".$id);
+    return $db->query("DELETE FROM ".DB_TABLES["book_ic"]." WHERE order_id=".$id);
   }
 
   public static function deleteBookFromOrder($order_id, $book_id) {
