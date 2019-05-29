@@ -1,8 +1,8 @@
 <tr>
   <td><?php echo $order["id"]; ?></td>
   <td><?php echo $order["name"]; ?></td>
-  <td><?php echo $order["books_of_count"]; ?></td>
   <td><?php echo $order["total_price"]; ?></td>
+  <td><span class="bg-order-status bg-o-status-<?php echo $order["status"]; ?>"><?php echo $order["status_name"]; ?></span></td>
   <td><?php echo $order["date_of_issue"]; ?></td>
   <td>
     <div class="t-row-control">

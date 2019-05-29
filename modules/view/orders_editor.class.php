@@ -35,7 +35,10 @@ class OrdersEditor {
     $customer = $customer_selection->fetch_assoc();
 
     $customer["name"] = $customer["firstname"]." ".$customer["lastname"];
-    $customer["gender_name"] = $customer["gender"] == "1" ? "мужской" : "женский";
+    if (isset($customer["gender"]))
+      $customer["gender_name"] =  $customer["gender"] == "1" ? "мужской" : "женский";
+    else
+      $customer["gender_name"] = "не указан";
     $customer["status"] = $order["user_id"] != 1 ? "зарегистрирован" : "не зарегистрирован";
 
     /*ob_start();

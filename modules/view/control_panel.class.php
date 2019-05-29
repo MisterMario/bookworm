@@ -123,6 +123,7 @@ class ControlPanel {
     $i = 0;
     while ($order = $orders_selection->fetch_assoc()) {
       $order["date_of_issue"] = OrderInfo::getFormatedDate($order["date_of_issue"]);
+      $order["status_name"] = OrderInfo::getStatusName($order["status"]);
       if ($order["user_id"] != 1)
         $user_orders[] += $order["user_id"];
       else

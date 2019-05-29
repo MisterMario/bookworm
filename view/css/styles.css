@@ -1388,6 +1388,25 @@ form.search-form input[type="submit"] {
 #inside-content-body #management-body table.control-table td .t-row-control input[type="submit"][value="delete_row"] {
   background: url(../images/btn-delete-row.png);
 }
+/* Страница: список заказов */
+select[name="select-order-status"] option {
+  color: #000;
+}
+option.o-status-option-1 {
+  background: #fe9205;
+}
+option.o-status-option-2 {
+  background: #4eb8ae;
+}
+option.o-status-option-3 {
+  background: #009688;
+}
+option.o-status-option-4 {
+  background: #00a651;
+}
+option.o-status-option-5 {
+  background: #ed1c24;
+}
 /* Страница: редактирование информации о товаре */
 #inside-content-body form .form-2-blocks {
   margin-top: 11px;
@@ -1474,20 +1493,25 @@ form.search-form input[type="submit"] {
 /* Выделение фоном для статуса заказа */
 span.bg-order-status {
   color: #fff;
-  padding: 2px 5px;
+  padding: 3px 5px;
 }
+span.bg-o-status-1, /* "span.bg-status-n" неприменим к "".ostatus-n span.bg-order-stats". Поэтому я разделил их на два разных класса. */
 .o-status-1 span.bg-order-status {
   background: #fe9205;
 }
+span.bg-o-status-2,
 .o-status-2 span.bg-order-status {
   background: #4eb8ae;
 }
+span.bg-o-status-3,
 .o-status-3 span.bg-order-status {
   background: #009688;
 }
+span.bg-o-status-4,
 .o-status-4 span.bg-order-status {
   background: #00a651;
 }
+span.bg-o-status-5,
 .o-status-5 span.bg-order-status {
   background: #ed1c24;
 }

@@ -8,9 +8,9 @@
           <li><strong>Стоимость заказа:</strong> <span id="total-price"><?php echo $order["total_price"]; ?></span> BYR</li>
           <li><strong>Дата оформления:</strong> <?php echo $order["date_of_issue"]; ?></li>
           <li><strong>Доставка:</strong> <?php echo $order["dilivery"]; ?></li>
-          <li><strong>Способ доставки:</strong>  <?php echo $order["dilivery_method"]; ?>.</li>
-          <li><strong>Метод оплаты:</strong>  <?php echo $order["payment_method"]; ?>.</li>
-          <li><strong>Статус:</strong> <span id="status-name" class="bg-order-status"><?php echo $order["status_name"]; ?></span>.</li>
+          <li><strong>Способ доставки:</strong>  <?php echo $order["dilivery_method"]; ?></li>
+          <li><strong>Метод оплаты:</strong>  <?php echo $order["payment_method"]; ?></li>
+          <li><strong>Статус:</strong> <span id="status-name" class="bg-order-status"><?php echo $order["status_name"]; ?></span></li>
         </ul>
       </div>
       <div class="order-control-panel">
@@ -31,7 +31,7 @@
     <div class="customer-info block">
       <h2>ИНФОРМАЦИЯ О ЗАКАЗЧИКЕ</h2>
       <ul>
-        <li><strong>Статус:</strong> <?php echo $customer["status"]; ?>.</li>
+        <li><strong>Статус:</strong> <?php echo $customer["status"]; ?></li>
         <li><strong>Имя, фимилия:</strong> <?php echo $customer["name"]; ?></li>
         <li><strong>Пол:</strong> <?php echo $customer["gender_name"]; ?></li>
         <li><strong>Телефон:</strong> <?php echo $customer["phone_number"]; ?></li>
