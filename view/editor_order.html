@@ -10,7 +10,7 @@
           <li><strong>Доставка:</strong> <?php echo $order["dilivery"]; ?></li>
           <li><strong>Способ доставки:</strong>  <?php echo $order["dilivery_method"]; ?>.</li>
           <li><strong>Метод оплаты:</strong>  <?php echo $order["payment_method"]; ?>.</li>
-          <li><strong>Статус:</strong> <?php echo $order["status_name"]; ?>.</li>
+          <li><strong>Статус:</strong> <span class="bg-order-status"><?php echo $order["status_name"]; ?></span>.</li>
         </ul>
       </div>
       <div class="order-control-panel">

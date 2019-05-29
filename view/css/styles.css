@@ -1471,6 +1471,26 @@ form.search-form input[type="submit"] {
 #two-indetical-blocks .customer-info h2:nth-child(3) {
   margin-top: calc(16px - 0.4em);
 }
+/* Выделение фоном для статуса заказа */
+span.bg-order-status {
+  color: #fff;
+  padding: 2px 5px;
+}
+.o-status-1 span.bg-order-status {
+  background: #fe9205;
+}
+.o-status-2 span.bg-order-status {
+  background: #4eb8ae;
+}
+.o-status-3 span.bg-order-status {
+  background: #009688;
+}
+.o-status-4 span.bg-order-status {
+  background: #00a651;
+}
+.o-status-5 span.bg-order-status {
+  background: #ed1c24;
+}
 /* Параметры форм */
 #inside-content-body form {
   width: 100%;
