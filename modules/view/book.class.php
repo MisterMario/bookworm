@@ -34,6 +34,7 @@ class Book {
     foreach($res as $key => $value){
       $book[$key] = ($value != null)? $value : "не указан.";
     }
+    $book["date_of_cos"] = self::getFormatedDate($book["date_of_cos"]);
     $book["genre"] = Genre::getName($book["genre_id"]);
     $book["image"] = self::getImage($book["id"]);
     ob_start();
@@ -51,6 +52,12 @@ class Book {
 
   public static function bookAuthor($author) { // Усекает имя автора, если оно больше определенного
     return mb_strlen($author, "utf-8") > 25 ? mb_substr($author, 0, 22, "utf-8")."..." : $author;
+  }
+
+  public static function getFormatedDate($date) {
+    preg_match_all("/[0-9]{1,}/", $date, $numbers);
+    $numbers = $numbers[0];
+    return "${numbers[2]}.${numbers[1]}.${numbers[0]}";
   }
 }
 
