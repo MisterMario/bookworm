@@ -100,6 +100,7 @@ function setOrderStatus(status_code) {
 
   order.removeClass(current_status);
   order.addClass('o-status-' + status_code);
+  $('#hidden-information input[name=order_status]').val(status_code);
 
   switch (status_code) {
     case 1:
@@ -109,7 +110,7 @@ function setOrderStatus(status_code) {
       status_name_html.html('укомплектован');
       break;
     case 3:
-      status_name_html.html('в пути');
+      status_name_html.html('находится в пути');
       break;
     case 4:
       status_name_html.html('выполнен');

@@ -178,6 +178,37 @@ class Order {
     if (!DB::checkDBResult($order_id)) return false;
     return $order_id->fetch_assoc()["id"];
   }
+
+  public static function setOrderState($order_id, $order_status, $book_id_list) {
+    $db = DB::getInstance();
+    $deleted_book_id_list = array(); // Книги, которых нет в списке $book_id_list должны быть удалены
+    $total_price = 0; $books_num = 0;
+
+    $old_book_list_selection = $db->query("SELECT bio.book_id AS id, bio.count, b.price ".
+                                          "FROM ".DB_TABLES["book_io"]." AS bio ".
+                                          "JOIN ".DB_TABLES["book"]." AS b ON bio.book_id=b.id ".
+                                          "WHERE order_id='$order_id'");
+    if (!DB::checkDBResult($old_book_list_selection)) return false;
+
+    while ($book = $old_book_list_selection->fetch_assoc()) {
+      if (in_array($book["id"], $book_id_list, true)) {
+
+        $books_num += (int)$book["count"];
+        $total_price += (int)$book["price"] * (int)$book["count"];
+
+      } else $deleted_book_id_list[] += $book["id"];
+    }
+
+    if (count($deleted_book_id_list) != 0)
+      if (!$db->query("DELETE FROM ".DB_TABLES["book_io"].
+                     " WHERE order_id='${order_id}' AND book_id IN (".implode(", ", $deleted_book_id_list).")"))
+        return false;
+
+    return $db->query("UPDATE ".DB_TABLES["order"]." SET status='${order_status}', ".
+                                                          "total_price='${total_price}', ".
+                                                          "books_of_count='${books_num}' ".
+                                                     "WHERE id='${order_id}' LIMIT 1");
+  }
 }
 
 ?>

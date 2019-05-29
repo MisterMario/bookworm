@@ -317,8 +317,8 @@ function sendUser(isEdit) {
 function sendEditedOrder() { // Страница ПУ: Редактор заказа
   var data = {
     mode: 'edit_order',
-    id: $('#hidden_information input[name=order_id]').val(),
-    status: $('#hidden_information input[name=order_status]').val(),
+    id: $('#hidden-information input[name=order_id]').val(),
+    status: $('#hidden-information input[name=order_status]').val(),
     products: [],
   }, product_id_list_html = $('#products-in-order .product input[name=item_id]'); // Получать нужно только ID товаров, и не более
 
@@ -329,7 +329,7 @@ function sendEditedOrder() { // Страница ПУ: Редактор зака
     }
     ajax('/ajax/validator.php', data, function(data) {
 
-      if (data.status && !isEdit)
+      if (data.status)
         showMessageBox('Информация о заказе успешно обновлена!');
       else
         showMessageBox(data.message, 1);

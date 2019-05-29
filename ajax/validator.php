@@ -14,6 +14,7 @@ require_once(MODULES_DIR."book.class.php");
 require_once(MODULES_DIR."info_block.class.php");
 require_once(MODULES_DIR."review.class.php");
 require_once(MODULES_DIR."genre.class.php");
+require_once(MODULES_DIR."order.class.php");
 
 session_start();
 $user = Auth::createUser();
@@ -123,6 +124,16 @@ if ($data["mode"] == "register" && !$user) {
       $answer["status"] = User::add($data);
     else
       $answer["status"] = User::edit($data);
+
+} elseif ($data["mode"] == "edit_order") {
+
+  if (count($data["products"]) != 0) {
+
+    $answer["status"] = Order::setOrderState($data["id"], $data["status"], $data["products"]);
+    if (!$answer["status"])
+      $answer["message"] = "Ошибка! Не удается обновить информацию о заказе!";
+      
+  } else $answer["message"] = "Ошибка! Нельзя удалить все товары из заказа!";
 
 }
 
