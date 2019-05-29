@@ -1,16 +1,16 @@
 <div id="edit-order">
   <div id="two-indetical-blocks">
-    <div class="order o-status-1 small-order block">
+    <div class="order o-status-<?php echo $order["status"]; ?> small-order block">
       <div class="order-info">
-        <h2>ЗАКАЗ №56078</h2>
+        <h2>ЗАКАЗ №<?php echo $order["id"]; ?></h2>
         <ul>
-          <li><strong>Количество товаров:</strong> 55</li>
-          <li><strong>Стоимость заказа:</strong> 14 873 BYR</li>
-          <li><strong>Дата оформления:</strong> 23.10.2018</li>
-          <li><strong>Доставка:</strong> 25.10.2018 в 14:00-16:00</li>
-          <li><strong>Способ доставки:</strong> курьерская доставка.</li>
-          <li><strong>Метод оплаты:</strong> наличными.</li>
-          <li><strong>Статус:</strong> ожидает подтверждения.</li>
+          <li><strong>Количество товаров:</strong> <?php echo $order["books_of_count"]; ?></li>
+          <li><strong>Стоимость заказа:</strong> <?php echo $order["total_price"]; ?> BYR</li>
+          <li><strong>Дата оформления:</strong> <?php echo $order["date_of_issue"]; ?></li>
+          <li><strong>Доставка:</strong> <?php echo $order["dilivery"]; ?></li>
+          <li><strong>Способ доставки:</strong>  <?php echo $order["dilivery_method"]; ?>.</li>
+          <li><strong>Метод оплаты:</strong>  <?php echo $order["payment_method"]; ?>.</li>
+          <li><strong>Статус:</strong> <?php echo $order["status_name"]; ?>.</li>
         </ul>
       </div>
       <div class="order-control-panel">
@@ -27,18 +27,18 @@
     <div class="customer-info block">
       <h2>ИНФОРМАЦИЯ О ЗАКАЗЧИКЕ</h2>
       <ul>
-        <li><strong>Статус:</strong> зарегистрирован.</li>
-        <li><strong>Имя, фимилия:</strong> Кирилл Савицкий</li>
-        <li><strong>Пол:</strong> мужской</li>
-        <li><strong>Телефон:</strong> +375448432245</li>
-        <li><strong>E-mail:</strong> kirilsavitskyi@mail.com</li>
+        <li><strong>Статус:</strong> <?php echo $customer["status"]; ?>.</li>
+        <li><strong>Имя, фимилия:</strong> <?php echo $customer["name"]; ?></li>
+        <li><strong>Пол:</strong> <?php echo $customer["gender_name"]; ?></li>
+        <li><strong>Телефон:</strong> <?php echo $customer["phone_number"]; ?></li>
+        <li><strong>E-mail:</strong> <?php echo $customer["email"]; ?></li>
       </ul>
       <h2>ДАННЫЕ ДЛЯ ДОСТАВКИ</h2>
       <ul>
-        <li><strong>Область:</strong> Минская</li>
-        <li><strong>Город:</strong> Солигорск</li>
-        <li><strong>Адрес:</strong> ул. Хлебова, д.35</li>
-        <li><strong>Индекс:</strong> 231117</li>
+        <li><strong>Область:</strong> <?php echo $customer["state"]; ?></li>
+        <li><strong>Город:</strong> <?php echo $customer["city"]; ?></li>
+        <li><strong>Адрес:</strong> <?php echo $customer["address"]; ?></li>
+        <li><strong>Индекс:</strong> <?php echo $customer["zip_code"]; ?></li>
       </ul>
     </div>
   </div>

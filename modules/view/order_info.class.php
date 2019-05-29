@@ -86,8 +86,8 @@ class OrderInfo {
                    "status" => $res["status"],
                    "num_books" => $res["books_of_count"],
                    "total_price" => $res["total_price"],
-                   "date_of_issue" => $res["date_of_issue"],
-                   "date_of_dilivery" => $res["date_of_dilivery"],
+                   "date_of_issue" => self::getFormatedDate($res["date_of_issue"]),
+                   "date_of_dilivery" => self::getFormatedDate($res["date_of_dilivery"]),
                    "dilivery_time" => self::getDiliveryTimeName($res["time_of_dilivery"]),
                    "dilivery_method" => self::getDiliveryMethodName($res["dilivery_method"]),
                    "payment_method" => self::getPaymentMethodName($res["payment_method"]),
@@ -143,6 +143,12 @@ class OrderInfo {
       case '5': return "отменен";
     }
     return null;
+  }
+
+  public static function getFormatedDate($date) {
+    preg_match_all("/[0-9]{1,}/", $date, $numbers);
+    $numbers = $numbers[0];
+    return "${numbers[2]}.${numbers[1]}.${numbers[0]}";
   }
 }
 

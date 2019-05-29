@@ -3,6 +3,7 @@
 namespace PageBuilder;
 
 require_once("book.class.php");
+require_once("order_info.class.php");
 
 use DB;
 
@@ -121,6 +122,7 @@ class ControlPanel {
 
     $i = 0;
     while ($order = $orders_selection->fetch_assoc()) {
+      $order["date_of_issue"] = OrderInfo::getFormatedDate($order["date_of_issue"]);
       if ($order["user_id"] != 1)
         $user_orders[] += $order["user_id"];
       else
