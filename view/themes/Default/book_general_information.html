@@ -1,6 +1,6 @@
 <div id="general-information">
   <div id="product-photo">
-    <img src="<?php echo CLIENT_VIEW_DIR; ?>products/<?php echo $book["image"]; ?>" alt="">
+    <img src="<?php echo CLIENT_P_DIR; ?><?php echo $book["image"]; ?>" alt="">
     <h2><?php echo $book["price"]." ".CURRENCY; ?></h2>
     <form action="" method="post" class="add-to-basket">
       <input type="hidden" name="form_name" value="add_to_cart">

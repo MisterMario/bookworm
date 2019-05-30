@@ -67,7 +67,7 @@ class Book {
   public static function setImage($book_id, $base64_image) {
     $image = base64_decode($base64_image);
     if ($image)
-      return file_put_contents(P_DIR."${book_id}.png", $image);
+      return file_put_contents(SERVER_P_DIR."${book_id}.png", $image);
 
     return false;
   }

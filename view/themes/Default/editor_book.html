@@ -5,7 +5,7 @@
       <input type="hidden" name="item_id" value="<?php echo $book["id"]; ?>">
       <div class="form-2-blocks">
         <div class="one-block">
-          <img src="<?php echo CLIENT_VIEW_DIR."products/".$book["image"]; ?>" id="book-photo" alt="">
+          <img src="<?php echo CLIENT_P_DIR.$book["image"]; ?>" id="book-photo" alt="">
           <input type="file" id="upload_photo" name="upload_photo" class="hidden">
           <input type="button" name="load_photo" value="Загрузить" onclick="$('#upload_photo').click();">
         </div>

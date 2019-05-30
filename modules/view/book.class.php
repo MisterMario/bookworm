@@ -43,7 +43,7 @@ class Book {
   }
 
   public static function getImage($id) { // На случай, если для книги не было загружено картинки
-    return file_exists(SERVER_VIEW_DIR."/products/".$id.".png")? $id.".png" : "default.png";
+    return file_exists(SERVER_P_DIR.$id.".png")? $id.".png" : "default.png";
   }
 
   public static function bookName($name) {
