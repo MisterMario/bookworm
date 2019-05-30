@@ -252,7 +252,7 @@ class ControlPanel {
     $num_pages = (int)ceil($num_pages);
     $pages_navigation = Page::getPageNavigation($num_pages, $page_num, "/control/orders/");
 
-    } else $list = self::getErrorMessage(10);
+  } else $list = self::getErrorMessage(11, OrderInfo::getStatusName($status));
 
     ob_start(); include SERVER_VIEW_DIR."cp_orders.html";
     return ob_get_clean();
@@ -522,6 +522,10 @@ class ControlPanel {
         break;
       case 10:
         $error_message = "Никто не оставлял заказов!<br />Если вам скучно - оформите парочку!";
+        $html_file = "error_no_orders.html";
+        break;
+      case 11:
+        $error_message = "Заказы со статусом <br />\"${searched_string}\"<br /> отсутствуют!";
         $html_file = "error_no_orders.html";
         break;
     }
