@@ -198,9 +198,9 @@ class ControlPanel {
         $order_list[$i] = $order;
 
         if ($order["user_id"] != 1)
-          $user_id_variety = $order["user_id"].", ";
+          $user_id_variety .= $order["user_id"].", ";
         else
-          $customer_order_id_variety = $order["id"].", ";
+          $customer_order_id_variety .= $order["id"].", ";
 
         $i++;
       }
