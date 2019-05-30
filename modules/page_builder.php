@@ -261,6 +261,18 @@ class Page {
         $this->content = ControlPanel::getSearchResultsByOrders($page_info["item_code"], $page_info["page_num"], 12);
         break;
 
+      case 17:
+        if (in_array($page_info["item_code"], ORDER_STATUS)) {
+
+          require_once(VIEW_MODULES_DIR."control_panel.class.php");
+          require_once(VIEW_MODULES_DIR."order_info.class.php");
+          $this->title .= "Заказы категории: ".OrderInfo::getStatusName($page_info["item_code"]);
+          $this->section_name = "Заказы категории: ".OrderInfo::getStatusName($page_info["item_code"]);;
+          $this->content = ControlPanel::getOrderListByStatus($page_info["item_code"], $page_info["page_num"], 12);
+
+        } //else $page_info["page_code"] = 404;
+        break;
+
       case 403:
         $this->title .= "Ошибка доступа!";
     }

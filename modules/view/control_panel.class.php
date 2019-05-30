@@ -174,6 +174,86 @@ class ControlPanel {
       $pages_navigation = Page::getPageNavigation($num_pages, $page_num, "/control/orders/");
 
     } else $list = self::getErrorMessage(10);
+
+    $status = 0;
+    ob_start(); include SERVER_VIEW_DIR."cp_orders.html";
+    return ob_get_clean();
+  }
+
+  public static function getOrderListByStatus($status, $page_num, $count) {
+    $db = DB::getInstance();
+    $list = ""; $pages_navigation = "";
+    $user_id_variety = ""; $customer_order_id_variety = ""; // Для того, чтобы сделать все в 2 запроса, вместо множества
+    $order_list = array();
+
+    $offset = ($page_num * $count) - $count;
+    $order_selection = $db->query("SELECT id, total_price, status, date_of_issue, user_id ".
+                                   "FROM ".DB_TABLES["order"]." WHERE status='${status}' ".
+                                   "ORDER BY id LIMIT ${count} OFFSET ${offset}");
+
+    if (DB::checkDBResult($order_selection)) {
+
+      $i = 0;
+      while ($order = $order_selection->fetch_assoc()) {
+        $order_list[$i] = $order;
+
+        if ($order["user_id"] != 1)
+          $user_id_variety = $order["user_id"].", ";
+        else
+          $customer_order_id_variety = $order["id"].", ";
+
+        $i++;
+      }
+
+      if (strlen($user_id_variety) > 0) {
+
+        $user_id_variety = "(".substr($user_id_variety, 0, strlen($user_id_variety)-2).")"; // удаление последних ", "
+        $user_selection = $db->query("SELECT id, firstname, lastname, email FROM ".DB_TABLES["user"].
+                                     " WHERE id IN ${user_id_variety} ORDER BY id");
+
+        if (DB::checkDBResult($user_selection)) {
+          while ($user = $user_selection->fetch_assoc()) {
+            for ($i=0; $i < count($order_list); $i++)
+              if ($order_list[$i]["user_id"] == $user["id"]) {
+                $order_list[$i]["name"] = $user["firstname"]." ".$user["lastname"];
+                $order_list[$i]["email"] = $user["email"];
+                break;
+              }
+          }
+        }
+      }
+
+      if (strlen($customer_order_id_variety) > 0) {
+
+        $customer_order_id_variety = "(".substr($customer_order_id_variety, 0, strlen($customer_order_id_variety)-2).")"; // удаление последних ", "
+        $customer_selection = $db->query("SELECT order_id, firstname, lastname, email FROM ".DB_TABLES["customer"].
+                                         " WHERE order_id IN ${customer_order_id_variety} ORDER BY id");
+
+        if (DB::checkDBResult($customer_selection)) {
+          while ($customer = $customer_selection->fetch_assoc()) {
+            for ($i=0; $i < count($order_list); $i++)
+              if ($order_list[$i]["id"] == $customer["order_id"]) {
+                $order_list[$i]["name"] = $customer["firstname"]." ".$customer["lastname"];
+                $order_list[$i]["email"] = $customer["email"];
+                break;
+              }
+          }
+        }
+      }
+
+    foreach ($order_list as $order) {
+      $order["status_name"] = OrderInfo::getStatusName($order["status"]);
+      $order["date_of_issue"] = OrderInfo::getFormatedDate($order["date_of_issue"]);
+      ob_start(); include SERVER_VIEW_DIR."cp_small_order.html";
+      $list .= ob_get_clean();
+    }
+
+    $num_pages = (int)( $db->query("SELECT count(id) FROM ".DB_TABLES["order"])->fetch_assoc()["count(id)"] ) / $count;
+    $num_pages = (int)ceil($num_pages);
+    $pages_navigation = Page::getPageNavigation($num_pages, $page_num, "/control/orders/");
+
+    } else $list = self::getErrorMessage(10);
+
     ob_start(); include SERVER_VIEW_DIR."cp_orders.html";
     return ob_get_clean();
   }
@@ -394,6 +474,7 @@ class ControlPanel {
     if (strlen($list) == 0)
       $list = self::getErrorMessage(9, $searched_string);
 
+    $status = 0;
     ob_start(); include SERVER_VIEW_DIR."cp_orders.html";
     return ob_get_clean();
   }
