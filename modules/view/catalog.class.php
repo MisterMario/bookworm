@@ -29,21 +29,23 @@ class Catalog {
 }
 
 class BooksCatalog {
-  public static function getFullBooksListHTML($page_num = 1, $genre_id = 0) {
-    $books_list = ""; $books_row = ""; $i = 0; $first_id = 0;
+  public static function getFullBooksListHTML($page_num = 1, $genre_id = 0, $first_id = 1, $order_by = "", $order_method = "") {
+    $books_list = ""; $books_row = ""; $i = 0;
     $db = DB::getInstance();
 
     if ($genre_id != 0) { // Если требуется получить книги конкретного жанра
       $first_id = $db->query("SELECT id FROM ".DB_TABLES["book"]." WHERE genre_id='".$genre_id."' LIMIT 1");
       if (gettype($first_id) != "boolean" || $first_id->num_rows != 0) $first_id = (int)$first_id->fetch_assoc()["id"]-1;
     }
-    $first_id += ($page_num * 12) - 12 + 1; // Для того, чтобы получать книги только нужной страницы
+    $first_id += ($page_num * 12) - 12; // Для того, чтобы получать книги только нужной страницы
 
     // Нужно сделать сортировку в обратном порядке, для того, чтобы сразу отображались самые новые товары, а затем старые
     $res = $db->query("SELECT id, name, author, price
                        FROM ".DB_TABLES["book"].
                        " WHERE id >= ".$first_id.
-                       ($genre_id != 0 ? " AND genre_id=".$genre_id : "")." LIMIT 12"); // Если нужно выбирать книги конкретного жанра
+                       ($genre_id != 0 ? " AND genre_id=".$genre_id : "").
+                       ($order_by != "" ? " ORDER BY ${order_by} ${order_method}" : "").
+                       " LIMIT 12"); // Если нужно выбирать книги конкретного жанра
     if (gettype($res) == "boolean" || $res->num_rows == 0) return null;
     while($row = $res->fetch_assoc()) {
       $i++;
@@ -60,6 +62,23 @@ class BooksCatalog {
     ob_start(); include SERVER_VIEW_DIR."catalog.html";
 
     return ob_get_clean();
+  }
+
+  public static function getNewBooksList() {
+    $content = ""; $content .= ob_get_clean();
+    $first_id = 0;
+
+    $db = DB::getInstance();
+    $id_selection = $db->query("SELECT id FROM ".DB_TABLES["book"]." ORDER BY id DESC LIMIT 12"); // Получение количества всех записей определенного жанра
+    if (!DB::checkDBResult($id_selection)) return EmptyContent::getHTML(2);
+
+    while ($row = $id_selection->fetch_assoc()) { // Получение первого ID для новинки
+      $first_id = (int)$row["id"];
+    }
+
+    $content .= BooksCatalog::getFullBooksListHTML(1, 0, $first_id, "id", "DESC");
+
+    return $content;
   }
 }
 

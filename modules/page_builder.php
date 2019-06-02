@@ -273,6 +273,13 @@ class Page {
         } //else $page_info["page_code"] = 404;
         break;
 
+      case 18:
+        require_once(VIEW_MODULES_DIR."catalog.class.php");
+        $this->title .= "Новинки";
+        $this->section_name = "Новинки";
+        $this->content = BooksCatalog::getNewBooksList();
+        break;
+
       case 403:
         $this->title .= "Ошибка доступа!";
     }

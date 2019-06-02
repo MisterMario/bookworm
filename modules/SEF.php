@@ -29,6 +29,7 @@ class SEF {
   const PATTERN_FOR_SEARCH_BY_INFO_BLOCKS = "/^\/control\/info-blocks\/search\/[a-zA-Zа-яА-Я0-9\s\.\!:@;,_-]{1,}(\/{0,1}|(\/[0-9]{1,}\/{0,1}))$/u";
   const PATTERN_FOR_SEARCH_BY_ORDERS = "/^\/control\/orders\/search\/[a-zA-Zа-яА-Я0-9\s\.\!:@;,_-]{1,}(\/{0,1}|(\/[0-9]{1,}\/{0,1}))$/u";
   const PATTERN_FOR_CART = "/^\/cart\/{0,1}$/"; // Корзина для неавторизованного пользователя
+  const PATTERN_FOR_NEW_PRODUCTS = "/^\/new\/{0,1}$/";
 
   public static function getPageInfo($uri) {
     $uri = strtok($uri, "?");
@@ -173,6 +174,10 @@ class SEF {
       $parts = preg_split("/\//", $uri);
       $page_num = count($parts) >= 6 && strlen($parts[5]) > 0 ? (int)$parts[5] : 1;
       $pi = array("page_code" => 17, "item_code" => $parts[4], "page_num" => $page_num);
+
+    } elseif (preg_match(self::PATTERN_FOR_NEW_PRODUCTS, $uri)) {
+
+      $pi = array("page_code" => 18, "item_code" => 0, "page_num" => 0);
 
     }
     return $pi;

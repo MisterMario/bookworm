@@ -3,7 +3,7 @@
 # Данные для работы сайта
 define("HOST_NAME", $_SERVER["SERVER_NAME"]);
 define("ROOT_DIR", dirname(__FILE__)."/");
-define("CURRENT_THEME", "Default");
+define("CURRENT_THEME", "Default"); // Имя директории, содержащей текущую тему
 define("SERVER_VIEW_DIR", ROOT_DIR."view/themes/".CURRENT_THEME."/");
 define("CLIENT_VIEW_DIR", "/view/themes/".CURRENT_THEME."/");
 define("CLIENT_JS_DIR", "/view/js/");
@@ -47,9 +47,9 @@ define("DB_TABLES", array(
 ));
 
 # Правила доступности страниц для различных групп пользователей
-define('PF_NO_USER', array(1, 2, 3, 4, 5, 10, 11)); // Для неавторизованного пользователя (анонима)
-define('PF_SIMPLE_USER', array(1, 2, 3, 4, 6, 7, 10)); // Для обычного пользователя
-define('PF_ADMIN', array(1, 2, 3, 4, 6, 7, 8, 9, 10, 12, 13, 14, 15, 16, 17)); // Для администратора ресурса
+define('PF_NO_USER', array(1, 2, 3, 4, 5, 10, 11, 18)); // Для неавторизованного пользователя (анонима)
+define('PF_SIMPLE_USER', array(1, 2, 3, 4, 6, 7, 10, 18)); // Для обычного пользователя
+define('PF_ADMIN', array(1, 2, 3, 4, 6, 7, 8, 9, 10, 12, 13, 14, 15, 16, 17, 18)); // Для администратора ресурса
 
 # Состояния в которых может находиться заказ
 // 1 - ожидает подтверждения,
