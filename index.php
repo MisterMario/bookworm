@@ -15,7 +15,6 @@ $decoded_uri = iconv("Windows-1251", "UTF-8", $_SERVER["REQUEST_URI"]);
 $decoded_uri = urldecode($decoded_uri);
 $page_info = SEF::getPageInfo($decoded_uri);
 
-var_dump($page_info);
 
 // Проверка того, что страница существует и доступна пользователю
 if (!$page_info["page_code"])

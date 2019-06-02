@@ -30,6 +30,8 @@ class SEF {
   const PATTERN_FOR_SEARCH_BY_ORDERS = "/^\/control\/orders\/search\/[a-zA-Zа-яА-Я0-9\s\.\!:@;,_-]{1,}(\/{0,1}|(\/[0-9]{1,}\/{0,1}))$/u";
   const PATTERN_FOR_CART = "/^\/cart\/{0,1}$/"; // Корзина для неавторизованного пользователя
   const PATTERN_FOR_NEW_PRODUCTS = "/^\/new\/{0,1}$/";
+  const PATTREN_FOR_SORTED_CATALOG = "/^\/sorted\/catalog\/(alphabet|price-asc|price-desc)((\/)|(\/[0-9]{1,}\/{0,1}))?$/";
+  const PATTREN_FOR_SORTED_GENRE = "/^\/sorted\/genre\/(alphabet|price-asc|price-desc)\/[0-9]{1,}((\/)|(\/[0-9]{1,}\/{0,1}))?$/";
 
   public static function getPageInfo($uri) {
     $uri = strtok($uri, "?");
@@ -178,6 +180,23 @@ class SEF {
     } elseif (preg_match(self::PATTERN_FOR_NEW_PRODUCTS, $uri)) {
 
       $pi = array("page_code" => 18, "item_code" => 0, "page_num" => 0);
+
+    } elseif (preg_match(self::PATTREN_FOR_SORTED_CATALOG, $uri)) {
+
+      $parts = preg_split("/\//", $uri);
+      // Проверка длины выполняется так "/" заменяется на "", соответственно при преобразовании в int будет ошибка
+      $page_num = count($parts) >= 5 && strlen($parts[4]) > 0 ? (int)$parts[4] : 1;
+      $pi = array("page_code" => 19, "item_code" => $parts[3], "page_num" => $page_num);
+
+    } elseif (preg_match(self::PATTREN_FOR_SORTED_GENRE, $uri)) {
+
+      $parts = preg_split("/\//", $uri);
+      var_dump($parts);
+      $page_num = count($parts) >= 6 && strlen($parts[5]) > 0 ? (int)$parts[5] : 1;
+      /* category_num - номер жанра. Эта переменная не указана в остальных вариантах ответа SEF
+      из-за того, что я не думал что она ранее понадобится, а сейчас уже поздно переписывать скрипт.
+      Ибо слишком много уже нужно менять - на это нет времени. */
+      $pi = array("page_code" => 20, "category_num" => $parts[4], "item_code" => $parts[3], "page_num" => $page_num);
 
     }
     return $pi;

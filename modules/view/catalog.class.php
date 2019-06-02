@@ -2,6 +2,9 @@
 
 namespace PageBuilder;
 
+/* Может содержать костыли и немного быдлокода.
+   Впоследствии я это исправлю. Сейчас сильно ограничен во времени и приходится делать что есть. */
+
 require_once("book.class.php");
 
 use DB;
@@ -9,19 +12,51 @@ use DB;
 
 class Catalog {
   public static function getHTML($page_info) { // Возвращает контент главной страницы (каталога всех товаров)
-    $content = "";
+    $content = ""; $genre_id = 0; $order_method = ""; $order_by = "";
+
     ob_start(); include SERVER_VIEW_DIR."sorting_goods.html";
     $content .= ob_get_clean();
-    $content .= BooksCatalog::getFullBooksListHTML($page_info["page_num"], $page_info["item_code"]);
+
+    switch ($page_info["page_code"]) {
+      case 19:
+        $order_method = $page_info["item_code"];
+        break;
+      case 20:
+        $genre_id = $page_info["category_num"];
+        $order_method = $page_info["item_code"];
+        break;
+      default:
+        $genre_id = $page_info["item_code"];
+    }
+    switch ($order_method) {
+      case "alphabet":
+        $order_by = "name";
+        $order_method = "ASC";
+        break;
+      case "price-asc":
+        $order_by = "price";
+        $order_method = "ASC";
+        break;
+      case "price-desc":
+        $order_by = "price";
+        $order_method = "DESC";
+        break;
+    }
+
+    $content .= BooksCatalog::getFullBooksListHTML($page_info["page_num"], $genre_id, $order_by, $order_method);
 
     $db = DB::getInstance();
-    $num_pages = $db->query("SELECT COUNT(id) as count FROM ".DB_TABLES["book"].($page_info["page_code"] == 2 ? " WHERE genre_id=".$page_info["item_code"] : "") ); // Получение количества всех записей определенного жанра
-    if (gettype($num_pages) == "boolean" || $num_pages->fetch_assoc()["count"] == 0) return EmptyContent::getHTML(2);
+    $num_pages = $db->query("SELECT COUNT(id) as count FROM ".DB_TABLES["book"].
+                            ($genre_id != 0 ? " WHERE genre_id=".$genre_id : ""). // Получение количества всех записей определенного жанра
+                            ($order_method != "" ? " ORDER BY ${order_by} ${order_method}" : "") );
+    if (!DB::checkDBResult($num_pages)) return EmptyContent::getHTML(2);
+
     $num_pages->data_seek(0);
     $num_pages = (int)ceil( ( (int)$num_pages->fetch_assoc()["count"] ) / 12 ); // Количество страниц
 
-    if ($page_info["item_code"] == 0) $uri = "/catalog/";
-    else $uri = "/genre/".$page_info["item_code"]."/";
+    if ($genre_id == 0) $uri = "/catalog/";
+    else $uri = "/genre/${genre_id}/";
+    if ($order_method != "") $uri = "/sorted".$uri."${page_info["item_code"]}/";
 
     $content .= Page::getPageNavigation($num_pages, $page_info["page_num"], $uri);
     return $content;
@@ -29,31 +64,27 @@ class Catalog {
 }
 
 class BooksCatalog {
-  public static function getFullBooksListHTML($page_num = 1, $genre_id = 0, $first_id = 1, $order_by = "", $order_method = "") {
-    $books_list = ""; $books_row = ""; $i = 0;
+  public static function getFullBooksListHTML($page_num = 1, $genre_id = 0, $order_by = "", $order_method = "") {
+    $books_list = ""; $books_row = ""; $i = 0; $offset = 0;
     $db = DB::getInstance();
 
-    if ($genre_id != 0) { // Если требуется получить книги конкретного жанра
-      $first_id = $db->query("SELECT id FROM ".DB_TABLES["book"]." WHERE genre_id='".$genre_id."' LIMIT 1");
-      if (gettype($first_id) != "boolean" || $first_id->num_rows != 0) $first_id = (int)$first_id->fetch_assoc()["id"]-1;
-    }
-    $first_id += ($page_num * 12) - 12; // Для того, чтобы получать книги только нужной страницы
+    $offset += ($page_num * 12) - 12; // Для того, чтобы получать книги только нужной страницы
 
     // Нужно сделать сортировку в обратном порядке, для того, чтобы сразу отображались самые новые товары, а затем старые
-    $res = $db->query("SELECT id, name, author, price
+    $book_selection = $db->query("SELECT id, name, author, price
                        FROM ".DB_TABLES["book"].
-                       " WHERE id >= ".$first_id.
                        ($genre_id != 0 ? " AND genre_id=".$genre_id : "").
                        ($order_by != "" ? " ORDER BY ${order_by} ${order_method}" : "").
-                       " LIMIT 12"); // Если нужно выбирать книги конкретного жанра
-    if (gettype($res) == "boolean" || $res->num_rows == 0) return null;
-    while($row = $res->fetch_assoc()) {
+                       " LIMIT 12 OFFSET ${offset}"); // Если нужно выбирать книги конкретного жанра
+    if (gettype($book_selection) == "boolean" || $book_selection->num_rows == 0) return null;
+
+    while($book = $book_selection->fetch_assoc()) {
       $i++;
       ob_start();
-      $book = array("id" => $row["id"], "name" => Book::bookName($row["name"]), "author" => Book::bookAuthor($row["author"]), "price" => $row["price"], "image" => Book::getImage($row["id"]));
+      $book = array("id" => $book["id"], "name" => Book::bookName($book["name"]), "author" => Book::bookAuthor($book["author"]), "price" => $book["price"], "image" => Book::getImage($book["id"]));
       include SERVER_VIEW_DIR."small_book.html";
       $books_row .= ob_get_clean();
-      if ($i % 4 == 0 || $i == $res->num_rows) { // Строка добавляется в каталог неполной, если книга последняя.
+      if ($i % 4 == 0 || $i == $book_selection->num_rows) { // Строка добавляется в каталог неполной, если книга последняя.
         ob_start();
         include SERVER_VIEW_DIR."small_books_row.html";
         $books_list .= ob_get_clean(); $books_row = ""; // Добавляет текущую строку с книгами в каталог и очишает ее
@@ -66,17 +97,13 @@ class BooksCatalog {
 
   public static function getNewBooksList() {
     $content = ""; $content .= ob_get_clean();
-    $first_id = 0;
-
     $db = DB::getInstance();
-    $id_selection = $db->query("SELECT id FROM ".DB_TABLES["book"]." ORDER BY id DESC LIMIT 12"); // Получение количества всех записей определенного жанра
-    if (!DB::checkDBResult($id_selection)) return EmptyContent::getHTML(2);
 
-    while ($row = $id_selection->fetch_assoc()) { // Получение первого ID для новинки
-      $first_id = (int)$row["id"];
-    }
+    $count_selection = $db->query("SELECT COUNT(id) AS count FROM ".DB_TABLES["book"]); // Получение количества всех записей определенного жанра
+    if (!DB::checkDBResult($count_selection) ||
+        (int)$count_selection->fetch_assoc()["count"] == 0) return EmptyContent::getHTML(2);
 
-    $content .= BooksCatalog::getFullBooksListHTML(1, 0, $first_id, "id", "DESC");
+    $content .= BooksCatalog::getFullBooksListHTML(1, 0, "id", "DESC");
 
     return $content;
   }

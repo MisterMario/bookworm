@@ -280,6 +280,22 @@ class Page {
         $this->content = BooksCatalog::getNewBooksList();
         break;
 
+      case 19:
+        require_once(VIEW_MODULES_DIR."catalog.class.php");
+        $this->title .= "Каталог товаров";
+        $this->section_name = "Каталог товаров";
+        $this->content = Catalog::getHTML($page_info);
+        break;
+
+      case 20:
+        require_once(VIEW_MODULES_DIR."genre.class.php");
+        require_once(VIEW_MODULES_DIR."catalog.class.php");
+        $genre_name = Genre::getName($page_info["category_num"]);
+        $this->title .= $genre_name;
+        $this->section_name = "Жанр: ".$genre_name;
+        $this->content = Catalog::getHTML($page_info);
+        break;
+
       case 403:
         $this->title .= "Ошибка доступа!";
     }
