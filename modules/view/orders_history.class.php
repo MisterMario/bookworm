@@ -30,7 +30,7 @@ class OrdersHistory {
                      "status_name" => OrderInfo::getStatusName($row["status"]));
 
       if ((int)$order["status"] < ORDER_STATUS[2]) { // Если заказ еще не в пути, то его можно изменить или отменить.
-        $canBeEdited = true;
+        //$canBeEdited = true;
         $canCancel = true;
       }
 

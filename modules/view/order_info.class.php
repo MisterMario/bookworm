@@ -92,11 +92,11 @@ class OrderInfo {
                    "dilivery_method" => self::getDiliveryMethodName($res["dilivery_method"]),
                    "payment_method" => self::getPaymentMethodName($res["payment_method"]),
                    "status_name" => self::getStatusName($res["status"]),
-                   "canBeEdited" => false,
+                   "canBeEdited" => false, // Редактирование заказа клиентом еще не реализовано
                    "canCancel" => false);
 
     if ((int)$order["status"] < ORDER_STATUS[2]) { // Если заказ еще не в пути, то его можно изменить или отменить.
-      $order["canBeEdited"] = true;
+      //$order["canBeEdited"] = true;
       $order["canCancel"] = true;
     }
 
