@@ -32,6 +32,7 @@ class SEF {
   const PATTERN_FOR_NEW_PRODUCTS = "/^\/new\/{0,1}$/";
   const PATTREN_FOR_SORTED_CATALOG = "/^\/sorted\/catalog\/(alphabet|price-asc|price-desc)((\/)|(\/[0-9]{1,}\/{0,1}))?$/";
   const PATTREN_FOR_SORTED_GENRE = "/^\/sorted\/genre\/[0-9]{1,}\/(alphabet|price-asc|price-desc)((\/)|(\/[0-9]{1,}\/{0,1}))?$/";
+  const PATTERN_FOR_ALL_GENRES = "/^\/all-genres\/$/";
 
   public static function getPageInfo($uri) {
     $uri = strtok($uri, "?");
@@ -196,7 +197,13 @@ class SEF {
       из-за того, что я не думал что она ранее понадобится, а сейчас уже поздно переписывать скрипт.
       Ибо слишком много уже нужно менять - на это нет времени. */
       $pi = array("page_code" => 20, "category_num" => $parts[3], "item_code" => $parts[4], "page_num" => $page_num);
+
+    } elseif (preg_match(self::PATTERN_FOR_ALL_GENRES, $uri)) {
+
+      $pi = array("page_code" => 21, "item_code" => 0, "page_num" => 0);
+      
     }
+
     return $pi;
   }
 }

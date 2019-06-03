@@ -296,6 +296,13 @@ class Page {
         $this->content = Catalog::getHTML($page_info);
         break;
 
+      case 21:
+        require_once(VIEW_MODULES_DIR."genre.class.php");
+        $this->title .= "Все жанры";
+        $this->section_name = "Список всех жанров";
+        $this->content = Genre::getGenresListHTML();
+        break;
+
       case 403:
         $this->title .= "Ошибка доступа!";
     }

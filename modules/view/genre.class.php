@@ -36,6 +36,22 @@ class Genre {
 
     return $list;
   }
+
+  public static function getGenresListHTML() {
+    $list = "";
+    $db = DB::getInstance();
+
+    $genre_selection = $db->query("SELECT * FROM ".DB_TABLES["genre"]);
+    if (!DB::checkDBResult($genre_selection)) return EmptyContent::getHTML(2);
+
+    while ($genre = $genre_selection->fetch_assoc()) {
+      ob_start(); include SERVER_VIEW_DIR."genre_in_genres_list.html";
+      $list .= ob_get_clean();
+    }
+
+    ob_start(); include SERVER_VIEW_DIR."all_genres.html";
+    return ob_get_clean();
+  }
 }
 
  ?>

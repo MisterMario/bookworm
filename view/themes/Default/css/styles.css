@@ -1491,6 +1491,20 @@ option.o-status-option-5 {
 #two-indetical-blocks .customer-info h2:nth-child(3) {
   margin-top: calc(16px - 0.4em);
 }
+/* Страница: все жанры */
+#inside-content-body > #all-genres table {
+  width: 100%;
+  text-align: left;
+}
+#inside-content-body > #all-genres table th {
+  background: #009688;
+  font-weight: bold;
+  color: #fff;
+  padding: 14px 0 14px 14px;
+}
+#inside-content-body > #all-genres table td {
+  padding: 14px 0 14px 14px;
+}
 /* Выделение фоном для статуса заказа */
 span.bg-order-status {
   color: #fff;
