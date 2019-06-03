@@ -282,8 +282,8 @@ class Page {
 
       case 19:
         require_once(VIEW_MODULES_DIR."catalog.class.php");
-        $this->title .= "Каталог товаров";
-        $this->section_name = "Каталог товаров";
+        $this->title .= "Главная";
+        $this->section_name = "Главная: перечень всех товаров";
         $this->content = Catalog::getHTML($page_info);
         break;
 

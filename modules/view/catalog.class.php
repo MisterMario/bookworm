@@ -21,7 +21,7 @@ class Catalog {
         break;
       case 2:
         $genre_id = $page_info["item_code"];
-        $link = "genre/$genre_id";
+        $link = "genre/${genre_id}";
         break;
       case 19:
         $order_method = $page_info["item_code"];
@@ -30,7 +30,7 @@ class Catalog {
       case 20:
         $genre_id = $page_info["category_num"];
         $order_method = $page_info["item_code"];
-        $link = "genre";
+        $link = "genre/${genre_id}";
         break;
     }
 
@@ -59,7 +59,7 @@ class Catalog {
 
     $db = DB::getInstance();
     $num_pages = $db->query("SELECT COUNT(id) as count FROM ".DB_TABLES["book"].
-                            ($genre_id != 0 ? " WHERE genre_id=".$genre_id : ""). // Получение количества всех записей определенного жанра
+                            ($genre_id != 0 ? " WHERE genre_id='${genre_id}'" : ""). // Получение количества всех записей определенного жанра
                             ($order_method != "" ? " ORDER BY ${order_by} ${order_method}" : "") );
     if (!DB::checkDBResult($num_pages)) return EmptyContent::getHTML(2);
 
@@ -84,10 +84,10 @@ class BooksCatalog {
 
     // Нужно сделать сортировку в обратном порядке, для того, чтобы сразу отображались самые новые товары, а затем старые
     $book_selection = $db->query("SELECT id, name, author, price
-                       FROM ".DB_TABLES["book"].
-                       ($genre_id != 0 ? " AND genre_id=".$genre_id : "").
-                       ($order_by != "" ? " ORDER BY ${order_by} ${order_method}" : "").
-                       " LIMIT 12 OFFSET ${offset}"); // Если нужно выбирать книги конкретного жанра
+                                 FROM ".DB_TABLES["book"].
+                                 ($genre_id != 0 ? " WHERE genre_id=".$genre_id : "").
+                                 ($order_by != "" ? " ORDER BY ${order_by} ${order_method}" : "").
+                                 " LIMIT 12 OFFSET ${offset}"); // Если нужно выбирать книги конкретного жанра
     if (gettype($book_selection) == "boolean" || $book_selection->num_rows == 0) return null;
 
     while($book = $book_selection->fetch_assoc()) {

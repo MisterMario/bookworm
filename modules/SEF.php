@@ -191,13 +191,11 @@ class SEF {
     } elseif (preg_match(self::PATTREN_FOR_SORTED_GENRE, $uri)) {
 
       $parts = preg_split("/\//", $uri);
-      var_dump($parts);
       $page_num = count($parts) >= 6 && strlen($parts[5]) > 0 ? (int)$parts[5] : 1;
       /* category_num - номер жанра. Эта переменная не указана в остальных вариантах ответа SEF
       из-за того, что я не думал что она ранее понадобится, а сейчас уже поздно переписывать скрипт.
       Ибо слишком много уже нужно менять - на это нет времени. */
-      $pi = array("page_code" => 20, "category_num" => $parts[4], "item_code" => $parts[3], "page_num" => $page_num);
-
+      $pi = array("page_code" => 20, "category_num" => $parts[3], "item_code" => $parts[4], "page_num" => $page_num);
     }
     return $pi;
   }
