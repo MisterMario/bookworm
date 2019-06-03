@@ -12,22 +12,34 @@ use DB;
 
 class Catalog {
   public static function getHTML($page_info) { // Возвращает контент главной страницы (каталога всех товаров)
-    $content = ""; $genre_id = 0; $order_method = ""; $order_by = "";
-
-    ob_start(); include SERVER_VIEW_DIR."sorting_goods.html";
-    $content .= ob_get_clean();
+    $content = ""; $genre_id = 0; $order_method = "";
+    $order_by = ""; $order_method_name= "";
 
     switch ($page_info["page_code"]) {
+      case 1:
+        $link = "catalog";
+        break;
+      case 2:
+        $genre_id = $page_info["item_code"];
+        $link = "genre/$genre_id";
+        break;
       case 19:
         $order_method = $page_info["item_code"];
+        $link = "catalog";
         break;
       case 20:
         $genre_id = $page_info["category_num"];
         $order_method = $page_info["item_code"];
+        $link = "genre";
         break;
-      default:
-        $genre_id = $page_info["item_code"];
     }
+
+    if ($order_method != "")
+      $order_method_name = $page_info["item_code"];
+
+    ob_start(); include SERVER_VIEW_DIR."sorting_goods.html";
+    $content .= ob_get_clean();
+
     switch ($order_method) {
       case "alphabet":
         $order_by = "name";

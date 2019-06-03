@@ -550,9 +550,6 @@ form.search-form input[type="submit"] {
 #main #content #content-head #search-results .result-line ul li:first-child {
   font-weight: bold;
 }
-#main #content #content-head #search-results .result-line .link {
-  display: none;
-}
 #main #content #content-head #search-results a {
   color: #000;
 }

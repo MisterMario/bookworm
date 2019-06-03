@@ -31,7 +31,7 @@ class SEF {
   const PATTERN_FOR_CART = "/^\/cart\/{0,1}$/"; // Корзина для неавторизованного пользователя
   const PATTERN_FOR_NEW_PRODUCTS = "/^\/new\/{0,1}$/";
   const PATTREN_FOR_SORTED_CATALOG = "/^\/sorted\/catalog\/(alphabet|price-asc|price-desc)((\/)|(\/[0-9]{1,}\/{0,1}))?$/";
-  const PATTREN_FOR_SORTED_GENRE = "/^\/sorted\/genre\/(alphabet|price-asc|price-desc)\/[0-9]{1,}((\/)|(\/[0-9]{1,}\/{0,1}))?$/";
+  const PATTREN_FOR_SORTED_GENRE = "/^\/sorted\/genre\/[0-9]{1,}\/(alphabet|price-asc|price-desc)((\/)|(\/[0-9]{1,}\/{0,1}))?$/";
 
   public static function getPageInfo($uri) {
     $uri = strtok($uri, "?");

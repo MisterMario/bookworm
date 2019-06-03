@@ -1,8 +1,17 @@
 <div id="sorting-goods">
   <p>Сортировать товар:</p>
   <ul>
-    <li>по алфавиту</li>
-    <li class="active">по возрастанию цены</li>
-    <li>по убыванию цены</li>
+    <li onclick="goToLink(this);" class="<?php if ($order_method_name == "alphabet") echo "active"; ?>">
+      <div class="link hidden">/sorted/<?php echo $link; ?>/alphabet/</div>
+      по алфавиту
+    </li>
+    <li onclick="goToLink(this);" class="<?php if ($order_method_name == "price-asc") echo "active"; ?>">
+      <div class="link hidden">/sorted/<?php echo $link; ?>/price-asc/</div>
+      по возрастанию цены
+    </li>
+    <li onclick="goToLink(this);" class="<?php if ($order_method_name == "price-desc") echo "active"; ?>">
+      <div class="link hidden">/sorted/<?php echo $link; ?>/price-desc/</div>
+      по убыванию цены
+    </li>
   </ul>
 </div>
