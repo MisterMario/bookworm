@@ -1,0 +1,13 @@
+<div id="basket">
+  <?php echo $products_list; ?>
+  <div id="sum-total">
+    <h2>Товаров в корзине: <span><?php echo $num_books; ?></span></h2>
+    <h2>На стоимость: <span><?php echo $total_sum." ".CURRENCY; ?></span></h2>
+  </div>
+  <div id="basket-control">
+    <form action="" method="post">
+      <input type="button" name="place_an_order" value="Оформить заказ" id="btn-place-an-order" onclick="proceedToCheckout();">
+      <input type="button" name="baket_clear" value="Очистить корзину" id="btn-baket-clear" onclick="<?php echo $isNoDB ? "clearNoDBCart()" : "clearCart()"; ?>">
+    </form>
+  </div>
+</div>

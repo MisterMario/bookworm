@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title><?php echo $this->title ?></title>
+  <link rel="stylesheet" href="<?php echo CLIENT_VIEW_DIR; ?>css/styles.css">
+  <!--Нужно сделать подгрузку JS-скриптов выборочной. В зависимости от страницы.-->
+  <script type="text/javascript" src="<?php echo CLIENT_JS_DIR; ?>jquery-3.3.1.min.js"></script>
+  <script type="text/javascript" src="<?php echo CLIENT_JS_DIR; ?>jquery.cookie.js"></script>
+  <script type="text/javascript" src="<?php echo CLIENT_JS_DIR; ?>ajax.js"></script>
+  <script type="text/javascript" src="<?php echo CLIENT_JS_DIR; ?>drop_down_menu.js"></script>
+  <script type="text/javascript" src="<?php echo CLIENT_JS_DIR; ?>cart.js"></script>
+  <script type="text/javascript" src="<?php echo CLIENT_JS_DIR; ?>login.js"></script>
+  <script type="text/javascript" src="<?php echo CLIENT_JS_DIR; ?>validator.js"></script>
+  <script type="text/javascript" src="<?php echo CLIENT_JS_DIR; ?>review.js"></script>
+  <script type="text/javascript" src="<?php echo CLIENT_JS_DIR; ?>order.js"></script>
+  <script type="text/javascript" src="<?php echo CLIENT_JS_DIR; ?>auto_test.js"></script>
+  <script type="text/javascript" src="<?php echo CLIENT_JS_DIR; ?>message.js"></script>
+  <script type="text/javascript" src="<?php echo CLIENT_JS_DIR; ?>drop-search-results.js"></script>
+</head>
+<body>
+  <div id="container">
+    <div id="header">
+      <div id="logo">
+        <a href="#"><img src="<?php echo CLIENT_VIEW_DIR ?>/images/logo.png" alt=""></a>
+        <div id="brand-name">
+          <h1>Book<span>Worm.by</span></h1>
+          <h2>Интернет-магазин книг</h2>
+        </div>
+      </div>
+      <div id="right-part">
+        <div id="mini-profil">
+          <?php echo $this->mini_profil; ?>
+        </div>
+        <?php echo $this->mini_cart; ?>
+      </div>
+    </div>
+    <div id="topmenu">
+      <ul>
+        <li><a href="/">Главная</a></li>
+        <li>
+          <a href="#" class="">Жанры</a>
+          <div class="drop-down-menu hidden">
+            <ul class="dd-ul">
+              <li class="dd-li"><a href="/genre/1">Современная проза</a></li>
+              <li class="dd-li"><a href="/genre/2">Классика</a></li>
+              <li class="dd-li"><a href="/genre/3">Музыка</a></li>
+              <li class="dd-li"><a href="/genre/4">Приключения</a></li>
+              <li class="dd-li"><a href="/genre/5">Зарубежная классика</a></li>
+              <li class="dd-li"><a href="/genre/6">Детективы</a></li>
+              <li class="dd-li"><a href="/all-genres/">Все жанры</a></li>
+            </ul>
+          </div>
+        </li>
+        <li><a href="/new/">Новинки</a></li>
+        <?php echo $this->topmenu; ?>
+      </ul>
+    </div>
+    <div id="main">
+      <div id="left-block">
+        <?php echo $this->left_block; ?>
+      </div>
+      <div id="content">
+        <div id="content-head">
+          <div id="section-name">
+            <?php echo $this->section_name; ?>
+          </div>
+          <div id="search">
+            <form action="" class="search-form">
+              <label for="search-string">Поиск по сайту:</label>
+              <input type="text" name="search-string" placeholder="Что-то ищете?" autocomplete="off" onkeyup="getResults()">
+              <input type="button" value="">
+            </form>
+          </div>
+          <div id="search-results">
+            <div id="result-lines"></div>
+            <div id="more-results">
+              <a href="#">Просмотреть все результаты поиска...</a>
+            </div>
+          </div>
+        </div>
+        <div id="content-body">
+          <div id="inside-content-body">
+            <?php echo $this->content; ?>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="footer">
+      <div id="copyright">
+        <p>© 2018 BookWorm.by</p>
+      </div>
+      <div id="social-networks">
+        <p>Мы в социальных сетях:</p>
+        <ul>
+          <li><a href="#"><img src="<?php echo CLIENT_VIEW_DIR ?>/images/social-icon-vk.png" alt=""></a></li>
+          <li><a href="#"><img src="<?php echo CLIENT_VIEW_DIR ?>/images/social-icon-facebook.png" alt=""></a></li>
+          <li><a href="#"><img src="<?php echo CLIENT_VIEW_DIR ?>/images/social-icon-instagram.png" alt=""></a></li>
+        </ul>
+      </div>
+    </div>
+    <div id="message-box" class="hidden">
+      <div id="message-header">
+        <div id="message-title">СООБЩЕНИЕ</div>
+        <div id="message-control">
+          <input type="button" name="message-hide" onclick="hideMessageBox();">
+        </div>
+      </div>
+      <div id="message-body">
+        Пустое сообщение...
+      </div>
+    </div>
+  </div>
+</body>
+</html>

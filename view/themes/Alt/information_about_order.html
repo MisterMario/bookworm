@@ -1,0 +1,30 @@
+<div id="information-about-order">
+  <div class="order o-status-<?php echo $order["status"]; ?> long-order">
+    <div class="order-info">
+      <h2>ЗАКАЗ №<?php echo $order["id"]; ?></h2>
+      <ul>
+        <li class="hidden"><input type="hidden" name="order_id" value="<?php echo $order["id"]; ?>"></li>
+        <li><strong>Количество товаров:</strong> <?php echo $order["num_books"]; ?></li>
+        <li><strong>Стоимость заказа:</strong> <?php echo $order["total_price"]." ".CURRENCY; ?></li>
+        <li><strong>Дата оформления:</strong> <?php echo $order["date_of_issue"]; ?></li>
+        <li><strong>Доставка:</strong> <?php echo $order["date_of_dilivery"]; ?> в <?php echo $order["dilivery_time"]; ?></li>
+        <li><strong>Способ доставки:</strong> <?php echo $order["dilivery_method"]; ?>.</li>
+        <li><strong>Метод оплаты:</strong> <?php echo $order["payment_method"]; ?>.</li>
+        <li><strong>Статус:</strong> <?php echo $order["status_name"]; ?>.</li>
+      </ul>
+    </div>
+    <div class="order-control">
+      <form action="" method="post">
+        <input type="hidden" name="form_name" value="edit_order">
+        <input type="hidden" name="item_id" value="<?php echo $order["id"]; ?>">
+        <input type="button" name="repeat" onclick="addBooksFromOrderToCart(this);" class="<?php if ($isEdited) echo "hidden"; ?>">
+        <input type="submit" name="accept_order" class="<?php if (!$order["canBeEdited"] || !$isEdited) echo "hidden"; ?>">
+        <input type="submit" name="edit" class="<?php if (!$order["canBeEdited"] || $isEdited) echo "hidden"; ?>">
+        <input type="button" name="delete" onclick="cacncelOrder(this);" class="<?php if (!$order["canCancel"]) echo "hidden"; ?>">
+      </form>
+    </div>
+  </div>
+  <div id="products-in-order">
+    <?php echo $books_list; ?>
+  </div>
+</div>

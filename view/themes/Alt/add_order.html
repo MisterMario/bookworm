@@ -1,0 +1,132 @@
+<div id="add-order">
+  <div id="dilivery-format" class="rect">
+    <h2>Выберите форму доставки заказа:</h2>
+    <div class="format-selection">
+      <ul>
+        <li value="1" class="active" onclick="setFormat(this);">Курьером</li>
+        <li value="2" onclick="setFormat(this);">Почтой</li>
+        <li value="3" onclick="setFormat(this);">Самовывоз</li>
+      </ul>
+    </div>
+    <div class="format-description fd-1">
+      Курьерская доставка товаров осуществляется в пределах всей Беларуси.<br />
+      Стоимость данного способа доставки составляет: 5 руб по Минску и 15 руб по всей Беларуси.<br />
+      При сумме заказа более 70 руб доставка бесплатна.<br />
+    </div>
+    <div class="format-description fd-2 hidden">
+      При доставке почтой оплата производится наложенным платежом.<br />
+      Стоимость пересылки и транзитные расходы определяются почтовым отделением.
+    </div>
+    <div class="format-description fd-3 hidden">
+      Забрать заказ вы сможете в одном из пунктов самовывоза.<br />
+      Местоположение и информацию о времени работы пунктов вы можете просмотреть перейдя по <a href="#">этой ссылке</a>.
+    </div>
+  </div>
+  <div id="personal-data" class="rect <?php echo $isHidden; ?>">
+    <h2>Введите личные данные</h2>
+    <form action="" method="post">
+      <div id="error-message" class="hidden">
+        <div id="message-head">
+          Ошибка
+        </div>
+        <div id="message-content">
+          Поле имя содержит некорректные символы. Допустимы лишь буквы русского и анлийского алфавита.
+        </div>
+      </div>
+      <div class="form-row">
+        <label for="firstname">Ваше имя: <span>*</span></label>
+        <div class="input <--!incorrect-value-->">
+          <input type="text" name="firstname" placeholder="Андрей" value="">
+        </div>
+      </div>
+      <div class="form-row">
+        <label for="lastname">Ваша фамилия: <span>*</span></label>
+        <div class="input">
+          <input type="text" name="lastname" placeholder="Сосновский">
+        </div>
+      </div>
+      <div class="form-row">
+        <label for="e-mail">E-mail: <span>*</span></label>
+        <div class="input">
+          <input type="text" name="e-mail" placeholder="nikolaisosnovskiy@mail.ru">
+        </div>
+      </div>
+      <div class="form-row">
+        <label for="phone">Телефон: <span>*</span></label>
+        <div class="input">
+          <input type="text" name="phone" placeholder="+375 (44) 291-36-81">
+        </div>
+      </div>
+      <div class="form-row">
+        <label for="region">Область: <span>*</span></label>
+        <div class="input">
+          <input type="text" name="region" placeholder="Минская">
+        </div>
+      </div>
+      <div class="form-row">
+        <label for="city">Город: <span>*</span></label>
+        <div class="input">
+          <input type="text" name="city" placeholder="Солигорск">
+        </div>
+      </div>
+      <div class="form-row">
+        <label for="address">Адрес: <span>*</span></label>
+        <div class="input">
+          <input type="text" name="address" placeholder="ул. Боярышника, д.78, кв.5">
+        </div>
+      </div>
+      <div class="form-row">
+        <label for="postcode">Почтовый индекс: <span>*</span></label>
+        <div class="input">
+          <input type="text" name="postcode" placeholder="824153">
+        </div>
+      </div>
+    </form>
+  </div>
+  <div id="payment-format" class="rect">
+    <h2>Выберите форму оплаты:</h2>
+    <div class="format-selection">
+      <ul>
+        <li value="1" onclick="setFormat(this);">Наличными</li>
+        <li value="2" onclick="setFormat(this);">Банковской картой</li>
+        <li class="active" value="3" onclick="setFormat(this);">Онлайн-платеж</li>
+      </ul>
+    </div>
+    <!--fs-n расшифровывается format description, n - номер способа оплаты
+        Для описания конкретного формата необходимо прописать для блока класс fd-n, где "n" его номер-->
+    <h2 class="fd-heading">Доступные платежные системы:</h2>
+    <div class="format-description fd-3">
+      <ul class="inline">
+        <li name="webmoney" value="1" onclick="setOnlinePaymentFormat(this);"></li>
+        <li name="paypal" value="2" onclick="setOnlinePaymentFormat(this);"></li>
+        <li name="yandex_money" value="3" class="active" onclick="setOnlinePaymentFormat(this);"></li>
+        <li name="quwi" value="4" onclick="setOnlinePaymentFormat(this);"></li>
+      </ul>
+    </div>
+  </div>
+  <div id="time-of-dilivery" class="rect">
+    <div id="dilivery-date">
+      <h2>Выберите дату доставки:</h2>
+      <ul class="inline">
+        <?php echo $dateList; ?>
+      </ul>
+    </div>
+    <div id="dilivery-time">
+      <h2>Выберите время доставки:</h2>
+      <select name="" id="">
+        <option value="1">10:00 - 12:00</option>
+        <option value="2">12:00 - 14:00</option>
+        <option value="3" selected>14:00 - 16:00</option>
+        <option value="4">16:00 - 18:00</option>
+      </select>
+    </div>
+  </div>
+  <div id="result">
+    <div id="sum-total">
+      <h2>Стоимость заказа: <?php echo $total_sum; ?> BYR</h2>
+    </div>
+    <div id="order-control">
+      <input type="button" name="place_an_order" onclick="sendOrder();" value="Подтвердить заказ" class="green-btn">
+    </div>
+  </div>
+</div>

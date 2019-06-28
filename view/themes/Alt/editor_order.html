@@ -1,0 +1,52 @@
+<div id="edit-order">
+  <div id="two-indetical-blocks">
+    <div class="order o-status-<?php echo $order["status"]; ?> small-order block">
+      <div class="order-info">
+        <h2>ЗАКАЗ №<?php echo $order["id"]; ?></h2>
+        <ul>
+          <li><strong>Количество товаров:</strong> <span id="books-num"><?php echo $order["books_of_count"]; ?></span></li>
+          <li><strong>Стоимость заказа:</strong> <span id="total-price"><?php echo $order["total_price"]; ?></span> BYR</li>
+          <li><strong>Дата оформления:</strong> <?php echo $order["date_of_issue"]; ?></li>
+          <li><strong>Доставка:</strong> <?php echo $order["dilivery"]; ?></li>
+          <li><strong>Способ доставки:</strong>  <?php echo $order["dilivery_method"]; ?></li>
+          <li><strong>Метод оплаты:</strong>  <?php echo $order["payment_method"]; ?></li>
+          <li><strong>Статус:</strong> <span id="status-name" class="bg-order-status"><?php echo $order["status_name"]; ?></span></li>
+        </ul>
+      </div>
+      <div class="order-control-panel">
+        <ul>
+          <li class="status-1" onclick="setOrderStatus(1);" title="Ожидает подтверждения"></li>
+          <li class="status-2" onclick="setOrderStatus(2);" title="Укомплектован"></li>
+          <li class="status-3" onclick="setOrderStatus(3);" title="Заказ в пути"></li>
+          <li class="status-4" onclick="setOrderStatus(4);" title="Выполнен"></li>
+          <li class="status-5" onclick="setOrderStatus(5);" title="Отменен"></li>
+        </ul>
+        <div id="hidden-information" class="hidden">
+          <input type="hidden" name="order_id" value="<?php echo $order["id"]; ?>">
+          <input type="hidden" name="order_status" value="<?php echo $order["status"]; ?>">
+        </div>
+        <input type="button" class="green-btn" value="Сохранить изменения" onclick="sendEditedOrder();">
+      </div>
+    </div>
+    <div class="customer-info block">
+      <h2>ИНФОРМАЦИЯ О ЗАКАЗЧИКЕ</h2>
+      <ul>
+        <li><strong>Статус:</strong> <?php echo $customer["status"]; ?></li>
+        <li><strong>Имя, фимилия:</strong> <?php echo $customer["name"]; ?></li>
+        <li><strong>Пол:</strong> <?php echo $customer["gender_name"]; ?></li>
+        <li><strong>Телефон:</strong> <?php echo $customer["phone_number"]; ?></li>
+        <li><strong>E-mail:</strong> <?php echo $customer["email"]; ?></li>
+      </ul>
+      <h2>ДАННЫЕ ДЛЯ ДОСТАВКИ</h2>
+      <ul>
+        <li><strong>Область:</strong> <?php echo $customer["state"]; ?></li>
+        <li><strong>Город:</strong> <?php echo $customer["city"]; ?></li>
+        <li><strong>Адрес:</strong> <?php echo $customer["address"]; ?></li>
+        <li><strong>Индекс:</strong> <?php echo $customer["zip_code"]; ?></li>
+      </ul>
+    </div>
+  </div>
+  <div id="products-in-order">
+    <?php echo $book_list; ?>
+  </div>
+</div>

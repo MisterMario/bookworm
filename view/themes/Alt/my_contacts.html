@@ -1,0 +1,92 @@
+<div id="my-contacts">
+  <div id="personal-data" class="rect">
+    <h2>Контактные данные:</h2>
+    <form action="" method="post">
+      <div id="error-message" class="hidden">
+        <div id="message-head">
+          Ошибка
+        </div>
+        <div id="message-content">
+          Поле имя содержит некорректные символы. Допустимы лишь буквы русского и анлийского алфавита.
+        </div>
+      </div>
+      <div class="form-row">
+        <label for="firstname">Ваше имя: <span>*</span></label>
+        <div class="input">
+          <input type="text" name="firstname" placeholder="Андрей" value="<?php echo $user_info["firstname"]; ?>">
+        </div>
+      </div>
+      <div class="form-row">
+        <label for="lastname">Ваша фамилия: <span>*</span></label>
+        <div class="input">
+          <input type="text" name="lastname" placeholder="Сосновский" value="<?php echo $user_info["lastname"]; ?>">
+        </div>
+      </div>
+      <div class="form-row">
+        <label for="email">E-mail: <span>*</span></label>
+        <div class="input">
+          <input type="text" name="email" placeholder="as@mail.ru" value="<?php echo $user_info["email"]; ?>">
+        </div>
+      </div>
+      <div class="form-row">
+        <label for="phone">Телефон: <span>*</span></label>
+        <div class="input">
+          <input type="text" name="phone" placeholder="+375 (44) 291-36-81" value="<?php echo $user_info["phone_number"]; ?>">
+        </div>
+      </div>
+      <div class="form-row">
+        <label for="password">Пароль:</label>
+        <div class="input">
+          <input type="password" name="password" placeholder="">
+        </div>
+      </div>
+      <div class="form-row">
+        <label for="repassword">Повтор пароля:</label>
+        <div class="input">
+          <input type="password" name="repassword" placeholder="">
+        </div>
+      </div>
+      <div class="form-row">
+        <label for="gender">Пол:</label>
+        <div class="input" id="input-gender">
+          <input type="radio" name="gender" id="male" value="1" <?php if ($user_info["gender"] == 1) echo "checked"; ?>>
+          <label for="male">мужской</label>
+          <input type="radio" name="gender" id="female" value="2" <?php if ($user_info["gender"] == 2) echo "checked"; ?>>
+          <label for="female">женский</label>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div id="delivery-data" class="rect">
+    <h2>Данные для доставки:</h2>
+    <form action="" method="post">
+      <div class="form-row">
+        <label for="state">Область:</label>
+        <div class="input">
+          <input type="text" name="state" placeholder="Минская" value="<?php echo $user_info["state"]; ?>">
+        </div>
+      </div>
+      <div class="form-row">
+        <label for="city">Город:</label>
+        <div class="input">
+          <input type="text" name="city" placeholder="Солигорск" value="<?php echo $user_info["city"]; ?>">
+        </div>
+      </div>
+      <div class="form-row">
+        <label for="address">Адрес:</label>
+        <div class="input">
+          <input type="text" name="address" placeholder="ул. Боярышника, д.78, кв.5" value="<?php echo $user_info["address"]; ?>">
+        </div>
+      </div>
+      <div class="form-row">
+        <label for="zip_code">Почтовый индекс:</label>
+        <div class="input">
+          <input type="text" name="zip_code" placeholder="824153" value="<?php echo $user_info["zip_code"]; ?>">
+        </div>
+      </div>
+    </form>
+  </div>
+  <div id="my-contacts-control" class="form-controls">
+    <input type="button" name="save-changes" value="Сохранить изменения" class="green-btn" onclick="sendMyContacts();">
+  </div>
+</div>

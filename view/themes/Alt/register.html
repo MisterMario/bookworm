@@ -1,0 +1,70 @@
+<div id="registration">
+  <div id="personal-data" class="rect">
+    <h2>Регистрация нового пользователя:</h2>
+    <form action="" method="post">
+      <div id="error-message" class="hidden">
+        <div id="message-head">
+          Ошибка
+        </div>
+        <div id="message-content">
+          Поле имя содержит некорректные символы. Допустимы лишь буквы русского и анлийского алфавита.
+        </div>
+      </div>
+      <div class="form-row">
+        <label for="firstname">Ваше имя: <span>*</span></label>
+        <div class="input">
+          <input type="text" name="firstname" placeholder="Андрей">
+        </div>
+      </div>
+      <div class="form-row">
+        <label for="lastname">Ваша фамилия: <span>*</span></label>
+        <div class="input">
+          <input type="text" name="lastname" placeholder="Сосновский">
+        </div>
+      </div>
+      <div class="form-row">
+        <label for="email">E-mail: <span>*</span></label>
+        <div class="input">
+          <input type="text" name="email" placeholder="as@mail.ru">
+        </div>
+      </div>
+      <div class="form-row">
+        <label for="phone">Телефон: <span>*</span></label>
+        <div class="input">
+          <input type="text" name="phone" placeholder="+375 (44) 291-36-81">
+        </div>
+      </div>
+      <div class="form-row">
+        <label for="password">Пароль:</label>
+        <div class="input">
+          <input type="password" name="password" placeholder="">
+        </div>
+      </div>
+      <div class="form-row">
+        <label for="repassword">Повтор пароля:</label>
+        <div class="input">
+          <input type="password" name="repassword" placeholder="">
+        </div>
+      </div>
+      <div class="form-row">
+        <label for="gender">Пол:</label>
+        <div class="input" id="input-gender">
+          <input type="radio" name="gender" id="male" value="1" checked>
+          <label for="male">мужской</label>
+          <input type="radio" name="gender" id="female" value="2">
+          <label for="female">женский</label>
+        </div>
+      </div>
+      <div class="form-row">
+        <label>Подтверждаю согласие с <a href="#">правилами проекта</a>: <span>*</span></label>
+        <div class="input">
+          <input type="checkbox" name="i-agree" id="i-agree">
+          <label for="i-agree"></label>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div id="registration-control" class="form-controls">
+    <input type="button" name="registration" value="Зарегистрироваться" class="green-btn" onclick="sendRegisterInfo();">
+  </div>
+</div>

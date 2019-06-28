@@ -1,0 +1,14 @@
+<tr>
+  <td><?php echo $genre["id"]; ?></td>
+  <td><?php echo $genre["name"]; ?></td>
+  <td>
+    <div class="t-row-control">
+      <form action="" method="post">
+        <input type="hidden" name="form_name" value="control_genres">
+        <input type="hidden" name="item_id" value="<?php echo $genre["id"]; ?>">
+        <input type="submit" name="action" value="edit_row">
+        <input type="submit" name="action" value="delete_row">
+      </form>
+    </div>
+  </td>
+</tr>

@@ -1,0 +1,32 @@
+<div id="general-information">
+  <div id="product-photo">
+    <img src="<?php echo CLIENT_P_DIR; ?><?php echo $book["image"]; ?>" alt="">
+    <h2><?php echo $book["price"]." ".CURRENCY; ?></h2>
+    <form action="" method="post" class="add-to-basket">
+      <input type="hidden" name="form_name" value="add_to_cart">
+      <input type="hidden" name="item_id" value="<?php echo $book["id"] ?>">
+      <input type="button" value="" onclick="addToCart(this);">
+    </form>
+  </div>
+  <div id="product-information">
+    <h1><?php echo $book["name"]; ?></h1>
+    <ul>
+      <li name="item_id" class="hidden"><?php echo $book["id"]; ?></li>
+      <li><strong>Автор</strong>: <?php echo $book["author"]; ?></li>
+      <li><strong>Жанр:</strong> <?php echo $book["genre"]; ?></li>
+      <li><strong>Язык книги:</strong> <?php echo $book["language"]; ?></li>
+      <li><strong>Теги</strong>: <?php echo $book["tags"]; ?></li>
+      <li><strong>Серии:</strong> <?php echo $book["series"]; ?></li>
+      <li><strong>Правообладатель:</strong> <?php echo $book["rightholder"]; ?></li>
+      <li><strong>Дата начала продаж:</strong> <?php echo $book["date_of_cos"]; ?></li>
+      <li><strong>Возрастные ограничения:</strong> <?php echo $book["age_restrictions"]; ?></li>
+      <li><strong>ISBN:</strong> <?php echo $book["isbn"]; ?></li>
+    </ul>
+  </div>
+</div>
+<div id="annotation">
+  <h2>Аннотация/Описание книги:</h2>
+  <p>
+    <?php echo $book["annotation"]; ?>
+  </p>
+</div>
